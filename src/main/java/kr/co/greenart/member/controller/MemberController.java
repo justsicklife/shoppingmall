@@ -8,8 +8,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/member")
 public class MemberController {
 	
-	@GetMapping("/index")
-	public String index() {
-		return "/index";
+	@GetMapping("/singin")
+	public String getLoginPage() {
+		return "/member/singin";
+	}
+	
+	@GetMapping("/singup")
+	public String getJoinPage() {
+		return "/member/singup";
 	}
 }
