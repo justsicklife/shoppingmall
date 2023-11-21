@@ -25,5 +25,14 @@ public class MemberController {
 		return "/shop/create";
 	}
 
+	@GetMapping("/singin")
+	public String getLoginPage() {
+		return "/member/singin";
+	}
+
+	@GetMapping("/singup")
+	public String getJoinPage() {
+		return "/member/singup";
+	}
 
 }
