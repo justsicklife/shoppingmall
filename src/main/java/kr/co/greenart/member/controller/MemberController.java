@@ -25,14 +25,14 @@ public class MemberController {
 		return "/shop/create";
 	}
 
-	@GetMapping("/singin")
+	@GetMapping("/signin")
 	public String getLoginPage() {
-		return "/member/singin";
+		return "/signin/signin";
 	}
 
-	@GetMapping("/singup")
+	@GetMapping("/signup")
 	public String getJoinPage() {
-		return "/member/singup";
+		return "/signup/signup";
 	}
 
 }
