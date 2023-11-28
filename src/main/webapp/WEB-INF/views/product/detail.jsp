@@ -269,7 +269,6 @@ a, a:hover {
 	<%@ include file="/WEB-INF/views/common/navbar.jsp"%>
 
 
-
 	<!-- Product section-->
 	<section class="py-5">
 		<div class="container px-4 px-lg-5 my-5">

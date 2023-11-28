@@ -33,6 +33,11 @@ public class FileUploadController {
 
 		String path = request.getSession().getServletContext().getRealPath("/") + File.separator + "resources/upload"; // 파일이
 		
+		System.out.println("img : " +imgfile);
+		System.out.println("path : " + path);
+		System.out.println("replaceName : " + replaceName);
+		
+
 		FileUpload.fileUpload(imgfile, path, replaceName);
 
 		model.addAttribute("path", path); // 파일업로드를 하는 창에 경로와

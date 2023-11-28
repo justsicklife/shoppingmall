@@ -40,8 +40,8 @@ public class ProductController {
 		return "/product/create";
 	}
 	
-	@GetMapping("/detail/{id}") 
-	public String getDetailePage(@PathVariable("id") int id,Model model) {
+	@GetMapping("/detail/{prdocut_id}") 
+	public String getDetailePage(@PathVariable("prdocut_id") int id,Model model) {
 		
 		ProductDTO productDTO= productService.productFindById(id);
 		
@@ -49,6 +49,19 @@ public class ProductController {
 		
 		return "/product/detail";
 	}
+	
+//	@GetMapping("/update/{product_id}")
+//	public String getUpdatePage(
+//			@PathVariable("product_id") int id,
+//			Model model
+//			) {
+//		
+//		ProductDTO productDTO= productService.productFindById(id);
+//		
+//		model.addAttribute("product",productDTO);
+//		
+//		return "/product/update";
+//	}
 	
 	@PostMapping("/create")
 	public String postCreatePage(ProductDTO product,
@@ -93,7 +106,7 @@ public class ProductController {
 				
 				System.out.println(filePathName);
 				
-				filePathList.add("\\resources\\upload\\" + fileName);
+				filePathList.add("/resources/upload/" + fileName);
 				Path filePath = Paths.get(filePathName);
 				
 				try {
