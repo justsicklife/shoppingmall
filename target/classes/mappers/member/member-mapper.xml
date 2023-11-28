@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="memberMapper">
+
+	<resultMap type="MemberDto" id="memberResultSet">
+		<result column="m_index" property="memberIdx"/>
+		<result column="m_name" property="memberName"/>
+		<result column="m_email" property="memberEmail"/>
+		<result column="m_id" property="memberId"/>
+		<result column="m_password" property="memberPassword"/>
+		<result column="m_addressNum" property="memberAdrrNum"/>
+		<result column="m_addressFirst" property="memberAdrrFirst"/>
+		<result column="m_addressSecond" property="memberAdrrSecond"/>
+		<result column="m_phoneNum" property="memberphoneNum"/>
+		<result column="m_gender" property="memberGender"/>
+		<result column="m_birthday" property="memberBirthday"/>
+		<result column="m_joindate" property="memberJoinDate"/>
+		<result column="m_removedate" property="memberRemoveDate"/>		
+	</resultMap>
+	
+	<select id="selectMemberAll" resultMap="memberResultSet">
+		SELECT * FROM S_MEMBER
+	</select>
+	
+	<!-- 로그인 -->
+	<select id="loginMember" resultMap="memberResultSet">
+		SELECT * FROM S_MEMBER
+		WHERE m_id = #{memberId}
+	</select>
+	
+	<!-- 이메일 중복 확인 -->
+	<select id="checkEmail" resultType="_int">
+		SELECT COUNT(*) FROM S_MEMBER <!-- 1. 테이블 컬럼들 갯수 조회 -->
+		WHERE m_email = #{memberEmail} <!-- 2. 이메일 유무를 위해 조건 추가 ( 있다면 1, 없으면 0 반환 -->
+	</select>
+	
+	<!-- 아이디 중복 확인 -->
+	<select id="checkId" resultType="_int">
+		SELECT COUNT(*) FROM S_MEMBER <!-- 1. 테이블 컬럼들 갯수 조회 -->
+		WHERE m_id = #{memberId} <!-- 2. 아이디 유무를 위해 조건 추가 ( 있다면 1, 없으면 0 반환 -->
+	</select>
+	
+	<!-- 회원 가입 -->
+	<insert id="signupMember" parameterType="MemberDto">
+		INSERT INTO S_MEMBER(m_index,
+						   m_name,
+						   m_email,
+						   m_id,
+						   m_password,
+						   m_addressNum,
+						   m_addressFirst,
+						   m_addressSecond,
+						   m_phoneNum,
+						   m_gender,
+						   m_birthday,
+						   m_joindate)
+				VALUES (seq_s_member_idx.NEXTVAL,
+					   #{memberName},
+					   #{memberEmail},
+					   #{memberId},
+					   #{memberPassword},
+					   #{memberAdrrNum},
+					   #{memberAdrrFirst},
+					   #{memberAdrrSecond},
+					   #{memberphoneNum},
+					   #{memberGender},
+					   #{memberBirthday},
+					   SYSDATE)
+	</insert>
+	
+</mapper>

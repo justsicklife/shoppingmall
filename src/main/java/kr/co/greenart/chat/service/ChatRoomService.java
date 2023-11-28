@@ -1,5 +1,8 @@
 package kr.co.greenart.chat.service;
 
-public class ChatRoomService {
+import org.springframework.stereotype.Service;
 
+@Service
+public class ChatRoomService {
+	
 }
