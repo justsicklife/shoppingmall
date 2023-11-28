@@ -39,61 +39,61 @@ public class ShopController {
 	
 	
 	
-	//idÃ£±â
+	//idì°¾ê¸°
 	//http://localhost/shop/findId
 	@GetMapping("/findId")
 	public String findIdPage() {
 		return "/member/find_id";
 	}
 	
-	//pwÃ£±â
+	//pwì°¾ê¸°
 	//http://localhost/shop/findPw
 	@GetMapping("/findPw")
 	public String findPwPage() {
 		return "/member/find_pw";
 	}
 	
-	//¸ŞÀÎ ÆäÀÌÁö
+	//ë©”ì¸ í˜ì´ì§€
 	@GetMapping("/index.do")
 	public String getIndexPage() {
 		return "/shop/index";
 	}
 
-	//·Î±×ÀÎ ÆäÀÌÁö (ÀÓ½Ã)
+	//ë¡œê·¸ì¸ í˜ì´ì§€ (ì„ì‹œ)
 	//http://localhost/shop/loginForm.do
 	@GetMapping("loginForm.do")
 	public String loginPage() {
 		return "/signin/signin";
 	}
 	
-	//·Î±×ÀÎ
+	//ë¡œê·¸ì¸
 	@PostMapping("/login.do")
 	public String getLoginPage(MemberDto memberDto, HttpSession session, Model model ) {
 		
 		MemberDto loginUser = memberSercvice.loginMember(memberDto);
 		
 		// Objects.isNull(loginUser) = null : true
-		// ! null : false ³í¸® ºÎÁ¤ »ç¿ëÇßÀ¸´Ï ºñ¾îÀÖ´Ù¸é false
-		// getMemberPassword - »ç¿ëÀÚ ÀÔ·Â ÆĞ½º¿öµå / getMemberPassword - db¿¡ ÀÚÁ¤µÈ ÆĞ½º¿öµå
+		// ! null : false ë…¼ë¦¬ ë¶€ì • ì‚¬ìš©í–ˆìœ¼ë‹ˆ ë¹„ì–´ìˆë‹¤ë©´ false
+		// getMemberPassword - ì‚¬ìš©ì ì…ë ¥ íŒ¨ìŠ¤ì›Œë“œ / getMemberPassword - dbì— ìì •ëœ íŒ¨ìŠ¤ì›Œë“œ
 		if(!Objects.isNull(loginUser) && bcryptPasswordEncoder.matches(memberDto.getMemberPassword(), loginUser.getMemberPassword())) {
 			
-			System.out.println("·Î±×ÀÎ ¼º°ø");
+			System.out.println("ë¡œê·¸ì¸ ì„±ê³µ");
 			
 			session.setAttribute("memberIdx", loginUser.getMemberIdx());
 			
 			return "redirect:/shop/index.do";
 		} else {
-			System.out.println("·Î±×ÀÎ ½ÇÆĞ");
-			 model.addAttribute("loginError", true); // ·Î±×ÀÎ ½ÇÆĞ¸¦ ³ªÅ¸³»´Â ¼Ó¼º Ãß°¡
+			System.out.println("ë¡œê·¸ì¸ ì‹¤íŒ¨");
+			 model.addAttribute("loginError", true); // ë¡œê·¸ì¸ ì‹¤íŒ¨ë¥¼ ë‚˜íƒ€ë‚´ëŠ” ì†ì„± ì¶”ê°€
 			return "/signin/signin";
 		}
 	}
 	
 	
-	// ResponseBody ¾²Áö ¾ÊÀ» °æ¿ì : /WEB-INF/views/success.jsp
-	// ResponseBody ¾µ °æ¿ì : ¹®ÀÚ¿­ success¸¦ Å¬¶óÀÌ¾ğÆ®¿¡°Ô ¹İÈ¯
+	// ResponseBody ì“°ì§€ ì•Šì„ ê²½ìš° : /WEB-INF/views/success.jsp
+	// ResponseBody ì“¸ ê²½ìš° : ë¬¸ìì—´ successë¥¼ í´ë¼ì´ì–¸íŠ¸ì—ê²Œ ë°˜í™˜
 	@PostMapping("checkMember.do")
-	@ResponseBody // HTTP body¿¡ return°ªÀ» ÀÀ´äÀ¸·Î º¸³¿
+	@ResponseBody // HTTP bodyì— returnê°’ì„ ì‘ë‹µìœ¼ë¡œ ë³´ëƒ„
 	public String checkMember(String id, String email) {
 		
 		int resultId = memberSercvice.checkId(id);
@@ -105,10 +105,10 @@ public class ShopController {
 		if(resultId > 0 && resultEmail > 0) {
 			return "failed";
 		} else if (resultId > 0 && resultEmail <= 0){
-			System.out.println("¾ÆÀÌµğ Áßº¹");
+			System.out.println("ì•„ì´ë”” ì¤‘ë³µ");
 			return "idFailed";
 		} else if (resultId <= 0 && resultEmail > 0 ){
-			System.out.println("ÀÌ¸ŞÀÏ Áßº¹");
+			System.out.println("ì´ë©”ì¼ ì¤‘ë³µ");
 			return "emailFailed";
 		} else {
 			return "success";
@@ -116,17 +116,17 @@ public class ShopController {
 	}
 	
 	//http://localhost/shop/signupForm.do
-	//È¸¿ø°¡ÀÔ ÆäÀÌÁö ÀÌµ¿
+	//íšŒì›ê°€ì… í˜ì´ì§€ ì´ë™
 	@GetMapping("/signupForm.do")
 	public String getSingUpPage() {
 		return "/signup/signup";
 	}
 	
-	//È¸¿ø °¡ÀÔ
+	//íšŒì› ê°€ì…
 	@PostMapping("/signup.do")
 	public String signupMember(MemberDto memberDto, HttpSession session) {
 		
-		//À¯È¿¼º °Ë»ç
+		//ìœ íš¨ì„± ê²€ì‚¬
 		String password = memberDto.getMemberPassword();
 		String passwordChk = memberDto.getMemberPasswordChk();
 		String id = memberDto.getMemberId();
@@ -136,13 +136,13 @@ public class ShopController {
 		String idRegex = "^(?=.*[a-zA-Z])[a-zA-Z0-9]{8,16}$";
 		String email = memberDto.getMemberEmail();
 		
-		//ÀÌ¸ŞÀÏ ÀúÀå
+		//ì´ë©”ì¼ ì €ì¥
 		String emailPrefix = memberDto.getEmailPrefix();
 		String emailSuffix = memberDto.getEmailSuffix();
 		memberDto.setMemberEmail(emailPrefix + "@" + emailSuffix);
 		
 		
-		// id, email Áßº¹ È®ÀÎ ¸Ş¼­µå ( ajax·Î ¿äÃ»ÇÏ´ø ¸Ş¼­µå¿¡ emailÀ» ´ã°í °á°ú°ª ¹İÈ¯ ¹ŞÀ½ , String chkMember = failed , emailFailed, idFailed, success Áß ÇÏ³ª ¹İÈ¯ ¹ŞÀ½)
+		// id, email ì¤‘ë³µ í™•ì¸ ë©”ì„œë“œ ( ajaxë¡œ ìš”ì²­í•˜ë˜ ë©”ì„œë“œì— emailì„ ë‹´ê³  ê²°ê³¼ê°’ ë°˜í™˜ ë°›ìŒ , String chkMember = failed , emailFailed, idFailed, success ì¤‘ í•˜ë‚˜ ë°˜í™˜ ë°›ìŒ)
 		String chkMember = checkMember(id, email);
 		System.out.println("chkMember : " + chkMember);
 		
@@ -157,25 +157,25 @@ public class ShopController {
 		if(password.matches(passwordRegex) && password.equals(passwordChk) &&
 				chkMember.equals("success") && email.matches(emailRegex) && id.matches(idRegex)) {
 			
-			System.out.println("Áßº¹ È®ÀÎ ¹× À¯È¿¼º °Ë»ç ¿Ï·á");
+			System.out.println("ì¤‘ë³µ í™•ì¸ ë° ìœ íš¨ì„± ê²€ì‚¬ ì™„ë£Œ");
 			
-			//ÆĞ½º¿öµå ¾ÏÈ£È­
+			//íŒ¨ìŠ¤ì›Œë“œ ì•”í˜¸í™”
 			String bcryPassword = bcryptPasswordEncoder.encode(memberDto.getMemberPassword());
 			memberDto.setMemberPassword(bcryPassword);
 			
-			//È¸¿ø °¡ÀÔ
+			//íšŒì› ê°€ì…
 			int result = memberSercvice.signupMember(memberDto);
 			
-			if(result > 0) { //µ¥ÀÌÅÍ°¡ Àü¼Û °¡´ÉÇÏ¸é
-				System.out.println("°¡ÀÔ ¿Ï·á");
+			if(result > 0) { //ë°ì´í„°ê°€ ì „ì†¡ ê°€ëŠ¥í•˜ë©´
+				System.out.println("ê°€ì… ì™„ë£Œ");
 				return "signin/signin";
 			} else {
-				System.out.println("µ¥ÀÌÅÍ Àü¼Û ½ÇÆĞ");
-				return "shop/index"; // ÀÓ½Ã·Î ¸ŞÀÎ ÆäÀÌÁö ÀÌµ¿ ( error )
+				System.out.println("ë°ì´í„° ì „ì†¡ ì‹¤íŒ¨");
+				return "shop/index"; // ì„ì‹œë¡œ ë©”ì¸ í˜ì´ì§€ ì´ë™ ( error )
 			}
 		} else {
-			System.out.println("È¸¿ø°¡ÀÔ À¯È¿¼º °Ë»ç ºÒÀÏÄ¡");
-			return "shop/index"; // ÀÓ½Ã·Î ¸ŞÀÎ ÆäÀÌÁö ÀÌµ¿ ( error )
+			System.out.println("íšŒì›ê°€ì… ìœ íš¨ì„± ê²€ì‚¬ ë¶ˆì¼ì¹˜");
+			return "shop/index"; // ì„ì‹œë¡œ ë©”ì¸ í˜ì´ì§€ ì´ë™ ( error )
 		}
 	}
 	

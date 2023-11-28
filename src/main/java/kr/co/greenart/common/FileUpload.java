@@ -1,4 +1,4 @@
-package kr.co.greenart.fileupload;
+package kr.co.greenart.common;
 
 import java.io.File;
 import java.io.FileOutputStream;

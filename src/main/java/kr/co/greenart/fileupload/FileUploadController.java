@@ -1,4 +1,4 @@
-package kr.co.greenart.fileupload2;
+package kr.co.greenart.fileupload;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 
-import kr.co.greenart.fileupload.FileUpload;
+import kr.co.greenart.common.FileUpload;
 
 @Controller
-public class FileUpload2 {
+public class FileUploadController {
 	
 	@PostMapping("/fileUpload")
 	public String fileUpload(Model model, MultipartRequest multipartRequest, HttpServletRequest request)
@@ -32,6 +32,11 @@ public class FileUpload2 {
 		String replaceName = cal.getTimeInMillis() + fileType;
 
 		String path = request.getSession().getServletContext().getRealPath("/") + File.separator + "resources/upload"; // 파일이
+		
+		System.out.println("img : " +imgfile);
+		System.out.println("path : " + path);
+		System.out.println("replaceName : " + replaceName);
+		
 
 		FileUpload.fileUpload(imgfile, path, replaceName);
 

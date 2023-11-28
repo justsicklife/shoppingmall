@@ -2,15 +2,25 @@
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd" >
 <configuration>
 	<settings>
+	<!-- 
+	jdbcTypeForNull: 매개변수로 null 값을 전달할 때 JDBC 타입을 설정합니다. 기본값은 OTHER입니다.
+	 -->
 		<setting name="jdbcTypeForNull" value="NULL" />
+	<!-- 
+	카멜 케이스(camel case)와 스네이크 케이스(snake case)를 자동 매핑할지 여부를 설정합니다. 기본값은 false입니다.
+	 -->
 		<setting name="mapUnderscoreToCamelCase" value="true" />
 	</settings>
 	
+	<!-- 별칭 작성 부분 -->
 	<typeAliases>
+		<typeAlias type="kr.co.greenart.product.model.dto.ProductDTO" alias="product"/>
 		<typeAlias type="kr.co.greenart.member.model.dto.MemberDto" alias="MemberDto"/>
 	</typeAliases>
 	
+	<!-- SQL이 작성되는 mapper 파일 위치 등록 -->
 	<mappers>
+		<mapper resource="/mappers/product/product-mapper.xml"/>
 		<mapper resource="/mappers/member/member-mapper.xml"/>
 	</mappers>
 </configuration>

@@ -36,45 +36,41 @@
 		<body>
 			<div class="container">
 
-				<form id="boardWriteForm" method="post">
+				<form id="boardWriteForm" enctype="multipart/form-data" method="post" action="/product/create">
 
 					<div>
 						<label for="">상품이름</label>
-						<input type="text" name="title" id="">
+						<input type="text" name="product_name" id="">
 						<label for="">상품 설명</label>
-						<input type="text" name="title" id="">
+						<input type="text" name="product_content" id="">
+						<label for="">상품 가격</label>
+						<input type="number" name="product_price" id="">
 					</div>
 
 					<label for="">색상을 입력해주세요</label>
 					<input id="option_input_color" type="text" placeholder="옵션을 입력해주세요" />
-					<button type="button" id="option_button_color">추가</button>
+					<button type="submit" id="option_button_color">추가</button>
 					<div id="option_group_color"></div>
 
 					<label for="">사이즈를 입력해주세요</label>
 					<input id="option_input_size" type="text" placeholder="옵션을 입력해주세요" />
-					<button type="button" id="option_button_size">추가</button>
+					<button type="submit" id="option_button_size">추가</button>
 					<div id="option_group_size"></div>
 
 					<div id='image_preview'>
 						<h3>메인 사진</h3>
-						<input type='file' id='btnAtt' name="image" multiple='multiple'/>
+						<input type='file' id='btnAtt' name="images" multiple='multiple'/>
 						<div id='att_zone' 
 							  data-placeholder='파일을 첨부 하려면 파일 선택 버튼을 클릭하거나 파일을 드래그앤드롭 하세요'></div>
 					</div>
 
-					<div>
-						<div>
-							<b>제목</b>
-						</div>
-						<input type="text" id="title" name="title" value="" maxlength="100" style="width: 100%;" />
-					</div>
+			
 					<div class="contentDiv">
-						<textarea id="txtContent" name="contents" rows="30" style="width: 100%;"></textarea>
+						<textarea id="txtContent" name="product_info" rows="30" style="width: 100%;"></textarea>
 					</div>
 					<div class="buttonDiv">
 						<button type="button" class="btn btn-primary" onclick="onWrite()">쓰기</button>
 						<button type="button" class="btn btn-primary" onclick="history.go(-1);">취소</button>
-						<input type="hidden" name="seq" value="${board.seq}" />
 					</div>
 				</form>
 			</div>
@@ -97,7 +93,9 @@
 					const div = document.createElement("div");
 					const input = document.createElement("input")
 					const deleteButton = document.createElement("button");
+					input.readOnly = true
 					deleteButton.onclick = (e) => {
+						
 						const parentNode = e.target.parentNode
 						parentNode.remove();
 					}
@@ -112,8 +110,8 @@
 				})
 			}
 
-			option_evnet("option_input_color", "option_group_color", "option_button_color", "color")
-			option_evnet("option_input_size", "option_group_size", "option_button_size", "size");
+			option_evnet("option_input_color", "option_group_color", "option_button_color", "product_color_group")
+			option_evnet("option_input_size", "option_group_size", "option_button_size", "product_size_group");
 
 		</script>
 
@@ -125,10 +123,10 @@
 				sSkinURI: "/resources/se/SmartEditor2Skin.html", // html editor가 skin url 입니다.
 				fOnAppLoad: function () {
 					//수정모드를 구현할 때 사용할 부분입니다. 로딩이 끝난 후 값이 체워지게 하는 구현을 합니다.
-					var title = localStorage.getItem("title");
-					var contents = localStorage.getItem("contents"); //db에서 불러온 값은 여기에서 체워넣습니다.
-					document.getElementById("title").value = title;
-					oEditors.getById["txtContent"].exec("PASTE_HTML", [contents]); //로딩이 끝나면 contents를 txtContent에 넣습니다.
+					// var title = localStorage.getItem("title");
+					// var contents = localStorage.getItem("contents"); //db에서 불러온 값은 여기에서 체워넣습니다.
+					// document.getElementById("title").value = title;
+					// oEditors.getById["txtContent"].exec("PASTE_HTML", [contents]); //로딩이 끝나면 contents를 txtContent에 넣습니다.
 				},
 				fCreator: "createSEditor2"
 			});
@@ -136,10 +134,10 @@
 			var onWrite = function () {
 				oEditors.getById["txtContent"].exec("UPDATE_CONTENTS_FIELD", []); // 에디터의 내용이 textarea에 적용합니다.
 
-				var contents = document.getElementById("txtContent").value;
-				var title = document.getElementById("title").value;
-				localStorage.setItem("contents", contents);
-				localStorage.setItem("title", title); //localStorage에 제목과 내용을 저장.
+				// var contents = document.getElementById("txtContent").value;
+				// var title = document.getElementById("title").value;
+				// localStorage.setItem("contents", contents);
+				// localStorage.setItem("title", title); //localStorage에 제목과 내용을 저장.
 
 				var boardWriteForm = document.getElementById("boardWriteForm");
 				//boardWriteForm.action ="writeSubmit";			//저장할 페이지로 쏩니다.              
@@ -230,6 +228,8 @@
           btn.setAttribute('value', 'x')
           btn.setAttribute('delFile', file.name);
           btn.setAttribute('style', chk_style);
+          btn.name = "file";
+          
           btn.onclick = function(ev){
             var ele = ev.srcElement;
             var delFile = ele.getAttribute('delFile');
