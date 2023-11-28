@@ -208,11 +208,19 @@ function join(event) {
                     // 폼 제출
                     document.getElementById("submitForm").submit();
                 } else if (memberChk === "emailFailed")  {
+                    console.log("이메일 중복");
+                    alert("이미 사용 중인 이메일 입니다.");
                     emailChkMsg.html("이미 사용 중인 이메일 입니다.").css("color", "red");
                 } else if (memberChk === "idFailed")  {
-                    idChkMsg.html("이미 사용 중인 아이디 입니다.").css("color", "red");
+                    console.log("아이디 중복");
+                    alert("이미 사용 중인 아이디 입니다.");
+                    idChkMsg.innerHTML = "이미 사용 중인 아이디 입니다.";
+                    idChkMsg.style.color = "red";
                 } else if (memberChk === "failed")  {
-                    idChkMsg.html("이미 사용 중인 아이디 입니다.").css("color", "red");
+                    console.log("이메일, 아이디 중복");
+                    alert("아이디, 이메일을 확인 해주세요.");
+                    idChkMsg.innerHTML = "이미 사용 중인 아이디 입니다.";
+                    idChkMsg.style.color = "red";
                     emailChkMsg.html("이미 사용 중인 이메일 입니다.").css("color", "red");
                 } 
             },

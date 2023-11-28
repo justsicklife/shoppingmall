@@ -2,6 +2,7 @@ package kr.co.greenart.shop.controller;
 
 import java.io.File;
 import java.sql.Date;
+import java.util.Objects;
 import java.util.UUID;
 
 import javax.servlet.ServletContext;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,14 +38,55 @@ public class ShopController {
 	private BCryptPasswordEncoder bcryptPasswordEncoder;
 	
 	
+	
+	//id찾기
+	//http://localhost/shop/findId
+	@GetMapping("/findId")
+	public String findIdPage() {
+		return "/member/find_id";
+	}
+	
+	//pw찾기
+	//http://localhost/shop/findPw
+	@GetMapping("/findPw")
+	public String findPwPage() {
+		return "/member/find_pw";
+	}
+	
+	//메인 페이지
 	@GetMapping("/index.do")
 	public String getIndexPage() {
 		return "/shop/index";
 	}
 
-	@GetMapping("/login.do")
-	public String getLoginPage() {
+	//로그인 페이지 (임시)
+	//http://localhost/shop/loginForm.do
+	@GetMapping("loginForm.do")
+	public String loginPage() {
 		return "/signin/signin";
+	}
+	
+	//로그인
+	@PostMapping("/login.do")
+	public String getLoginPage(MemberDto memberDto, HttpSession session, Model model ) {
+		
+		MemberDto loginUser = memberSercvice.loginMember(memberDto);
+		
+		// Objects.isNull(loginUser) = null : true
+		// ! null : false 논리 부정 사용했으니 비어있다면 false
+		// getMemberPassword - 사용자 입력 패스워드 / getMemberPassword - db에 자정된 패스워드
+		if(!Objects.isNull(loginUser) && bcryptPasswordEncoder.matches(memberDto.getMemberPassword(), loginUser.getMemberPassword())) {
+			
+			System.out.println("로그인 성공");
+			
+			session.setAttribute("memberIdx", loginUser.getMemberIdx());
+			
+			return "redirect:/shop/index.do";
+		} else {
+			System.out.println("로그인 실패");
+			 model.addAttribute("loginError", true); // 로그인 실패를 나타내는 속성 추가
+			return "/signin/signin";
+		}
 	}
 	
 	
@@ -56,12 +99,17 @@ public class ShopController {
 		int resultId = memberSercvice.checkId(id);
 		int resultEmail = memberSercvice.checkEmail(email);
 		
+		System.out.println("resultId : " + resultId);
+		System.out.println("resultEmail : " + resultEmail);
+		
 		if(resultId > 0 && resultEmail > 0) {
 			return "failed";
-		} else if (resultId > 0 && resultEmail == 0){
-			return "emailFailed";
-		} else if (resultId == 0 && resultEmail > 0 ){
+		} else if (resultId > 0 && resultEmail <= 0){
+			System.out.println("아이디 중복");
 			return "idFailed";
+		} else if (resultId <= 0 && resultEmail > 0 ){
+			System.out.println("이메일 중복");
+			return "emailFailed";
 		} else {
 			return "success";
 		}
@@ -81,12 +129,12 @@ public class ShopController {
 		//유효성 검사
 		String password = memberDto.getMemberPassword();
 		String passwordChk = memberDto.getMemberPasswordChk();
-		String email = memberDto.getMemberEmail();
 		String id = memberDto.getMemberId();
 		
 		String passwordRegex = "^(?=.*[a-zA-Z])(?=.*[@$!%*?&\\#])[A-Za-z\\d@$!%*?&\\#]{8,20}$";
 		String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
 		String idRegex = "^(?=.*[a-zA-Z])[a-zA-Z0-9]{8,16}$";
+		String email = memberDto.getMemberEmail();
 		
 		//이메일 저장
 		String emailPrefix = memberDto.getEmailPrefix();
@@ -100,6 +148,11 @@ public class ShopController {
 		
 		System.out.println("member :" + memberDto);
 		System.out.println(chkMember.equals("success"));
+		
+		System.out.println("password : " + password);
+		System.out.println("chkMember : " + chkMember);
+		System.out.println("email : " + email);
+		System.out.println("id : " + id);
 		
 		if(password.matches(passwordRegex) && password.equals(passwordChk) &&
 				chkMember.equals("success") && email.matches(emailRegex) && id.matches(idRegex)) {

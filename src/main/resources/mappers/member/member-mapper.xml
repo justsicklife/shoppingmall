@@ -24,7 +24,7 @@
 	</select>
 	
 	<!-- 로그인 -->
-	<select id="LoginMember" resultMap="memberResultSet">
+	<select id="loginMember" resultMap="memberResultSet">
 		SELECT * FROM S_MEMBER
 		WHERE m_id = #{memberId}
 	</select>
