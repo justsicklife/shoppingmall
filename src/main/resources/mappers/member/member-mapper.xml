@@ -42,6 +42,7 @@
 	</select>
 	
 	<!-- 회원 가입 -->
+	<!-- insert, update는 자동으로 true:1 , false:0 int타입으로 반환-->
 	<insert id="signupMember" parameterType="MemberDto">
 		INSERT INTO S_MEMBER(m_index,
 						   m_name,
@@ -69,4 +70,34 @@
 					   SYSDATE)
 	</insert>
 	
+	<!-- id 찾기 -->
+	<select id="findId" parameterType="String" resultType="String">
+		SELECT m_id FROM S_MEMBER
+		WHERE m_name = #{memberName}
+		and
+		m_email = #{memberEmail}
+	</select>
+	
+	<!-- pw 찾기 (사용 안함)-->
+	<select id="findPw" parameterType="String" resultType="String">
+		SELECT m_password FROM S_MEMBER
+		WHERE m_id = #{memberId}
+		and
+		m_email = #{memberEmail}
+	</select>
+	
+	<!-- pw 찾기(회원번호 불러오기) -->
+	<select id="findIdx" parameterType="String" resultType="String">
+		SELECT m_index  FROM S_MEMBER
+		WHERE m_id = #{memberId}
+		and
+		m_email = #{memberEmail}
+	</select>
+	
+	<!-- pw 변경 -->
+	<!-- insert, update는 자동으로 true:1 , false:0 int타입으로 반환-->
+	<update id="changePw" parameterType="MemberDto">
+		UPDATE S_MEMBER SET m_password = #{memberPassword}
+							WHERE m_index = #{memberIdx}
+	</update>
 </mapper>

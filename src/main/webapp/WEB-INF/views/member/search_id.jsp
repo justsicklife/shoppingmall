@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>비밀번호 찾기</title>
+    <title>아이디 찾기</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
         crossorigin="anonymous">
@@ -17,24 +17,24 @@
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="text-center">비밀번호 찾기</h3>
+                        <h3 class="text-center">아이디 찾기</h3>
                     </div>
                     <div class="card-body">
-                        <form action="/shop/resetPassword.do" method="post">
+                        <form action="/member/findId.do" method="post">
                             <div class="mb-3">
-                                <label for="username" class="form-label">아이디</label>
-                                <input type="text" class="form-control" id="username" name="username" required>
+                                <label for="name" class="form-label">이름</label>
+                                <input type="name" class="form-control" id="name" name="memberName" required>
                             </div>
                             <div class="mb-3">
                                 <label for="email" class="form-label">이메일</label>
-                                <input type="email" class="form-control" id="email" name="email" required>
+                                <input type="email" class="form-control" id="email" name="memberEmail" required>
                             </div>
                             <div class="d-grid">
-                                <button class="btn btn-primary" type="submit">비밀번호 재설정</button>
+                                <button class="btn btn-primary" type="submit">아이디 찾기</button>
                             </div>
                         </form>
                         <div class="mt-3 text-center">
-                            <a href="/shop/login.do">로그인으로 돌아가기</a>
+                            <a href="/member/loginPage">로그인으로 돌아가기</a>
                         </div>
                     </div>
                 </div>

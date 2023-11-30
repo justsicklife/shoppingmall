@@ -161,7 +161,7 @@
 </head>
 
 <body>
-	<form action="/shop/signup.do" method="post" id="submitForm" class="needs-validation">
+	<form action="/member/signup.do" method="post" id="submitForm" class="needs-validation">
 		<div class="container container-table">
 			<div class="d-flex justify-content-end">
 				<span class="star">*</span> 필수 입력 사항
