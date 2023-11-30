@@ -16,11 +16,15 @@
 	<typeAliases>
 		<typeAlias type="kr.co.greenart.product.model.dto.ProductDTO" alias="product"/>
 		<typeAlias type="kr.co.greenart.member.model.dto.MemberDto" alias="MemberDto"/>
+		<typeAlias type="kr.co.greenart.chat.model.dto.ChatRoomDTO" alias="chatRoom"/>
+		<typeAlias type="kr.co.greenart.chat.model.dto.ChatMessageDTO" alias="chatMessage"/>
 	</typeAliases>
 	
 	<!-- SQL이 작성되는 mapper 파일 위치 등록 -->
 	<mappers>
 		<mapper resource="/mappers/product/product-mapper.xml"/>
 		<mapper resource="/mappers/member/member-mapper.xml"/>
+		<mapper resource="/mappers/chatRoom/chatRoom-mapper.xml"/>
+		<mapper resource="/mappers/chatMessage/chatMessage-mapper.xml"/>
 	</mappers>
 </configuration>
