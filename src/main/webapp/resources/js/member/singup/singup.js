@@ -196,7 +196,7 @@ function join(event) {
         console.log("필수 항목 모두 입력 완료, ajax 실행");
         $.ajax({
             type: "POST",
-            url: "/shop/checkMember.do",
+            url: "/member/checkMember.do",
             data: {
                 id: user_id,
                 email: user_email

@@ -48,7 +48,7 @@
                 <div class="card border-0 shadow rounded-3 my-5">
                     <div class="card-body p-4 p-sm-5">
                         <h5 class="card-title text-center mb-5 fw-light fs-5">Sign In</h5>
-                        <form action="/shop/login.do" method="post">
+                        <form action="/member/login.do" method="post">
                             <div class="form-floating mb-3">
                                 <input type="id" class="form-control" id="floatingInput" name="memberId"
                                     placeholder="ID">
@@ -61,10 +61,8 @@
                             </div>
 
                             <div class="d-flex justify-content-center mb-3 siniin-link">
-                                <a class="link">아이디 찾기</a> 
-                                <a class="link">
-                                    비밀번호 찾기
-                                </a>
+                                <a href="/member/searchId" class="link">아이디 찾기</a> 
+                                <a href="/member/searchPw" class="link">비밀번호 찾기</a>
                             </div>
                             <div class="d-grid">
                                 <button class="btn btn-primary btn-login text-uppercase fw-bold" type="submit">Sign in</button>

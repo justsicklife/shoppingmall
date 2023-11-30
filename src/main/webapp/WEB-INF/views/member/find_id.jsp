@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 
 <head>
     <meta charset="UTF-8">
@@ -20,18 +21,35 @@
                         <h3 class="text-center">아이디 찾기</h3>
                     </div>
                     <div class="card-body">
-                        <form action="/shop/findUsername.do" method="post">
-                            <div class="mb-3">
-                                <label for="email" class="form-label">이메일</label>
-                                <input type="email" class="form-control" id="email" name="email" required>
+                        <c:if test="${empty memberId}">
+                            <div style="text-align: center; margin-top: 20px;">
+                                <h2 style="font-size: 24px;">가입된 아이디가 없습니다.</h2>
                             </div>
-                            <div class="d-grid">
-                                <button class="btn btn-primary" type="submit">아이디 찾기</button>
+                            <div class="mt-3 text-center">
+                                <a href="javascript:history.go(-1);">이전 페이지로 돌아가기</a>
+                                <br>
                             </div>
-                        </form>
-                        <div class="mt-3 text-center">
-                            <a href="/shop/login.do">로그인으로 돌아가기</a>
-                        </div>
+                        </c:if>
+                        <c:if test="${not empty memberId}">
+                            <div style="text-align: center; margin-top: 20px;">
+                                <h2 style="font-size: 24px;">고객님께서 가입하신 아이디는</h2>
+                            </div>
+                            <div style="text-align: center;">
+                                <div>
+                                    <br>
+                                    <h5>${memberId}</h5>
+                                    <br>
+                                    <p>
+                                        <h2 style="font-size: 24px;">입니다</h2>
+                                        <!-- <button type="button" onclick="history.go(-3);">로그인</button> -->
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="mt-3 text-center">
+                                <a href="/member/loginPage">로그인으로 돌아가기</a>
+                                <br>
+                            </div>
+                        </c:if>
                     </div>
                 </div>
             </div>

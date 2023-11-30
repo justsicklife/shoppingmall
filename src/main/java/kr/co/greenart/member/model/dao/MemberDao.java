@@ -10,27 +10,51 @@ import lombok.NoArgsConstructor;
 public class MemberDao {
 	
 	
-	//·Î±×ÀÎ
-	// selectOne : ÇÏ³ª¸¸°¡Á®¿È
+	//ë¡œê·¸ì¸
+	// selectOne : í•˜ë‚˜ë§Œê°€ì ¸ì˜´
 	public MemberDto loginMember(SqlSessionTemplate sqlSession, MemberDto m) {
 		return sqlSession.selectOne("memberMapper.loginMember",m);
 	}
 	
-	//ÀÌ¸ŞÀÏ È®ÀÎ
-	// selectOne : ÇÏ³ª¸¸°¡Á®¿È
+	//ì´ë©”ì¼ í™•ì¸
+	// selectOne : í•˜ë‚˜ë§Œê°€ì ¸ì˜´
 	public int checkEmail(SqlSessionTemplate sqlSession, String memberEmail) {
 		return sqlSession.selectOne("memberMapper.checkEmail", memberEmail);
 	}
 	
-	//¾ÆÀÌµğ È®ÀÎ
-	// selectOne : ÇÏ³ª¸¸°¡Á®¿È
+	//ì•„ì´ë”” í™•ì¸
+	// selectOne : í•˜ë‚˜ë§Œê°€ì ¸ì˜´
 	public int checkId(SqlSessionTemplate sqlSession, String memberId) {
 		return sqlSession.selectOne("memberMapper.checkId", memberId);
 	}
 	
-	//È¸¿ø °¡ÀÔ
-	//insert : µ¥ÀÌÅÍ Àü¼Û
+	//íšŒì› ê°€ì…
+	//insert : ë°ì´í„° ì „ì†¡
 	public int signupMember(SqlSessionTemplate sqlSession, MemberDto memberdto) {
 		return sqlSession.insert("memberMapper.signupMember", memberdto);
+	}
+	
+	//idì°¾ê¸°
+	public String findId(SqlSessionTemplate sqlSession, MemberDto memberdto) {
+//		MemberDto memberdto = new MemberDto();
+//		
+//		memberdto.setMemberName(memberName);
+//		memberdto.setMemberEmail(memberEmail);
+		return sqlSession.selectOne("memberMapper.findId",memberdto);
+	}
+	
+	//pwì°¾ê¸°(ì‚¬ìš© ì•ˆí•¨) 
+	public String findPw(SqlSessionTemplate sqlSession, MemberDto memberdto) {
+		return sqlSession.selectOne("memberMapper.findPw", memberdto);
+	}
+	
+	//pwì°¾ê¸°(íšŒì›ë²ˆí˜¸ ê°€ì ¸ì˜¤ê¸°)
+	public String findIdx(SqlSessionTemplate sqlSession, MemberDto memberdto) {
+		return sqlSession.selectOne("memberMapper.findIdx", memberdto);
+	}
+	
+	//pwë³€ê²½
+	public int changePw(SqlSessionTemplate sqlSession, MemberDto memberdto) {
+		return sqlSession.update("memberMapper.changePw", memberdto);
 	}
 }
