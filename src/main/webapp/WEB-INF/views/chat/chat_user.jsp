@@ -31,7 +31,7 @@
 					<div class="messaging">
 						<div class="inbox_msg">
 							<div class="mesgs">
-								<div class="msg_history">
+								<div id="msgBox" class="msg_history">
 									<c:forEach var="chatMessage" items="${chatMessageList}">
 										<c:choose>
 											<c:when test="${chatMessage.memberId eq memberId }">
@@ -101,16 +101,12 @@
 											"/sub/chat/room/"
 											+ roomIdx,
 											function (chat) {
-												let data = JSON
-													.parse(chat.body);
-												console
-													.log(data);
+												let data = JSON.parse(chat.body);
 												let str = "";
-
-												if (userIdx == data.memberId) {
+												if (userIdx != data.memberId) {
 													str += "<div class='incoming_msg'>";
 													str += "<div class='incoming_msg_img'>";
-													str += "<img src='https://ptetutorials.com/images/user-profile.png' alt='sunil'>"
+													str += "<img width='21px' height='21px' src='https://ptetutorials.com/images/user-profile.png' alt='sunil'>"
 													str += "</div>"
 													str += "<div class='received_msg'>"
 													str += "<div class='received_withd_msg'>";
@@ -122,25 +118,18 @@
 													str += "</div>"
 													str += "</div>";
 												} else {
-													str += "<div class='outgoing_msg'>";
-													str += "<div class='outgoing_msg_img'>";
-													str += "<img src='https://ptetutorials.com/images/user-profile.png' alt='sunil'>"
-													str += "</div>"
-													str += "<div class='received_msg'>"
-													str += "<div class='received_withd_msg'>";
+													str += "<div class='outgoing_msg'>"
+													str += "<div class='sent_msg'>"
 													str += "<p>"
 													str += data.chatMessageContent;
 													str += "</p>"
-													str += "<span class='time_date'> 11:01 AM | June 9</span>";
-													str += "</div>"
+													str += "<span class='time_date'> 11:01 AM | June 9</span>"
 													str += "</div>"
 													str += "</div>";
 												}
 
-												$(
-													".msg_history")
-													.append(
-														str);
+												$(".msg_history").append(str);
+												$("#msgBox").scrollTop($("#msgBox").height());
 											})
 
 									stomp
@@ -158,7 +147,7 @@
 
 						$(".msg_send_btn").on(
 							"click",
-							function (e) {
+							function () {
 								let msg_box = document
 									.getElementById(".msg_history");
 								const write_msg = document

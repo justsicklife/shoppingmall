@@ -37,7 +37,8 @@
 								</div>
 								<div class="inbox_chat">
 									<c:forEach var="chatRoom" items="${chatRoomList}">
-										<div class="chat_list" onclick="changeRoom(5)">
+										<div class="chat_list" data-id="${chatRoom.chatRoomId}"
+											onclick='changeRoom("${chatRoom.chatRoomId}")'>
 											<div class="chat_people">
 												<div class="chat_img">
 													<img src="https://ptetutorials.com/images/user-profile.png"
@@ -57,25 +58,7 @@
 								</div>
 							</div>
 							<div class="mesgs">
-								<div class="msg_history">
-									<div class="incoming_msg">
-										<div class="incoming_msg_img">
-											<img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
-										</div>
-										<div class="received_msg">
-											<div class="received_withd_msg">
-												<p>Test which is a new approach to have all solutions</p>
-												<span class="time_date"> 11:01 AM | June 9</span>
-											</div>
-										</div>
-									</div>
-									<div class="outgoing_msg">
-										<div class="sent_msg">
-											<p>Test which is a new approach to have all solutions</p>
-											<span class="time_date"> 11:01 AM | June 9</span>
-										</div>
-									</div>
-
+								<div class="msg_history" id="msgBox">
 								</div>
 								<div class="type_msg">
 									<div class="input_msg_write">
@@ -96,38 +79,115 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 		<script>
 
-			// stomp와 연결하기 위한 거
-			let sockJs = new SockJS("/stomp/chat");
+			let sockJs;
+			let stomp;
 
-			let stomp = Stomp.over(sockJs);
+			let subscribedSet = new Set();
 
-			let curRoomIdx;
+			$(document).ready(
+				function () {
+					// stomp와 연결하기 위한 거
+					sockJs = new SockJS("/stomp/chat");
+
+					stomp = Stomp.over(sockJs);
+
+					stomp.connect(
+						{},
+						function () {
+
+						});
+
+				}
+			)
+
+
+			let curRoomIdx = -1;
 			const userIdx = "${memberId}";
 
-			function changeRoom(roomIdx) {
+			function msgMaker(msg, userIdx, memberId) {
+				let str = "";
+				if (userIdx != memberId) {
+					str += "<div class='incoming_msg'>";
+					str += "<div class='incoming_msg_img'>";
+					str += "<img width='21px' height='21px' src='https://ptetutorials.com/images/user-profile.png' alt='sunil'>"
+					str += "</div>"
+					str += "<div class='received_msg'>"
+					str += "<div class='received_withd_msg'>";
+					str += "<p>"
+					str += msg;
+					str += "</p>"
+					str += "<span class='time_date'> 11:01 AM | June 9</span>";
+					str += "</div>"
+					str += "</div>"
+					str += "</div>";
+				} else {
+					str += "<div class='outgoing_msg'>"
+					str += "<div class='sent_msg'>"
+					str += "<p>"
+					str += msg;
+					str += "</p>"
+					str += "<span class='time_date'> 11:01 AM | June 9</span>"
+					str += "</div>"
+					str += "</div>";
+				}
+				return str;
+
+			}
+
+			function  changeRoom(roomIdx) {
+
+
+				// 룸번호가 없는게 아니고 룸이 같다면
+				if (curRoomIdx !== -1) {
+					if (curRoomIdx === roomIdx) {
+						return
+					} else {
+						console.log("aaa");
+						$("#msgBox").empty();
+					}
+				}
 
 				curRoomIdx = roomIdx;
 
-				stomp.connect(
-					{},
-					function () {
-						stomp.subscribe(
-							"/sub/chat/room/" + curRoomIdx,
-							function (chat) {
-								let data = JSON.parse(chat.body);
-								console.log("asdsada");
-							}
-						)
+				const topicRoom = "/sub/chat/room/" + curRoomIdx;
 
-						stomp.subscribe(
-							"/sub/chat/history" + curRoomIdx,
-							function (chat) {
-								let data = JSON.parse(chat.body);
-								// console.log("asdasdsa");
-								
+
+				if (!subscribedSet.has(topicRoom)) {
+
+					stomp.subscribe(
+						topicRoom,
+						function (chat) {
+							let data = JSON.parse(chat.body);
+							console.log(data);
+							const tag = msgMaker(data.chatMessageContent, userIdx, data.memberId)
+							$("#msgBox").append(tag);
+							$("#msgBox").scrollTop($("#msgBox").height());
+						}
+					)
+					subscribedSet.add(topicRoom);
+				} else {
+					console.log("이미 있는" + topicRoom + " 입니다")
+				}
+
+				const topicHistory = "/sub/chat/history/" + curRoomIdx;
+
+				if (!subscribedSet.has(topicHistory)) {
+					stomp.subscribe(
+						topicHistory,
+						function (chat) {
+							let data = JSON.parse(chat.body);
+							for (let i = 0; i < data.length; i++) {
+								const tag = msgMaker(data[i].chatMessageContent, userIdx, data[i].memberId);
+								$("#msgBox").append(tag);
 							}
-						)
-					});
+							$("#msgBox").scrollTop($("#msgBox").height());
+						}
+					)
+					subscribedSet.add(topicHistory);
+				} else {
+					console.log("이미 있는" + topicHistory + " 입니다.");
+				}
+
 				stomp
 					.send(
 						"/pub/chat/enter",
@@ -135,10 +195,11 @@
 						JSON
 							.stringify({
 								chatRoomId: curRoomIdx,
-								// chatMessageId: 1,
 								memberId: userIdx,
 								chatMessageContent: "방문했습니다."
-							}));
+							})
+							
+							);
 
 				stomp.send(
 					"/pub/chat/history",
@@ -149,18 +210,18 @@
 					})
 				)
 			}
-			
-			
+
+
 			const msg_send_btn = document.querySelector(".msg_send_btn");
 
 			msg_send_btn.addEventListener("click", () => {
 				const write_msg = document.querySelector(".write_msg");
-				if (write_msg === "") 
+				if (write_msg === "")
 					return
-				const msg = write_msg.value; 
-				
+				const msg = write_msg.value;
+
 				write_msg.value = "";
-				
+
 				stomp.send(
 					"/pub/chat/message",
 					{},
@@ -169,10 +230,9 @@
 						memberId: userIdx,
 						chatMessageContent: msg,
 					})
-					
 				)
 			})
-			
+
 		</script>
 
 		</html>
