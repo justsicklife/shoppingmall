@@ -29,4 +29,6 @@ public class MemberDto {
 	private String memberBirthday;
 	private String memberJoinDate;
 	private String memberRemoveDate;
+	
+	private int memberAuth; //이메인 인증시 1, 미인증 0
 }

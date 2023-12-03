@@ -31,4 +31,10 @@ public interface MemberService {
 	
 	//pw변경
 	int changePw(MemberDto memberdto);
+	
+	//이메일 인증
+	public void memberAuth(String memberEmail, String key) throws Exception;
+	
+	//이메일 발송
+	public void sendMail(MemberDto memberdto) throws Exception;
 }

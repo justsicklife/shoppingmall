@@ -1,5 +1,8 @@
 package kr.co.greenart.member.model.dao;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -57,4 +60,24 @@ public class MemberDao {
 	public int changePw(SqlSessionTemplate sqlSession, MemberDto memberdto) {
 		return sqlSession.update("memberMapper.changePw", memberdto);
 	}
+	
+	
+	//이메일 인증
+	public void createAuthKey(SqlSessionTemplate sqlsession, String memberEmail,String authKey){
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("memberEmail", memberEmail);
+		map.put("authKey", authKey);
+		
+		sqlsession.selectOne("memberMapper.createAuthKey", map);
+		
+	}
+	
+	//이메일 인증
+	public void memberAuth(SqlSessionTemplate sqlsession, String memberEmail, String key) throws Exception{
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("authKey", key);
+		map.put("memberEmail", memberEmail);
+		sqlsession.update("memberMapper.memberAuth", map);
+	}
+	
 }
