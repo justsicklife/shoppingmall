@@ -25,14 +25,14 @@
 
 			<%@ include file="/WEB-INF/views/common/navbar.jsp" %>
 
-
+				<input hidden value="${memberId}" id="memberId">
 				<div class="container message-box">
 					<h3 class=" text-center">Messaging</h3>
 					<div class="messaging">
 						<div class="inbox_msg">
 							<div class="mesgs">
 								<div id="msgBox" class="msg_history">
-									<c:forEach var="chatMessage" items="${chatMessageList}">
+									<!-- <c:forEach var="chatMessage" items="${chatMessageList}">
 										<c:choose>
 											<c:when test="${chatMessage.memberId eq memberId }">
 												<div class="incoming_msg">
@@ -58,12 +58,12 @@
 												</div>
 											</c:otherwise>
 										</c:choose>
-									</c:forEach>
+									</c:forEach> -->
 
 								</div>
 								<div class="type_msg">
 									<div class="input_msg_write">
-										<input type="text" class="write_msg" placeholder="Type a message" />
+										<input readonly type="text" id="input-msg" class="write_msg" placeholder="Type a message" />
 										<button class="msg_send_btn" type="button">
 											<i class="fa fa-paper-plane-o" aria-hidden="true"></i>
 										</button>
@@ -71,99 +71,18 @@
 								</div>
 							</div>
 						</div>
-
 					</div>
+					<button id="start-button">채팅 시작 버튼</button>
 				</div>
 		</body>
 		<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+		<script src="/resources/js/chat/chat_user.js"></script>
 
 		<script>
-			$(document)
-				.ready(
-					function () {
-						let sockJs = new SockJS("/stomp/chat");
 
-						let stomp = Stomp.over(sockJs);
-
-						const roomIdx = "${chatRoomId}";
-						const userIdx = "${memberId}";
-
-						stomp
-							.connect(
-								{},
-								function () {
-									console.log("STOMP Connection");
-
-									stomp
-										.subscribe(
-											"/sub/chat/room/"
-											+ roomIdx,
-											function (chat) {
-												let data = JSON.parse(chat.body);
-												let str = "";
-												if (userIdx != data.memberId) {
-													str += "<div class='incoming_msg'>";
-													str += "<div class='incoming_msg_img'>";
-													str += "<img width='21px' height='21px' src='https://ptetutorials.com/images/user-profile.png' alt='sunil'>"
-													str += "</div>"
-													str += "<div class='received_msg'>"
-													str += "<div class='received_withd_msg'>";
-													str += "<p>"
-													str += data.chatMessageContent;
-													str += "</p>"
-													str += "<span class='time_date'> 11:01 AM | June 9</span>";
-													str += "</div>"
-													str += "</div>"
-													str += "</div>";
-												} else {
-													str += "<div class='outgoing_msg'>"
-													str += "<div class='sent_msg'>"
-													str += "<p>"
-													str += data.chatMessageContent;
-													str += "</p>"
-													str += "<span class='time_date'> 11:01 AM | June 9</span>"
-													str += "</div>"
-													str += "</div>";
-												}
-
-												$(".msg_history").append(str);
-												$("#msgBox").scrollTop($("#msgBox").height());
-											})
-
-									stomp
-										.send(
-											"/pub/chat/enter",
-											{},
-											JSON
-												.stringify({
-													chatRoomId: roomIdx,
-													// chatMessageId: 1,
-													memberId: userIdx,
-													chatMessageContent: "방문했습니다."
-												}));
-								})
-
-						$(".msg_send_btn").on(
-							"click",
-							function () {
-								let msg_box = document
-									.getElementById(".msg_history");
-								const write_msg = document
-									.querySelector(".write_msg");
-								const msg = write_msg.value;
-
-								write_msg.value = "";
-
-								stomp.send("/pub/chat/message", {}, JSON
-									.stringify({
-										chatRoomId: roomIdx,
-										memberId: userIdx,
-										chatMessageContent: msg,
-									}))
-							})
-					})
+			
 		</script>
 
 		</html>

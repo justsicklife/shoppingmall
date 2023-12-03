@@ -29,31 +29,23 @@ public class ChatController {
 	public String room(Model model,HttpSession session) {
 
 		// memberId
-		int id =5;
+		int id = 5;
 		
-		ChatRoomDTO chatRoomDTO = new ChatRoomDTO(0,id);
+//		ChatRoomDTO chatRoomDTO = new ChatRoomDTO(0,id);
+//		
+//		// 멤버 아이디로 채팅방 찾기
+//		ChatRoomDTO findChatRoomDTO = chatRoomService.chatRoomFindById(id);
+//		
+//		// 채팅방이 없다면
+//		if(findChatRoomDTO == null) {
+//			// 새로 생성
+//			int success = chatRoomService.chatRoomInsert(chatRoomDTO);
+//			
+//			findChatRoomDTO = new ChatRoomDTO(chatRoomDTO.getMemberId(),id);
+//		}
 		
-		// 멤버 아이디로 채팅방 찾기
-		ChatRoomDTO findChatRoomDTO = chatRoomService.chatRoomFindById(id);
-		
-		// 채팅방이 없다면
-		if(findChatRoomDTO == null) {
-			// 새로 생성
-			int success = chatRoomService.chatRoomInsert(chatRoomDTO);
-			
-			findChatRoomDTO = new ChatRoomDTO(chatRoomDTO.getMemberId(),id);
-		} else {
-			// 채팅방이 있다면 
-			List<ChatMessageDTO> chatMessageDTO = chatMessageService.ChatMessageFindById(findChatRoomDTO.getChatRoomId());
-			// 채팅 내역 가져오기
-			System.out.println("가져온 데이터 : " + chatMessageDTO);
-			model.addAttribute("chatMessageList",chatMessageDTO);
-		}
-		
-//		System.out.println(findChatRoomDTO);
-		
-		model.addAttribute("chatRoomId",findChatRoomDTO.getChatRoomId());
-		model.addAttribute("memberId",findChatRoomDTO.getMemberId());
+//		model.addAttribute("chatRoomId",findChatRoomDTO.getChatRoomId());
+		model.addAttribute("memberId",id);
 		
 		return "/chat/chat_user";
 	}
