@@ -1,16 +1,3 @@
-let roomIdx = -1;
-const userIdx =  parseInt($("#memberId").val());
-
-console.log(userIdx);
-
-let topicRoom = "/sub/chat/room/";
-
-let topicHistory = "/sub/user/history/";
-
-let isEmpty = false;
-let sockJs;
-let stomp;
-
 function msgMaker(msg, userIdx, memberId) {
     let str = "";
     if (userIdx != memberId) {
@@ -40,24 +27,70 @@ function msgMaker(msg, userIdx, memberId) {
     return str;
 }
 
+
+// 값이없으면 -1
+let roomIdx = -1;
+const userIdx = parseInt($("#memberId").val());
+
+let topicRoom = "/sub/chat/room/";
+let topicHistory = "/sub/user/history/";
+
+// 처음 방문 이라면 true, 아니라면 false
+let isEmpty = false;
+
+let sockJs;
+let stomp;
+
+$(document)
+    .ready(
+        function () {
+            sockJs = new SockJS("/stomp/chat");
+
+            stomp = Stomp.over(sockJs);
+
+            stomp
+                .connect(
+                    {},
+                    function () {
+                        stomp.subscribe("/sub/room/find",
+                            function (chat) {
+                                let data = JSON.parse(chat.body);
+                                console.log(data.chatRoomId);
+                                if (data.chatRoomId === -1) {
+                                    isEmpty = true;
+                                } else {
+                                    roomIdx = data.chatRoomId;
+                                }
+                            }
+
+                        )
+
+                        stomp.send("/pub/room/find",
+                            {},
+                            JSON.stringify({
+                                memberId: userIdx
+                            })
+                        );
+                    }
+                );
+
+        })
+
+
 $("#start-button").on("click", function () {
     $("#input-msg").attr("readonly", false);
 
-    console.log("STOMP Connection");
-
     const topicCreate = "/sub/room/create/";
 
+    // url 에 roomIdx 더함
     topicRoom += roomIdx;
     topicHistory += roomIdx;
 
-    console.log(isEmpty);
-
     // 비어있다면 생성
     if (isEmpty) {
-        console.log(topicCreate);
         stomp.subscribe(
             topicCreate,
-            function(chat) {
+            function (chat) {
                 let data = JSON.parse(chat.body);
                 roomIdx = data.chatRoomId;
                 topicRoom += data.chatRoomId;
@@ -65,12 +98,13 @@ $("#start-button").on("click", function () {
             }
         )
 
+        // create 를 구독에게 보냄
         stomp.send("/pub/room/create",
-        {},
-        JSON.stringify({
-            chatRoomId: 0,
-            memberId: userIdx
-        })
+            {},
+            JSON.stringify({
+                chatRoomId: 0,
+                memberId: userIdx
+            })
         );
 
         stomp.send("/pub/chat/list")
@@ -90,6 +124,7 @@ $("#start-button").on("click", function () {
         )
     }
 
+    // 구독함 
     stomp.subscribe(
         topicRoom,
         function (chat) {
@@ -137,41 +172,6 @@ $("#start-button").on("click", function () {
     $("#start-button").remove();
 });
 
-$(document)
-    .ready(
-        function () {
-            sockJs = new SockJS("/stomp/chat");
-
-            stomp = Stomp.over(sockJs);
-
-            stomp
-                .connect(
-                    {},
-                    function () {
-                        stomp.subscribe("/sub/room/find",
-                            function (chat) {
-                                let data = JSON.parse(chat.body);
-                                console.log(data.chatRoomId);
-                                if (data.chatRoomId === -1) {
-                                    isEmpty = true;
-                                } else {
-                                    roomIdx = data.chatRoomId;
-                                }
-                            }
-
-                        )
-
-                        stomp.send("/pub/room/find",
-                            {},
-                            JSON.stringify({
-                                memberId: userIdx
-                            })
-                        );
-                    }
-                );
-
-        })
-
 $(".msg_send_btn").on(
     "click",
     function () {
@@ -184,7 +184,7 @@ $(".msg_send_btn").on(
 
         write_msg.value = "";
 
-        console.log("roomIdx  : "  + roomIdx);
+        console.log("roomIdx  : " + roomIdx);
 
         stomp.send("/pub/chat/message", {}, JSON
             .stringify({
