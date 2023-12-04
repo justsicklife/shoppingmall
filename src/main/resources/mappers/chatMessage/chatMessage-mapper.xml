@@ -14,7 +14,7 @@
 	</resultMap>
 	
 	<select id="ChatMessageFindById" parameterType="int" resultMap="chatRoomResultMap">
-		select * from s_chat_message where cr_id = #{chatRoomId} order by cm_date desc
+		select * from s_chat_message where cr_id = #{chatRoomId} order by cm_date asc
 	</select>
 	
 	<insert id="ChatMessageInsert" parameterType="chatMessage">

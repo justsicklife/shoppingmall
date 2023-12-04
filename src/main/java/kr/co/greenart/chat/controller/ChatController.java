@@ -27,35 +27,25 @@ public class ChatController {
 	
 	@GetMapping("/user")
 	public String room(Model model,HttpSession session) {
-				
-		// 만약 채팅방 아이디가 멤버 아이디 라면
-		// 채팅방 메세지를 찾을때 멤버 아이디만 가져다가 되면
-		// 채팅메세지가 딸려올것이다 그렇다면 
-		
-		// 일단 채팅방이 있는지 없는지 확인 
-//		chatRoomService.chatRoomFindById(id);
-		int id =1;
 
-		// chatRoomService.chatRoomFindById(id) 값이 있다면 orElseGet 을 실행안함
-		// 없다면 실행함
+		// memberId
+		int id = 5;
 		
-		ChatRoomDTO chatRoomDTO = new ChatRoomDTO(0,id);
+//		ChatRoomDTO chatRoomDTO = new ChatRoomDTO(0,id);
+//		
+//		// 멤버 아이디로 채팅방 찾기
+//		ChatRoomDTO findChatRoomDTO = chatRoomService.chatRoomFindById(id);
+//		
+//		// 채팅방이 없다면
+//		if(findChatRoomDTO == null) {
+//			// 새로 생성
+//			int success = chatRoomService.chatRoomInsert(chatRoomDTO);
+//			
+//			findChatRoomDTO = new ChatRoomDTO(chatRoomDTO.getMemberId(),id);
+//		}
 		
-		
-		ChatRoomDTO findChatRoomDTO = chatRoomService.chatRoomFindById(id);
-		if(findChatRoomDTO == null) {
-			int success = chatRoomService.chatRoomInsert(chatRoomDTO);
-			findChatRoomDTO = new ChatRoomDTO(chatRoomDTO.getMemberId(),id);
-		} else {
-			List<ChatMessageDTO> chatMessageDTO = chatMessageService.ChatMessageFindById(findChatRoomDTO.getChatRoomId());
-			System.out.println("가져온 데이터 : " + chatMessageDTO);
-			model.addAttribute("chatMessageList",chatMessageDTO);
-		}
-		
-//		System.out.println(findChatRoomDTO);
-		
-		model.addAttribute("chatRoomId",findChatRoomDTO.getChatRoomId());
-		model.addAttribute("memberId",findChatRoomDTO.getMemberId());
+//		model.addAttribute("chatRoomId",findChatRoomDTO.getChatRoomId());
+		model.addAttribute("memberId",id);
 		
 		return "/chat/chat_user";
 	}
@@ -65,6 +55,7 @@ public class ChatController {
 		
 		List<ChatRoomDTO> listChatRoomDTO = chatRoomService.chatRoomFindAll();
 		
+		// memberId 
 		int id = 10;
 		
 		model.addAttribute("chatRoomList",listChatRoomDTO);

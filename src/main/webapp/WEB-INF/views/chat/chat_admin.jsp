@@ -24,7 +24,7 @@
 		<body>
 
 			<%@ include file="/WEB-INF/views/common/navbar.jsp" %>
-
+				<input hidden value="${memberId}" id="memberId">
 				<div class="container message-box">
 					<h3 class=" text-center">admin</h3>
 					<div class="messaging">
@@ -35,47 +35,11 @@
 										<h4>Recent</h4>
 									</div>
 								</div>
-								<div class="inbox_chat">
-									<c:forEach var="chatRoom" items="${chatRoomList}">
-										<div class="chat_list" onclick="changeRoom(5)">
-											<div class="chat_people">
-												<div class="chat_img">
-													<img src="https://ptetutorials.com/images/user-profile.png"
-														alt="sunil">
-												</div>
-												<div class="chat_ib">
-													<h5>
-														${chatRoom.chatRoomId } <span
-															class="chat_date">${chatRoom.memberId}</span>
-													</h5>
-													<p>글제목</p>
-												</div>
-											</div>
-										</div>
-									</c:forEach>
-
+								<div class="inbox_chat" id="inbox-chat">
 								</div>
 							</div>
 							<div class="mesgs">
-								<div class="msg_history">
-									<div class="incoming_msg">
-										<div class="incoming_msg_img">
-											<img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
-										</div>
-										<div class="received_msg">
-											<div class="received_withd_msg">
-												<p>Test which is a new approach to have all solutions</p>
-												<span class="time_date"> 11:01 AM | June 9</span>
-											</div>
-										</div>
-									</div>
-									<div class="outgoing_msg">
-										<div class="sent_msg">
-											<p>Test which is a new approach to have all solutions</p>
-											<span class="time_date"> 11:01 AM | June 9</span>
-										</div>
-									</div>
-
+								<div class="msg_history" id="msgBox">
 								</div>
 								<div class="type_msg">
 									<div class="input_msg_write">
@@ -94,85 +58,6 @@
 		<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-		<script>
-
-			// stomp와 연결하기 위한 거
-			let sockJs = new SockJS("/stomp/chat");
-
-			let stomp = Stomp.over(sockJs);
-
-			let curRoomIdx;
-			const userIdx = "${memberId}";
-
-			function changeRoom(roomIdx) {
-
-				curRoomIdx = roomIdx;
-
-				stomp.connect(
-					{},
-					function () {
-						stomp.subscribe(
-							"/sub/chat/room/" + curRoomIdx,
-							function (chat) {
-								let data = JSON.parse(chat.body);
-								console.log("asdsada");
-							}
-						)
-
-						stomp.subscribe(
-							"/sub/chat/history" + curRoomIdx,
-							function (chat) {
-								let data = JSON.parse(chat.body);
-								// console.log("asdasdsa");
-								
-							}
-						)
-					});
-				stomp
-					.send(
-						"/pub/chat/enter",
-						{},
-						JSON
-							.stringify({
-								chatRoomId: curRoomIdx,
-								// chatMessageId: 1,
-								memberId: userIdx,
-								chatMessageContent: "방문했습니다."
-							}));
-
-				stomp.send(
-					"/pub/chat/history",
-					{},
-					JSON.stringify({
-						chatRoomId: curRoomIdx,
-						memberId: userIdx
-					})
-				)
-			}
-			
-			
-			const msg_send_btn = document.querySelector(".msg_send_btn");
-
-			msg_send_btn.addEventListener("click", () => {
-				const write_msg = document.querySelector(".write_msg");
-				if (write_msg === "") 
-					return
-				const msg = write_msg.value; 
-				
-				write_msg.value = "";
-				
-				stomp.send(
-					"/pub/chat/message",
-					{},
-					JSON.stringify({
-						chatRoomId: curRoomIdx,
-						memberId: userIdx,
-						chatMessageContent: msg,
-					})
-					
-				)
-			})
-			
-		</script>
+		<script src="/resources/js/chat/chat_admin.js"></script>
 
 		</html>
