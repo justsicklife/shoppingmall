@@ -102,12 +102,12 @@
 							WHERE m_index = #{memberIdx}
 	</update>
 	
-	<!-- 이메일 인증 유무 -->
+	<!-- 이메일 인증 발송 확인 ( 이메일, 암호키 저장 ) -->
 	<insert id="createAuthKey">
 		insert into S_MEMBER_AUTH values(#{memberEmail}, #{authKey})
 	</insert>
 	
-	<!-- 이메일 인증 하면 MEMBER_AUTH 칼럼을 기본값0에서 1로 변경, 로그인을 허용함 -->
+	<!-- 이메일 인증 하면 MEMBER_AUTH(인증 유무/미인증0,인증1) 칼럼을 기본값0에서 1로 변경, 로그인을 허용함 -->
 	<update id="memberAuth">
 		<![CDATA[update S_MEMBER set m_auth = 1 where (select count(*) from S_MEMBER_AUTH where m_email = #{memberEmail} AND AUTHKEY = #{authKey}) > 0]]>
 	</update>
