@@ -1,6 +1,7 @@
 package kr.co.greenart.member.controller;
 
 import java.io.File;
+import java.lang.System.Logger;
 import java.sql.Date;
 import java.util.Objects;
 import java.util.UUID;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.co.greenart.member.model.dto.MemberDto;
 import kr.co.greenart.member.model.service.MemberService;
@@ -34,8 +36,9 @@ import oracle.jdbc.proxy.annotation.Post;
 @RequestMapping("/member")
 public class MemberController {
 	
+	
 	@Autowired
-	private MemberServiceImpl memberSercvice;
+	private MemberServiceImpl memberService;
 	
 	@Autowired
 	private BCryptPasswordEncoder bcryptPasswordEncoder;
@@ -60,7 +63,7 @@ public class MemberController {
 			memberdto.setMemberName(memberName);
 			memberdto.setMemberEmail(memberEmail);
 			
-			model.addAttribute("memberId", memberSercvice.findId(memberdto));
+			model.addAttribute("memberId", memberService.findId(memberdto));
 			return "/member/find_id";
 			
 	}
@@ -83,8 +86,8 @@ public class MemberController {
 			memberdto.setMemberId(memberId);
 			memberdto.setMemberEmail(memberEmail);
 			
-			model.addAttribute("memberIdx", memberSercvice.findIdx(memberdto));
-			System.out.println("memberIdx, memberSercvice.findIdx(memberdto) : " + memberSercvice.findIdx(memberdto));
+			model.addAttribute("memberIdx", memberService.findIdx(memberdto));
+			System.out.println("memberIdx, memberSercvice.findIdx(memberdto) : " + memberService.findIdx(memberdto));
 			
 			return "/member/change_pw";
 	}
@@ -114,7 +117,7 @@ public class MemberController {
 			System.out.println("member :" + memberdto);
 			
 			//update 서비스 실행
-			int result = memberSercvice.changePw(memberdto);
+			int result = memberService.changePw(memberdto);
 			System.out.println("result : " + result);
 			System.out.println("update_member :" + memberdto);
 			
@@ -127,9 +130,10 @@ public class MemberController {
 	}
 	
 	//메인 페이지
+	//http://localhost/member/indexPage
 	@GetMapping("/indexPage")
 	public String getIndexPage() {
-		return "/shop/index";
+		return "/product/index";
 	}
 
 	//로그인 페이지 (임시)
@@ -143,22 +147,28 @@ public class MemberController {
 	@PostMapping("/login.do")
 	public String getLoginPage(MemberDto memberDto, HttpSession session, Model model ) {
 		
-		MemberDto loginUser = memberSercvice.loginMember(memberDto);
+		MemberDto loginUser = memberService.loginMember(memberDto);
 		
 		// Objects.isNull(loginUser) = null : true
 		// ! null : false 논리 부정 사용했으니 비어있다면 false
 		// getMemberPassword - 사용자 입력 패스워드 / getMemberPassword - db에 자정된 패스워드
-		if(!Objects.isNull(loginUser) && bcryptPasswordEncoder.matches(memberDto.getMemberPassword(), loginUser.getMemberPassword())) {
+		if(!Objects.isNull(loginUser) && bcryptPasswordEncoder.matches(memberDto.getMemberPassword(), loginUser.getMemberPassword()) && loginUser.getMemberAuth() == 1) {
 			
 			System.out.println("로그인 성공");
 			
 			session.setAttribute("memberIdx", loginUser.getMemberIdx());
 			
 			return "redirect:/member/indexPage";
-		} else {
+		} else if(Objects.isNull(loginUser) || !bcryptPasswordEncoder.matches(memberDto.getMemberPassword(), loginUser.getMemberPassword())){
 			System.out.println("로그인 실패");
-			 model.addAttribute("loginError", true); // 로그인 실패를 나타내는 속성 추가
+			 model.addAttribute("loginError", true); // 로그인 실패를 나타내는 속성 추가 (signin.jsp 스크립트 실행)
 			return "/signin/signin";
+		} else if(loginUser.getMemberAuth() == 0){
+			return "/member/registerReady";
+		} else {
+			System.out.println("로그인 에러");
+			return "error";
+			
 		}
 	}
 	
@@ -169,11 +179,11 @@ public class MemberController {
 	@ResponseBody // HTTP body에 return값을 응답으로 보냄
 	public String checkMember(String id, String email) {
 		
-		int resultId = memberSercvice.checkId(id);
-		int resultEmail = memberSercvice.checkEmail(email);
+		int resultId = memberService.checkId(id);
+		int resultEmail = memberService.checkEmail(email);
 		
-		System.out.println("resultId : " + resultId);
-		System.out.println("resultEmail : " + resultEmail);
+//		System.out.println("resultId : " + resultId);
+//		System.out.println("resultEmail : " + resultEmail);
 		
 		if(resultId > 0 && resultEmail > 0) {
 			return "failed";
@@ -197,7 +207,7 @@ public class MemberController {
 	
 	//회원 가입
 	@PostMapping("/signup.do")
-	public String signupMember(MemberDto memberDto, HttpSession session) {
+	public String signupMember(MemberDto memberDto, HttpSession session, RedirectAttributes rttr) throws Exception {
 		
 		//유효성 검사
 		String password = memberDto.getMemberPassword();
@@ -217,15 +227,15 @@ public class MemberController {
 		
 		// id, email 중복 확인 메서드 ( ajax로 요청하던 메서드에 email을 담고 결과값 반환 받음 , String chkMember = failed , emailFailed, idFailed, success 중 하나 반환 받음)
 		String chkMember = checkMember(id, email);
-		System.out.println("chkMember : " + chkMember);
-		
-		System.out.println("member :" + memberDto);
-		System.out.println(chkMember.equals("success"));
-		
-		System.out.println("password : " + password);
-		System.out.println("chkMember : " + chkMember);
-		System.out.println("email : " + email);
-		System.out.println("id : " + id);
+//		System.out.println("chkMember : " + chkMember);
+//		
+//		System.out.println("member :" + memberDto);
+//		System.out.println(chkMember.equals("success"));
+//		
+//		System.out.println("password : " + password);
+//		System.out.println("chkMember : " + chkMember);
+//		System.out.println("email : " + email);
+//		System.out.println("id : " + id);
 		
 		if(password.matches(passwordRegex) && password.equals(passwordChk) &&
 				chkMember.equals("success") && email.matches(emailRegex) && id.matches(idRegex)) {
@@ -236,24 +246,49 @@ public class MemberController {
 			String bcryPassword = bcryptPasswordEncoder.encode(memberDto.getMemberPassword());
 			memberDto.setMemberPassword(bcryPassword);
 			
-			//회원 가입 ( insert 서비스 실행)
-			int result = memberSercvice.signupMember(memberDto);
+		
+			//redirect되는 곳으로 데이터 전송
+//			rttr.addFlashAttribute("msg", "가입이 완료되었습니다");
+			rttr.addAttribute("memberEmail", memberDto.getMemberEmail());
+			rttr.addAttribute("memberId", memberDto.getMemberId());
 			
-			if(result > 0) { //데이터가 전송 가능하면
-				System.out.println("가입 완료");
-				return "signin/signin";
-			} else {
-				System.out.println("데이터 전송 실패");
-				return "shop/index"; // 임시로 메인 페이지 이동 ( error )
-			}
+			//회원 가입 ( insert 서비스 실행)
+//			int result = memberService.signupMember(memberDto);
+			memberService.sendMail(memberDto);
+			return "redirect:/member/registerAuth";
+			
+//			if(result > 0) { //데이터가 전송 가능하면
+//				System.out.println("가입 완료");
+//				return "signin/signin";
+//			} else {
+//				System.out.println("데이터 전송 실패");
+//				return "shop/index"; // 임시로 메인 페이지 이동 ( error )
+//			}
 		} else {
 			System.out.println("회원가입 유효성 검사 불일치");
 			return "shop/index"; // 임시로 메인 페이지 이동 ( error )
 		}
 	}
 	
+	//이메일 인증
+	@GetMapping("/emailConfirm")
+	public String emailConfirm(String memberEmail, String key, Model model)throws Exception{
+		memberService.memberAuth(memberEmail, key);
+		model.addAttribute("memberEmail", memberEmail);
+		model.addAttribute("authKey", key);
+		
+		return "/member/emailConfirm";
+	}
 	
-	
+	//이메일 인증 요청 페이지
+	@GetMapping("/registerAuth")
+	public String loginView(HttpServletRequest request, Model model, @RequestParam("memberEmail")String memberEmail, @RequestParam("memberId")String memberId) throws Exception{
+
+		model.addAttribute("memberEmail", memberEmail);
+		model.addAttribute("memberId", memberId);
+		
+		return "/member/registerAuth";
+	}
 	
 	@GetMapping("/create")
 	public String getCreatePage() {

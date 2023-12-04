@@ -4,13 +4,17 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.annotation.Retention;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.ibatis.javassist.bytecode.stackmap.BasicBlock.Catch;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import kr.co.greenart.common.MailUtils;
+import kr.co.greenart.common.TempKey;
 import kr.co.greenart.member.model.dao.MemberDao;
 import kr.co.greenart.member.model.dto.MemberDto;
 
@@ -22,7 +26,9 @@ public class MemberServiceImpl implements MemberService{
 	
 	@Autowired
 	private MemberDao memberDao;
-
+	
+	@Inject
+	private JavaMailSender mailSender;
 	
 	
 	//로그인
@@ -43,7 +49,7 @@ public class MemberServiceImpl implements MemberService{
 		return memberDao.checkEmail(sqlSession, email);
 	}
 
-	//회원 가입
+	//회원 가입 ( 사용 안함 )
 	@Override
 	public int signupMember(MemberDto memberDto) {
 		return memberDao.signupMember(sqlSession, memberDto);
@@ -97,4 +103,31 @@ public class MemberServiceImpl implements MemberService{
 		return memberDao.changePw(sqlSession, memberdto);
 	}
 
+	//이메일 인증
+    @Override
+	public void memberAuth(String memberEmail, String key) throws Exception{
+		memberDao.memberAuth(sqlSession, memberEmail, key);
+    }
+    
+    //이메일 발송
+	@Override
+	public void sendMail(MemberDto memberdto) throws Exception {
+		memberDao.signupMember(sqlSession, memberdto);
+		
+		String key = new TempKey().getKey(50,false);
+		memberDao.createAuthKey(sqlSession, memberdto.getMemberEmail(), key);
+		MailUtils sendMail = new MailUtils(mailSender);
+		sendMail.setSubject("[쇼핑몰 프로젝트 이메일 인증 입니다.]"); //메일제목
+		sendMail.setText(
+				"<h1>메일인증</h1>" +
+						"<br/>"+memberdto.getMemberId()+"님 "+
+						"<br/>쇼핑몰 프로젝트에 회원가입 해주셔서 감사합니다."+
+						"<br/>아래 [이메일 인증 확인]을 눌러주세요."+
+						"<a href='http://localhost/member/emailConfirm?memberEmail=" + memberdto.getMemberEmail() +
+						"&key=" + key +
+						"' target='_blenk'><br>이메일 인증 확인</a>");
+		sendMail.setFrom("shopprj2023@gmail.com", "[쇼핑몰 프로젝트]");
+		sendMail.setTo(memberdto.getMemberEmail());
+		sendMail.send();
+	}
 }
