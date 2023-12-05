@@ -76,7 +76,7 @@ $(document)
 
         })
 
-
+// start button 을 누르면
 $("#start-button").on("click", function () {
     $("#input-msg").attr("readonly", false);
 
@@ -184,12 +184,15 @@ $(".msg_send_btn").on(
 
         write_msg.value = "";
 
-        console.log("roomIdx  : " + roomIdx);
-
         stomp.send("/pub/chat/message", {}, JSON
             .stringify({
                 chatRoomId: roomIdx,
                 memberId: userIdx,
                 chatMessageContent: msg,
             }))
+    
+        stomp.send("/pub/chat/alarm" , {},
+        JSON.stringify({
+            chatRoomId : roomIdx
+        }));
     })

@@ -28,10 +28,19 @@ $(document).ready(
                         console.log(document.getElementById("inbox-chat"));
                         $("#inbox-chat").empty();
                         for (let i = 0; i < data.length; i++) {
-                            $("#inbox-chat").append(listMaker(data[i].chatRoomId, data[i].memberId,curRoomIdx));
+                            $("#inbox-chat").append(listMaker(data[i].chatRoomId, data[i].memberId, curRoomIdx));
                             console.log(data[i]);
                         }
                     })
+
+                // 알람
+                stomp.subscribe("/sub/chat/alarm",
+                    function (chat) {
+                        let data = JSON.parse(chat.body);
+                        console.log(data.chatRoomId);
+                        $("#chat-"+data.chatRoomId).addClass("alram");
+                    })
+
                 // 채팅창 send 보냄
                 stomp.send("/pub/chat/list")
             });
@@ -39,8 +48,9 @@ $(document).ready(
 )
 
 // 채팅방 목록 태그 만들어주는거
-function listMaker(chatRoomId, memberId,curRoomIdx) {
-    let str = `<div class='chat_list ${curRoomIdx === chatRoomId ? "active-chat" : ""}' id='chat-${chatRoomId}' onclick='changeRoom(${chatRoomId})'>
+function listMaker(chatRoomId, memberId, curRoomIdx) {
+    console.log(chatRoomId, curRoomIdx);
+    let str = `<div class='chat_list ${curRoomIdx === chatRoomId ? "active_chat" : ""}' id='chat-${chatRoomId}' onclick='changeRoom(${chatRoomId})'>
     <div class='chat_people'>
     <div class='chat_img'>
     <img src='https://ptetutorials.com/images/user-profile.png' alt='sunil'>
@@ -98,6 +108,8 @@ function changeRoom(roomIdx) {
     // 현재 선택된 방에 class 넣어주는거
     $("#chat-" + curRoomIdx).removeClass("active_chat");
 
+    $("#chat-" + curRoomIdx).removeClass("alram");
+
     curRoomIdx = roomIdx;
 
     // subscribe 주소
@@ -111,6 +123,7 @@ function changeRoom(roomIdx) {
             function (chat) {
                 let data = JSON.parse(chat.body);
                 const tag = msgMaker(data.chatMessageContent, userIdx, data.memberId)
+                
                 $("#msgBox").append(tag);
                 $("#msgBox").scrollTop($("#msgBox")[0].scrollHeight);
             }

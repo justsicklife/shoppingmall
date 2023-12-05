@@ -29,7 +29,7 @@ public class ChatController {
 	public String room(Model model,HttpSession session) {
 
 		// memberId
-		int id = 5;
+		int id = 15;
 		
 //		ChatRoomDTO chatRoomDTO = new ChatRoomDTO(0,id);
 //		

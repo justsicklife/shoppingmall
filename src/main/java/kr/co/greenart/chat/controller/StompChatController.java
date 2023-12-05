@@ -61,7 +61,7 @@ public class StompChatController {
 	@MessageMapping(value="/chat/list")
 	public void list() {
 		List<ChatRoomDTO> listChatRoomDTO = chatRoomService.chatRoomFindAll();
-//		System.out.println("list : " + listChatRoomDTO);
+		System.out.println("list : " + listChatRoomDTO);
 		template.convertAndSend("/sub/chat/list",listChatRoomDTO);
 	}
 	
@@ -89,6 +89,11 @@ public class StompChatController {
 		ChatRoomDTO findChatRoomDTO = new ChatRoomDTO(chatRoomDTO.getChatRoomId(),chatRoomDTO.getMemberId());
 		System.out.println("create :" +findChatRoomDTO);
 		template.convertAndSend("/sub/room/create",findChatRoomDTO);
+	}
+	
+	@MessageMapping(value="/chat/alarm")
+	public void alarm(ChatRoomDTO chatRoomDTO) {
+		template.convertAndSend("/sub/chat/alarm",chatRoomDTO);
 	}
 }
 
