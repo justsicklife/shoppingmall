@@ -65,32 +65,6 @@ public class StompChatController {
 		template.convertAndSend("/sub/chat/list",listChatRoomDTO);
 	}
 	
-	// 현재 방에 있는지 없는지
-	@MessageMapping(value="/room/find")
-	public void find(ChatRoomDTO chatRoomDTO) {
-		System.out.println("chatROOMDTO : " + chatRoomDTO);
-		ChatRoomDTO findChatRoomDTO = chatRoomService.chatRoomFindById(chatRoomDTO.getMemberId());
-		
-//		System.out.println("findChatRoomDTO : " + findChatRoomDTO);
-		
-		// 방이없다면 
-		if(findChatRoomDTO == null) {
-			template.convertAndSend("/sub/room/find",new ChatRoomDTO(-1,-1));				
-		} else {
-			template.convertAndSend("/sub/room/find",findChatRoomDTO);			
-		}
-		
-	}
-	
-	@MessageMapping(value="/room/create")
-	public void create(ChatRoomDTO chatRoomDTO) {
-		int success = chatRoomService.chatRoomInsert(chatRoomDTO);
-		System.out.println("success : " + success);
-		ChatRoomDTO findChatRoomDTO = new ChatRoomDTO(chatRoomDTO.getChatRoomId(),chatRoomDTO.getMemberId());
-		System.out.println("create :" +findChatRoomDTO);
-		template.convertAndSend("/sub/room/create",findChatRoomDTO);
-	}
-	
 	@MessageMapping(value="/chat/alarm")
 	public void alarm(ChatRoomDTO chatRoomDTO) {
 		template.convertAndSend("/sub/chat/alarm",chatRoomDTO);

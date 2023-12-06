@@ -14,7 +14,7 @@
 	
 	<!-- 별칭 작성 부분 -->
 	<typeAliases>
-		<typeAlias type="kr.co.greenart.product.model.dto.ProductDTO" alias="product"/>
+		<typeAlias type="kr.co.greenart.product.model.dto.ProductDTO" alias="Product"/>
 		<typeAlias type="kr.co.greenart.member.model.dto.MemberDto" alias="MemberDto"/>
 		<typeAlias type="kr.co.greenart.chat.model.dto.ChatRoomDTO" alias="chatRoom"/>
 		<typeAlias type="kr.co.greenart.chat.model.dto.ChatMessageDTO" alias="chatMessage"/>

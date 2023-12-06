@@ -28,7 +28,7 @@ $(document).ready(
                         console.log(document.getElementById("inbox-chat"));
                         $("#inbox-chat").empty();
                         for (let i = 0; i < data.length; i++) {
-                            $("#inbox-chat").append(listMaker(data[i].chatRoomId, data[i].memberId, curRoomIdx));
+                            $("#inbox-chat").append(listMaker(data[i].chatRoomId, data[i].memberId, data[i].chatRoomTitle,curRoomIdx));
                             console.log(data[i]);
                         }
                     })
@@ -48,7 +48,7 @@ $(document).ready(
 )
 
 // 채팅방 목록 태그 만들어주는거
-function listMaker(chatRoomId, memberId, curRoomIdx) {
+function listMaker(chatRoomId, memberId, chatRoomTitle,curRoomIdx) {
     console.log(chatRoomId, curRoomIdx);
     let str = `<div class='chat_list ${curRoomIdx === chatRoomId ? "active_chat" : ""}' id='chat-${chatRoomId}' onclick='changeRoom(${chatRoomId})'>
     <div class='chat_people'>
@@ -57,7 +57,7 @@ function listMaker(chatRoomId, memberId, curRoomIdx) {
     </div>
     <div class='chat_ib'>
     <h5>${chatRoomId} <span class='chat_date'>${memberId}</span></h5>
-    <p>글제목</p></div></div></div>`;
+    <p>${chatRoomTitle}</p></div></div></div>`;
     return str;
 }
 

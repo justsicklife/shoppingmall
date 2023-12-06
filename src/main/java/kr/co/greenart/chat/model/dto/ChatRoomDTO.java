@@ -14,4 +14,5 @@ import lombok.ToString;
 public class ChatRoomDTO {
 	private int chatRoomId;
 	private int memberId;
+	private String chatRoomTitle;
 }
