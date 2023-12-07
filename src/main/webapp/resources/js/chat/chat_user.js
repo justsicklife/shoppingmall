@@ -87,7 +87,7 @@ $("#start-button").on("click", function () {
             data: {
                 chatRoomId:0,
                 memberId:userIdx,
-                chatRoomTitle: $("#chat-title").val(),
+                chatRoomTitle: $("#chat-title").val() === "" ? "대화방" : $("#chat-title").val(),
             },
             success: function(data) {
                 roomIdx = data.chatRoomId;
@@ -124,7 +124,6 @@ $("#start-button").on("click", function () {
         topicRoom,
         function (chat) {
             let data = JSON.parse(chat.body);
-            console.log(data);
             let str = "";
             if (userIdx != data.memberId) {
                 str += "<div class='incoming_msg'>";
@@ -136,7 +135,9 @@ $("#start-button").on("click", function () {
                 str += "<p>"
                 str += data.chatMessageContent;
                 str += "</p>"
-                str += "<span class='time_date'> 11:01 AM | June 9</span>";
+                str += "<span class='time_date'>"
+                str +=  data.chatMessageDate
+                str += "</span>";
                 str += "</div>"
                 str += "</div>"
                 str += "</div>";
@@ -146,7 +147,9 @@ $("#start-button").on("click", function () {
                 str += "<p>"
                 str += data.chatMessageContent;
                 str += "</p>"
-                str += "<span class='time_date'> 11:01 AM | June 9</span>"
+                str += "<span class='time_date'>"
+                str += data.chatMessageDate;
+                str += "</span>"
                 str += "</div>"
                 str += "</div>";
             }
@@ -181,11 +184,16 @@ $(".msg_send_btn").on(
 
         write_msg.value = "";
 
+        let nowDate = `${new Date().getFullYear()}:${new Date().getMonth()}:${new Date().getHours()}:${new Date().getMinutes()}`;
+
+        console.log(nowDate);
+
         stomp.send("/pub/chat/message", {}, JSON
             .stringify({
                 chatRoomId: roomIdx,
                 memberId: userIdx,
                 chatMessageContent: msg,
+                chatMessageDate: nowDate,
             }))
     
         stomp.send("/pub/chat/alarm" , {},

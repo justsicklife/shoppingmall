@@ -18,7 +18,7 @@
 	</select>
 	
 	<insert id="ChatMessageInsert" parameterType="chatMessage">
-		insert into s_chat_message(cm_id,m_id,cr_id,cm_content) values(s_chat_message_seq.nextval,#{memberId}, #{chatRoomId},#{chatMessageContent})
+		insert into s_chat_message(cm_id,m_id,cr_id,cm_content,cm_date) values(s_chat_message_seq.nextval,#{memberId}, #{chatRoomId},#{chatMessageContent},#{chatMessageDate})
 	</insert>
 	
 </mapper>

@@ -18,5 +18,5 @@ public class ChatMessageDTO {
 	private int memberId;
 	private int chatRoomId;
 	private String chatMessageContent;
-	private Date chatMessageDate;
+	private String chatMessageDate;
 }

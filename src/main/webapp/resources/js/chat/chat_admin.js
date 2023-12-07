@@ -62,7 +62,7 @@ function listMaker(chatRoomId, memberId, chatRoomTitle,curRoomIdx) {
 }
 
 // 메세지 태그 만들어주는거
-function msgMaker(msg, userIdx, memberId) {
+function msgMaker(msg, userIdx, chatMessageDate,memberId) {
     let str = "";
     if (userIdx != memberId) {
         str += "<div class='incoming_msg'>";
@@ -74,7 +74,9 @@ function msgMaker(msg, userIdx, memberId) {
         str += "<p>"
         str += msg;
         str += "</p>"
-        str += "<span class='time_date'> 11:01 AM | June 9</span>";
+        str += "<span class='time_date'>"
+        str += chatMessageDate
+        str += "</span>";
         str += "</div>"
         str += "</div>"
         str += "</div>";
@@ -84,7 +86,9 @@ function msgMaker(msg, userIdx, memberId) {
         str += "<p>"
         str += msg;
         str += "</p>"
-        str += "<span class='time_date'> 11:01 AM | June 9</span>"
+        str += "<span class='time_date'>"
+        str += chatMessageDate
+        str += "</span>"
         str += "</div>"
         str += "</div>";
     }
@@ -122,7 +126,7 @@ function changeRoom(roomIdx) {
             topicRoom,
             function (chat) {
                 let data = JSON.parse(chat.body);
-                const tag = msgMaker(data.chatMessageContent, userIdx, data.memberId)
+                const tag = msgMaker(data.chatMessageContent, userIdx,data.chatMessageDate, data.memberId)
                 
                 $("#msgBox").append(tag);
                 $("#msgBox").scrollTop($("#msgBox")[0].scrollHeight);
@@ -175,6 +179,9 @@ msg_send_btn.addEventListener("click", () => {
 
     write_msg.value = "";
 
+    let nowDate = `${new Date().getFullYear()}:${new Date().getMonth()}:${new Date().getHours()}:${new Date().getMinutes()}`;
+
+
     // 메세지를 구독한 분에게 전달해준다 JSON 형태로
     stomp.send(
         "/pub/chat/message",
@@ -183,6 +190,7 @@ msg_send_btn.addEventListener("click", () => {
             chatRoomId: curRoomIdx,
             memberId: userIdx,
             chatMessageContent: msg,
+            chatMessageDate: nowDate,
         })
     )
 })
