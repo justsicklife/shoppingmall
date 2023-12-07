@@ -23,4 +23,5 @@ public class ProductDTO {
 	private String product_info;
 	private String product_color_group;
 	private String product_size_group;
+	private String product_type;
 }

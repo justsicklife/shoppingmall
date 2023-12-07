@@ -20,14 +20,15 @@
 		<result column="p_info" property="product_info"/>
 		<result column="p_color_group" property="product_color_group"/>
 		<result column="p_size_group" property="product_size_group"/>
+		<result column="p_type" property="product_type"/>
 	</resultMap>
 	
 	<insert id="insertProduct" parameterType="product">
 		<selectKey resultType="int" keyProperty="product_id" order="AFTER">
 			SELECT s_product_seq.CURRVAL as product_id FROM DUAL
 		</selectKey>
-		insert into s_product (p_id,p_name,p_image_group,p_content,p_price,p_info,p_color_group,p_size_group)
-		VALUES(s_product_seq.nextval,#{product_name},#{product_image_group},#{product_content},#{product_price},#{product_info},#{product_color_group},#{product_size_group})
+		insert into s_product (p_id,p_name,p_image_group,p_content,p_price,p_info,p_color_group,p_size_group,p_type)
+		VALUES(s_product_seq.nextval,#{product_name},#{product_image_group},#{product_content},#{product_price},#{product_info},#{product_color_group},#{product_size_group},#{product_type})
 	</insert>
 	
 	<select id="productFindById" resultMap="productResultMap">
