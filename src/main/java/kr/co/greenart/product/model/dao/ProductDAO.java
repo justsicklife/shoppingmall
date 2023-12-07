@@ -9,6 +9,7 @@ import kr.co.greenart.product.model.dto.ProductDTO;
 public class ProductDAO {
 
 	public int insertProduct(SqlSessionTemplate sql, ProductDTO productDTO) {
+		System.out.println(productDTO);
 		return sql.insert("s_product.insertProduct",productDTO);
 	}
 

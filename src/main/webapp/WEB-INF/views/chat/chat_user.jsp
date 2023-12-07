@@ -72,7 +72,9 @@
 							</div>
 						</div>
 					</div>
+					
 					<button id="start-button">채팅 시작 버튼</button>
+					<input id="chat-title" required type="text" placeholder="채팅방 제목">
 				</div>
 		</body>
 		<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>

@@ -23,7 +23,7 @@
 		<selectKey resultType="int" keyProperty="chatRoomId" order="AFTER">
 			SELECT s_chat_room_seq.CURRVAL as s_chat_room FROM DUAL
 		</selectKey>
-		insert into s_chat_room(cr_id,m_id) VALUES(s_chat_room_seq.nextval,#{memberId})
+		insert into s_chat_room(cr_id,m_id,cr_title) VALUES(s_chat_room_seq.nextval,#{memberId},#{chatRoomTitle})
 	</insert>
 	
 </mapper>

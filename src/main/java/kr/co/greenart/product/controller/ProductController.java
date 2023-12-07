@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,15 +36,25 @@ public class ProductController {
 	@Autowired
 	private ProductService productService;
 	
+	@GetMapping("/index")
+	public String getIndexPage() {
+		
+		return "/product/index";
+	}
+	
 	@GetMapping("/create")
 	public String getCreatePage() {
 		return "/product/create";
 	}
 	
-	@GetMapping("/detail/{prdocut_id}") 
-	public String getDetailePage(@PathVariable("prdocut_id") int id,Model model) {
+	@GetMapping("/detail") 
+	public String getDetailePage(HttpServletResponse response,@RequestParam(value="product_id",required = true) int id,Model model) throws IOException {
 		
 		ProductDTO productDTO= productService.productFindById(id);
+		
+		if (productDTO == null) {
+			response.sendError(404,"404에러가 발생했습니다");
+		}
 		
 		model.addAttribute("product",productDTO);
 		
@@ -129,6 +140,6 @@ public class ProductController {
 		productService.insertProduct(product);
 		int product_id = product.getProduct_id();
 		
-		return "redirect:/product/detail/" + product_id;
+		return "redirect:/product/detail?product_id=" + product_id;
 	}
 }

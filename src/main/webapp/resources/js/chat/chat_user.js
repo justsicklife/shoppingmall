@@ -52,63 +52,58 @@ $(document)
                 .connect(
                     {},
                     function () {
-                        stomp.subscribe("/sub/room/find",
-                            function (chat) {
-                                let data = JSON.parse(chat.body);
-                                console.log(data.chatRoomId);
+
+                        $.ajax({
+                            type:"post",
+                            url:"/chat/find",
+                            data: {
+                                memberId:userIdx,
+                            },
+                            success: function(data) {
+                                console.log(data);
                                 if (data.chatRoomId === -1) {
                                     isEmpty = true;
                                 } else {
                                     roomIdx = data.chatRoomId;
+                                    $("#chat-title").remove();
                                 }
                             }
-
-                        )
-
-                        stomp.send("/pub/room/find",
-                            {},
-                            JSON.stringify({
-                                memberId: userIdx
-                            })
-                        );
+                        });
                     }
                 );
 
         })
 
-
+// start button 을 누르면
 $("#start-button").on("click", function () {
     $("#input-msg").attr("readonly", false);
 
-    const topicCreate = "/sub/room/create/";
-
-    // url 에 roomIdx 더함
-    topicRoom += roomIdx;
-    topicHistory += roomIdx;
-
     // 비어있다면 생성
     if (isEmpty) {
-        stomp.subscribe(
-            topicCreate,
-            function (chat) {
-                let data = JSON.parse(chat.body);
+
+        $.ajax({
+            url:"/chat/create",
+            type:"post",
+            data: {
+                chatRoomId:0,
+                memberId:userIdx,
+                chatRoomTitle: $("#chat-title").val() === "" ? "대화방" : $("#chat-title").val(),
+            },
+            success: function(data) {
                 roomIdx = data.chatRoomId;
                 topicRoom += data.chatRoomId;
                 topicHistory += data.chatRoomId;
-            }
-        )
-
-        // create 를 구독에게 보냄
-        stomp.send("/pub/room/create",
-            {},
-            JSON.stringify({
-                chatRoomId: 0,
-                memberId: userIdx
-            })
-        );
+                console.log(topicRoom,topicHistory)
+            },
+            async:false,
+        })
 
         stomp.send("/pub/chat/list")
     } else {
+        // url 에 roomIdx 더함
+        topicRoom += roomIdx;
+        topicHistory += roomIdx;
+
         console.log(topicHistory);
         stomp.subscribe(
             topicHistory,
@@ -140,7 +135,9 @@ $("#start-button").on("click", function () {
                 str += "<p>"
                 str += data.chatMessageContent;
                 str += "</p>"
-                str += "<span class='time_date'> 11:01 AM | June 9</span>";
+                str += "<span class='time_date'>"
+                str +=  data.chatMessageDate
+                str += "</span>";
                 str += "</div>"
                 str += "</div>"
                 str += "</div>";
@@ -150,7 +147,9 @@ $("#start-button").on("click", function () {
                 str += "<p>"
                 str += data.chatMessageContent;
                 str += "</p>"
-                str += "<span class='time_date'> 11:01 AM | June 9</span>"
+                str += "<span class='time_date'>"
+                str += data.chatMessageDate;
+                str += "</span>"
                 str += "</div>"
                 str += "</div>";
             }
@@ -170,6 +169,7 @@ $("#start-button").on("click", function () {
 
 
     $("#start-button").remove();
+    $("#chat-title").remove();
 });
 
 $(".msg_send_btn").on(
@@ -184,12 +184,20 @@ $(".msg_send_btn").on(
 
         write_msg.value = "";
 
-        console.log("roomIdx  : " + roomIdx);
+        let nowDate = `${new Date().getFullYear()}:${new Date().getMonth()}:${new Date().getHours()}:${new Date().getMinutes()}`;
+
+        console.log(nowDate);
 
         stomp.send("/pub/chat/message", {}, JSON
             .stringify({
                 chatRoomId: roomIdx,
                 memberId: userIdx,
                 chatMessageContent: msg,
+                chatMessageDate: nowDate,
             }))
+    
+        stomp.send("/pub/chat/alarm" , {},
+        JSON.stringify({
+            chatRoomId : roomIdx
+        }));
     })

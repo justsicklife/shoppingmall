@@ -1,5 +1,7 @@
 package kr.co.greenart.chat.model.dto;
 
+import java.sql.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,4 +16,5 @@ import lombok.ToString;
 public class ChatRoomDTO {
 	private int chatRoomId;
 	private int memberId;
+	private String chatRoomTitle;
 }

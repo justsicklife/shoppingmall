@@ -1,82 +1,96 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-		<!DOCTYPE html>
-		<html>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<!DOCTYPE html>
+<html>
 
-		<head>
-			<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-			<title>Insert title here</title>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
 
-			<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
 
-			<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+<link rel="stylesheet"
+	href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
 
-			<script type="text/javascript" src="/resources/js/shop/sidebar.js"></script>
+<script type="text/javascript" src="/resources/js/shop/sidebar.js"></script>
 
-			<script src="/resources/se/js/HuskyEZCreator.js"></script>
+<script src="/resources/se/js/HuskyEZCreator.js"></script>
 
-			<script src="/resources/se/js/jindo.min.js"></script>
+<script src="/resources/se/js/jindo.min.js"></script>
 
-			<style type="text/css">
-				#att_zone {
-					width: 660px;
-					min-height: 150px;
-					padding: 10px;
-					border: 1px dotted #00f;
-				}
+<style type="text/css">
+#att_zone {
+	width: 660px;
+	min-height: 150px;
+	padding: 10px;
+	border: 1px dotted #00f;
+}
 
-				#att_zone:empty:before {
-					content: attr(data-placeholder);
-					color: #999;
-					font-size: .9em;
-				}
-			</style>
-		</head>
+#att_zone:empty:before {
+	content: attr(data-placeholder);
+	color: #999;
+	font-size: .9em;
+}
+</style>
+</head>
 
-		<body>
-			<div class="container">
+<body>
+	<div class="container">
 
-				<form id="boardWriteForm" enctype="multipart/form-data" method="post" action="/product/create">
+		<form id="boardWriteForm" enctype="multipart/form-data" method="post"
+			action="/product/create">
 
-					<div>
-						<label for="">상품이름</label>
-						<input type="text" name="product_name" id="">
-						<label for="">상품 설명</label>
-						<input type="text" name="product_content" id="">
-						<label for="">상품 가격</label>
-						<input type="number" name="product_price" id="">
-					</div>
-
-					<label for="">색상을 입력해주세요</label>
-					<input id="option_input_color" type="text" placeholder="옵션을 입력해주세요" />
-					<button type="submit" id="option_button_color">추가</button>
-					<div id="option_group_color"></div>
-
-					<label for="">사이즈를 입력해주세요</label>
-					<input id="option_input_size" type="text" placeholder="옵션을 입력해주세요" />
-					<button type="submit" id="option_button_size">추가</button>
-					<div id="option_group_size"></div>
-
-					<div id='image_preview'>
-						<h3>메인 사진</h3>
-						<input type='file' id='btnAtt' name="images" multiple='multiple'/>
-						<div id='att_zone' 
-							  data-placeholder='파일을 첨부 하려면 파일 선택 버튼을 클릭하거나 파일을 드래그앤드롭 하세요'></div>
-					</div>
-
-			
-					<div class="contentDiv">
-						<textarea id="txtContent" name="product_info" rows="30" style="width: 100%;"></textarea>
-					</div>
-					<div class="buttonDiv">
-						<button type="button" class="btn btn-primary" onclick="onWrite()">쓰기</button>
-						<button type="button" class="btn btn-primary" onclick="history.go(-1);">취소</button>
-					</div>
-				</form>
+			<div>
+				<label for="">상품이름</label> <input type="text" name="product_name"
+					id=""> <label for="">상품 설명</label> <input type="text"
+					name="product_content" id=""> <label for="">상품 가격</label> <input
+					type="number" name="product_price" id="">
 			</div>
-		</body>
 
-		<script>
+			<div>
+				  <label for="lang">옷 타입</label>
+				<select name="product_type" id="product_type">
+					<option value="outem">outem</option>
+					<option value="top">top</option>
+					<option value="bottom">bottom</option>
+					<option value="shoes">shoes</option>
+				</select>
+			</div>
+
+			<label for="">색상을 입력해주세요</label> <input id="option_input_color"
+				type="text" placeholder="옵션을 입력해주세요" />
+			<button type="submit" id="option_button_color">추가</button>
+			<div id="option_group_color"></div>
+
+			<label for="">사이즈를 입력해주세요</label> <input id="option_input_size"
+				type="text" placeholder="옵션을 입력해주세요" />
+			<button type="submit" id="option_button_size">추가</button>
+			<div id="option_group_size"></div>
+
+			<div id='image_preview'>
+				<h3>메인 사진</h3>
+				<input type='file' id='btnAtt' name="images" multiple='multiple' />
+				<div id='att_zone'
+					data-placeholder='파일을 첨부 하려면 파일 선택 버튼을 클릭하거나 파일을 드래그앤드롭 하세요'></div>
+			</div>
+
+
+			<div class="contentDiv">
+				<textarea id="txtContent" name="product_info" rows="30"
+					style="width: 100%;"></textarea>
+			</div>
+			<div class="buttonDiv">
+				<button type="button" class="btn btn-primary" onclick="onWrite()">쓰기</button>
+				<button type="button" class="btn btn-primary"
+					onclick="history.go(-1);">취소</button>
+			</div>
+		</form>
+	</div>
+</body>
+
+<script>
 
 			const option_evnet = function (input, group, button, name) {
 
@@ -115,7 +129,7 @@
 
 		</script>
 
-		<script type="text/javascript">
+<script type="text/javascript">
 			var oEditors = [];
 			nhn.husky.EZCreator.createInIFrame({
 				oAppRef: oEditors,
@@ -256,4 +270,4 @@
     )('att_zone', 'btnAtt')
     
     </script>
-		</html>
+</html>

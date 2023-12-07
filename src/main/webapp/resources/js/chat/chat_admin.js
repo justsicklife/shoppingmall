@@ -28,10 +28,19 @@ $(document).ready(
                         console.log(document.getElementById("inbox-chat"));
                         $("#inbox-chat").empty();
                         for (let i = 0; i < data.length; i++) {
-                            $("#inbox-chat").append(listMaker(data[i].chatRoomId, data[i].memberId,curRoomIdx));
+                            $("#inbox-chat").append(listMaker(data[i].chatRoomId, data[i].memberId, data[i].chatRoomTitle,curRoomIdx));
                             console.log(data[i]);
                         }
                     })
+
+                // 알람
+                stomp.subscribe("/sub/chat/alarm",
+                    function (chat) {
+                        let data = JSON.parse(chat.body);
+                        console.log(data.chatRoomId);
+                        $("#chat-"+data.chatRoomId).addClass("alram");
+                    })
+
                 // 채팅창 send 보냄
                 stomp.send("/pub/chat/list")
             });
@@ -39,20 +48,21 @@ $(document).ready(
 )
 
 // 채팅방 목록 태그 만들어주는거
-function listMaker(chatRoomId, memberId,curRoomIdx) {
-    let str = `<div class='chat_list ${curRoomIdx === chatRoomId ? "active-chat" : ""}' id='chat-${chatRoomId}' onclick='changeRoom(${chatRoomId})'>
+function listMaker(chatRoomId, memberId, chatRoomTitle,curRoomIdx) {
+    console.log(chatRoomId, curRoomIdx);
+    let str = `<div class='chat_list ${curRoomIdx === chatRoomId ? "active_chat" : ""}' id='chat-${chatRoomId}' onclick='changeRoom(${chatRoomId})'>
     <div class='chat_people'>
     <div class='chat_img'>
     <img src='https://ptetutorials.com/images/user-profile.png' alt='sunil'>
     </div>
     <div class='chat_ib'>
     <h5>${chatRoomId} <span class='chat_date'>${memberId}</span></h5>
-    <p>글제목</p></div></div></div>`;
+    <p>${chatRoomTitle}</p></div></div></div>`;
     return str;
 }
 
 // 메세지 태그 만들어주는거
-function msgMaker(msg, userIdx, memberId) {
+function msgMaker(msg, userIdx, chatMessageDate,memberId) {
     let str = "";
     if (userIdx != memberId) {
         str += "<div class='incoming_msg'>";
@@ -64,7 +74,9 @@ function msgMaker(msg, userIdx, memberId) {
         str += "<p>"
         str += msg;
         str += "</p>"
-        str += "<span class='time_date'> 11:01 AM | June 9</span>";
+        str += "<span class='time_date'>"
+        str += chatMessageDate
+        str += "</span>";
         str += "</div>"
         str += "</div>"
         str += "</div>";
@@ -74,7 +86,9 @@ function msgMaker(msg, userIdx, memberId) {
         str += "<p>"
         str += msg;
         str += "</p>"
-        str += "<span class='time_date'> 11:01 AM | June 9</span>"
+        str += "<span class='time_date'>"
+        str += chatMessageDate
+        str += "</span>"
         str += "</div>"
         str += "</div>";
     }
@@ -98,6 +112,8 @@ function changeRoom(roomIdx) {
     // 현재 선택된 방에 class 넣어주는거
     $("#chat-" + curRoomIdx).removeClass("active_chat");
 
+    $("#chat-" + curRoomIdx).removeClass("alram");
+
     curRoomIdx = roomIdx;
 
     // subscribe 주소
@@ -110,7 +126,8 @@ function changeRoom(roomIdx) {
             topicRoom,
             function (chat) {
                 let data = JSON.parse(chat.body);
-                const tag = msgMaker(data.chatMessageContent, userIdx, data.memberId)
+                const tag = msgMaker(data.chatMessageContent, userIdx,data.chatMessageDate, data.memberId)
+                
                 $("#msgBox").append(tag);
                 $("#msgBox").scrollTop($("#msgBox")[0].scrollHeight);
             }
@@ -162,6 +179,9 @@ msg_send_btn.addEventListener("click", () => {
 
     write_msg.value = "";
 
+    let nowDate = `${new Date().getFullYear()}:${new Date().getMonth()}:${new Date().getHours()}:${new Date().getMinutes()}`;
+
+
     // 메세지를 구독한 분에게 전달해준다 JSON 형태로
     stomp.send(
         "/pub/chat/message",
@@ -170,6 +190,7 @@ msg_send_btn.addEventListener("click", () => {
             chatRoomId: curRoomIdx,
             memberId: userIdx,
             chatMessageContent: msg,
+            chatMessageDate: nowDate,
         })
     )
 })
