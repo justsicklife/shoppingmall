@@ -19,6 +19,11 @@ public class MemberDao {
 		return sqlSession.selectOne("memberMapper.loginMember",m);
 	}
 	
+	//sns(이메일) 로그인
+	public MemberDto snsLoginMember(SqlSessionTemplate sqlSession, MemberDto m ) {
+		return sqlSession.selectOne("memberMapper.snsLoginMember",m);
+	}
+	
 	//이메일 확인
 	// selectOne : 하나만가져옴
 	public int checkEmail(SqlSessionTemplate sqlSession, String memberEmail) {
@@ -80,4 +85,9 @@ public class MemberDao {
 		sqlsession.update("memberMapper.memberAuth", map);
 	}
 	
+	//sns 로그인, 가입
+	public int snsSingup(SqlSessionTemplate sqlSession, MemberDto md) {
+		return sqlSession.insert("memberMapper.snsSingup", md);
+	}
+
 }
