@@ -30,6 +30,12 @@
 		WHERE m_id = #{memberId}
 	</select>
 	
+	<!-- sns(이메일) 로그인 -->
+	<select id="snsLoginMember" resultMap="memberResultSet">
+		SELECT * FROM S_MEMBER
+		WHERE m_email = #{memberEmail}
+	</select>
+	
 	<!-- 이메일 중복 확인 -->
 	<select id="checkEmail" resultType="_int">
 		SELECT COUNT(*) FROM S_MEMBER <!-- 1. 테이블 컬럼들 갯수 조회 -->
@@ -69,6 +75,30 @@
 					   #{memberGender},
 					   #{memberBirthday},
 					   SYSDATE)
+	</insert>
+	
+	<!-- sns 가입  -->
+	<insert id="snsSingup">
+		INSERT INTO S_MEMBER(m_index,
+						   m_name,
+						   m_email,
+						   m_id,
+						   m_password,
+						   m_phoneNum,
+						   m_gender,
+						   m_birthday,
+						   m_joindate,
+						   m_auth)
+				VALUES (seq_s_member_idx.NEXTVAL,
+					   #{memberName},
+					   #{memberEmail},
+					   #{memberId},
+					   #{memberPassword},
+					   #{memberphoneNum},
+					   #{memberGender},
+					   #{memberBirthday},
+					   SYSDATE,
+					   1)
 	</insert>
 	
 	<!-- id 찾기 -->
@@ -111,4 +141,5 @@
 	<update id="memberAuth">
 		<![CDATA[update S_MEMBER set m_auth = 1 where (select count(*) from S_MEMBER_AUTH where m_email = #{memberEmail} AND AUTHKEY = #{authKey}) > 0]]>
 	</update>
+
 </mapper>

@@ -1,5 +1,7 @@
 package kr.co.greenart.member.model.service;
 
+import java.util.HashMap;
+
 import javax.servlet.http.HttpServletResponse;
 
 import kr.co.greenart.member.model.dao.MemberDao;
@@ -10,6 +12,9 @@ public interface MemberService {
 	
 	//로그인
 	MemberDto loginMember(MemberDto m);
+	
+	//sns(이메일)로그인
+	MemberDto snsLoginMember(MemberDto m);
 	
 	//아이디 체크
 	int checkId(String id);
@@ -32,9 +37,25 @@ public interface MemberService {
 	//pw변경
 	int changePw(MemberDto memberdto);
 	
+	
 	//이메일 인증
 	public void memberAuth(String memberEmail, String key) throws Exception;
 	
 	//이메일 발송
 	public void sendMail(MemberDto memberdto) throws Exception;
+	
+	
+	//sns 로그인, 가입
+	int snsSingup(MemberDto memberdto);
+	
+	
+	//카카오 로그인
+	String getAccessTokenKakao(String authorize_code) throws Throwable;
+	
+	public HashMap<String, Object> getUserInfoKakao(String access_Token) throws Throwable;
+	
+	//네이버 로그인
+	String getAccessTokenNaver(String authorize_code) throws Throwable;
+	
+	public HashMap<String, Object> getUserInfoNaver(String access_Token) throws Throwable;
 }

@@ -3,6 +3,7 @@ package kr.co.greenart.member.controller;
 import java.io.File;
 import java.lang.System.Logger;
 import java.sql.Date;
+import java.util.HashMap;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -18,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -138,6 +140,7 @@ public class MemberController {
 
 	//로그인 페이지 (임시)
 	//http://localhost/member/loginPage
+	//https://nid.naver.com/internalToken/view/tokenList/pc/ko
 	@GetMapping("loginPage")
 	public String loginPage() {
 		return "/signin/signin";
@@ -289,6 +292,159 @@ public class MemberController {
 		
 		return "/member/registerAuth";
 	}
+	
+	
+	// 네이버 로그인
+	@RequestMapping(value = "/naverLogin", method = RequestMethod.GET)
+	public String naverLogin(@RequestParam(value = "code", required = false) String code, HttpSession session,
+				Model model) throws Throwable {
+
+			String access_Token = memberService.getAccessTokenNaver(code);
+			// 위의 access_Token 받는 걸 확인한 후에 밑에 진행
+			System.out.println("access_Token" + access_Token);
+
+			HashMap<String, Object> userInfo = memberService.getUserInfoNaver(access_Token);
+			System.out.println("###id#### : " + userInfo.get("id"));
+			System.out.println("###pw#### : " + userInfo.get("pw"));
+			System.out.println("###email#### : " + userInfo.get("email"));
+			System.out.println("###name#### : " + userInfo.get("name"));
+			System.out.println("###phoneNum#### : " + userInfo.get("phoneNum"));
+			System.out.println("###gender#### : " + userInfo.get("gender"));
+			System.out.println("###birthday#### : " + userInfo.get("birthday"));
+			String id = (String) userInfo.get("id");
+			String email = (String) userInfo.get("email");
+			
+//			int checkId = memberService.checkId(id);
+			int checkEmail = memberService.checkEmail(email);
+			
+			//중복 되는 이메일로 가입된 계정이 있을 경우, 해당 이메일 계정으로 접속함
+			if (checkEmail > 0) {
+				MemberDto m = new MemberDto();
+				m.setMemberEmail(email);
+				MemberDto loginUser = memberService.snsLoginMember(m);
+				System.out.println(loginUser);
+				if (!Objects.isNull(loginUser)) {
+					System.out.println("데이터(네이버 계정) 있음");
+					session.setAttribute("memberNum", loginUser.getMemberIdx());
+					String sessionMemberIdx = String.valueOf(loginUser.getMemberIdx());
+					session.setAttribute("sessionMemberIdx", sessionMemberIdx);
+					session.setAttribute("memberName", loginUser.getMemberName());
+					return "redirect:/member/indexPage";
+				} else {
+//					model.addAttribute("msg", "아이디 비밀번호를 확인해 주세요!");
+//					model.addAttribute("status", "error");
+					return "/signin/signin";
+				}
+			} else {
+				System.out.println("네이버 계정 가입");
+				MemberDto md = new MemberDto();
+				md.setMemberId(id);
+				md.setMemberPassword((String) userInfo.get("pw"));
+				md.setMemberEmail((String) userInfo.get("email"));
+				md.setMemberName((String) userInfo.get("name"));
+				md.setMemberGender((String) userInfo.get("gender"));
+				md.setMemberphoneNum((String) userInfo.get("phoneNum"));
+				md.setMemberBirthday((String) userInfo.get("birthday"));
+
+				int result = memberService.snsSingup(md);
+				if (result > 0) {
+					MemberDto m = new MemberDto();
+					m.setMemberId(id);
+					MemberDto loginUser = memberService.loginMember(m);
+					System.out.println(loginUser.toString());
+					if (!Objects.isNull(loginUser)) {
+						session.setAttribute("memberNum", loginUser.getMemberIdx());
+						String sessionMemberIdx = String.valueOf(loginUser.getMemberIdx());
+						session.setAttribute("sessionMemberIdx", sessionMemberIdx);
+						session.setAttribute("memberName", loginUser.getMemberName());
+						return "redirect:/member/indexPage";
+					} else {
+//						model.addAttribute("msg", "아이디 비밀번호를 확인해 주세요!");
+//						model.addAttribute("status", "error");
+						return "/signin/signin";
+					}
+				}
+				return "/signin/signin";
+			}
+		}
+	
+	// 카카오 로그인
+	@RequestMapping(value = "/kakaoLogin", method = RequestMethod.GET)
+	public String kakaoLogin(@RequestParam(value = "code", required = false) String code, HttpSession session,
+			Model model) throws Throwable {
+
+		String access_Token = memberService.getAccessTokenKakao(code);
+		// 위의 access_Token 받는 걸 확인한 후에 밑에 진행
+
+		HashMap<String, Object> userInfo = memberService.getUserInfoKakao(access_Token);
+		System.out.println("###id#### : " + userInfo.get("id"));
+		System.out.println("###pw#### : " + userInfo.get("pw"));
+		System.out.println("###email#### : " + userInfo.get("email"));
+//		System.out.println("###name#### : " + userInfo.get("name"));
+//		System.out.println("###phoneNum#### : " + userInfo.get("phoneNum"));
+//		System.out.println("###gender#### : " + userInfo.get("gender"));
+//		System.out.println("###birthday#### : " + userInfo.get("birthday"));
+		String id = (String) userInfo.get("id");
+		String email = (String) userInfo.get("email");
+		
+//		int checkId = memberService.checkId(id);
+		int checkEmail = memberService.checkEmail(email);
+		
+		//중복 되는 이메일로 가입된 계정이 있을 경우, 해당 이메일 계정으로 접속함
+		if (checkEmail > 0) {
+			MemberDto m = new MemberDto();
+			m.setMemberEmail(email);
+			MemberDto loginUser = memberService.snsLoginMember(m);
+			System.out.println(loginUser);
+			if (!Objects.isNull(loginUser)) {
+				System.out.println("데이터(카카오 계정) 있음");
+				session.setAttribute("memberNum", loginUser.getMemberIdx());
+				String sessionMemberIdx = String.valueOf(loginUser.getMemberIdx());
+				session.setAttribute("sessionMemberIdx", sessionMemberIdx);
+				session.setAttribute("memberName", loginUser.getMemberName());
+				return "redirect:/member/indexPage";
+			} else {
+//				model.addAttribute("msg", "아이디 비밀번호를 확인해 주세요!");
+//				model.addAttribute("status", "error");
+				return "/signin/signin";
+			}
+		} else {
+			System.out.println("카카오 계정 가입");
+			MemberDto md = new MemberDto();
+			md.setMemberId(id);
+			md.setMemberPassword((String) userInfo.get("pw"));
+			md.setMemberEmail((String) userInfo.get("email"));
+//			md.setMemberName((String) userInfo.get("name"));
+//			md.setMemberGender((String) userInfo.get("gender"));
+//			md.setMemberphoneNum((String) userInfo.get("phoneNum"));
+//			md.setMemberBirthday((String) userInfo.get("birthday"));
+
+			int result = memberService.snsSingup(md);
+			if (result > 0) {
+				MemberDto m = new MemberDto();
+				m.setMemberId(id);
+				MemberDto loginUser = memberService.loginMember(m);
+				System.out.println(loginUser.toString());
+				if (!Objects.isNull(loginUser)) {
+					session.setAttribute("memberNum", loginUser.getMemberIdx());
+					String sessionMemberIdx = String.valueOf(loginUser.getMemberIdx());
+					session.setAttribute("sessionMemberIdx", sessionMemberIdx);
+					session.setAttribute("memberName", loginUser.getMemberName());
+					return "redirect:/member/indexPage";
+				} else {
+//					model.addAttribute("msg", "아이디 비밀번호를 확인해 주세요!");
+//					model.addAttribute("status", "error");
+					return "/signin/signin";
+				}
+			}
+			return "/signin/signin";
+		}
+
+	}
+
+	
+	
+	
 	
 	@GetMapping("/create")
 	public String getCreatePage() {
