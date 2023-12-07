@@ -31,12 +31,59 @@
             text-decoration: none;
             cursor: pointer;
         }
+        .txt_c {
+            margin: 10px;
+        }
+
+        .sns_login_form {
+            width: 100%;
+        }
+
+        .btn-kakao {
+            background-color: #FFEB00 !important;
+            background-image: url(https://vendor-cdn.imweb.me/images/kakao_icon.png);
+            background-size: 20px;
+            background-position: 12px 49%;
+            background-repeat: no-repeat;
+            color: #3c1e1e !important;
+            border-color: #FFEB00 !important;
+            font-size: 14px;
+            display: block !important;
+            padding: 10px 25px 10px 25px;
+            width: 100%;
+            text-align: center;
+            border-radius: 6px;
+        }
+
+        .btn-naver {
+            background-color: #27d34a !important;
+            border-color: #27d34a !important;
+            background-image:
+                url(https://vendor-cdn.imweb.me/images/naver_login2x.png);
+            background-size: 16px;
+            background-position: 15px 50%;
+            background-repeat: no-repeat;
+            color: #fff !important;
+            font-size: 14px;
+            display: block !important;
+            padding: 10px 25px 10px 25px;
+            width: 100%;
+            text-align: center;
+            border-radius: 6px;
+            padding: 10px 25px 10px 25px;
+            width: 100%;
+        }
 
     </style>
-        <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
-     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+<!-- 네이버 로그인 연동 api start -->
+<script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+<script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
 
 </head>
 <!-- This snippet uses Font Awesome 5 Free as a dependency. You can download it at fontawesome.io! -->
@@ -68,13 +115,19 @@
                                 <button class="btn btn-primary btn-login text-uppercase fw-bold" type="submit">Sign in</button>
                             </div>
                             <hr class="my-4">
-                            <div class="d-flex justify-content-center">
-                                <button class="btn-naver" type="submit">
+                            <div class="sns_login_form">
+                                <p class="txt_c">
+                                    <a class="btn btn-kakao" id="custom-login-btn" href="https://kauth.kakao.com/oauth/authorize?client_id=f50e884d53d77ca3295d6fb79fda096c&redirect_uri=http://localhost/member/kakaoLogin&response_type=code">카카오로 시작하기</a>
+                                </p>
+                                <p class="txt_c">
+                                    <a class="btn btn-naver" href="https://nid.naver.com/oauth2.0/authorize?response_type=code&redirect_uri=http://localhost/member/naverLogin&client_id=QOej8ZdoC6TIOyLYsN6p">네이버로 시작하기</a>
+                                </p>
+                                <!-- <button class="btn-naver" type="submit">
                                    <img src="https://i.namu.wiki/i/p_1IEyQ8rYenO9YgAFp_LHIAW46kn6DXT0VKmZ_jKNijvYth9DieYZuJX_E_H_4GkCER_sVKhMqSyQYoW94JKA.svg">
                                 </button>
                                 <button class="btn-kakao" type="submit">
                                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/KakaoTalk_logo.svg/600px-KakaoTalk_logo.svg.png">
-                                </button>
+                                </button> -->
                             </div>
                         </form>
                     </div>
