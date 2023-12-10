@@ -111,7 +111,9 @@
 				<button class="review-button">후기게시판</button>
 				<c:if test="${empty curUser}">
 					<button class="review-save">
-						<a href="/review/create?member_id=${member_id}&product_id=${product.product_id}">후기작성 </a>
+						<a
+							href="/review/create?member_id=${member_id}&product_id=${product.product_id}">후기작성
+						</a>
 					</button>
 				</c:if>
 			</div>
@@ -161,14 +163,14 @@
 
 	<div id="review" class="container mt-5">
 
-		<div class="row review-box">
+		<div class="review-box">
 
 			<div class="col-md-12">
 				<c:if test="${not empty curUser}">
-				<div
-					class="headings d-flex justify-content-between align-items-center mb-3">
-					<h5>내가 작성한 댓글</h5>
-				</div>
+					<div
+						class="headings d-flex justify-content-between align-items-center mb-3">
+						<h5>내가 작성한 댓글</h5>
+					</div>
 					<div class="card p-3">
 						<div class="d-flex justify-content-between align-items-center">
 							<div class="user d-flex flex-row align-items-center">
@@ -198,24 +200,22 @@
 						</div>
 						<div>
 							<button>
-							<a href="/review/update?review_id=${curUser.review_id}">
-								수정
-							</a>
+								<a href="/review/update?review_id=${curUser.review_id}"> 수정
+								</a>
 							</button>
-						<form action="/review/delete" method="post">
-							<input type="hidden" name="review_id" value="${curUser.review_id }"/>
-							<input type="hidden" name="product_id" value="${curUser.product_id }"/>
-							<button>
-								삭제			
-							</button>
-						</form>
+							<form action="/review/delete" method="post">
+								<input type="hidden" name="review_id"
+									value="${curUser.review_id }" /> <input type="hidden"
+									name="product_id" value="${curUser.product_id }" />
+								<button>삭제</button>
+							</form>
 						</div>
 					</div>
 				</c:if>
-				
+
 				<div
 					class="headings d-flex justify-content-between align-items-center mb-3">
-					<h5>Unread Review(6)</h5>
+					<h5>작성된 리뷰 ${listCount }</h5>
 				</div>
 				<c:forEach var="review" items="${reviewList}">
 					<div class="card p-3">
@@ -246,9 +246,49 @@
 							</div>
 						</div>
 					</div>
-
 				</c:forEach>
+
 			</div>
+			<ul>
+				<c:choose>
+					<c:when test="${pi.currentPage eq 1 }">
+						<li class="page-item">
+							<a class="page-link" href="#" aria-label="Previous">
+								<span aria-hidden="true">&laquo;</span>
+							</a>
+						</li>
+					</c:when>
+					<c:otherwise>
+					<li class="page-item">
+							<a class="page-link" href="detail?cpage=${pi.currentPage-1 }&product_id=${product.product_id}" aria-label="Previous">
+								<span aria-hidden="true">&laquo;</span>
+							</a>
+						</li>
+					</c:otherwise>
+				</c:choose>
+				<c:forEach var="p" begin="${pi.startPage}" end="${pi.endPage}">
+					<li class="page-item">
+						<a class="page-link" href="detail?cpage=${p }&product_id=${product.product_id}">${ p}</a>
+					</li>
+				</c:forEach>
+				
+				<c:choose>
+					<c:when test="${pi.currentPage eq pi.maxPage }">
+						<li class="page-item">
+							<a class="page-link" href="#" aria-label="Previous">
+								<span aria-hidden="true">&raquo;</span>
+							</a>
+						</li>
+					</c:when>
+					<c:otherwise>
+					<li class="page-item">
+							<a class="page-link" href="detail?cpage=${pi.currentPage+1 }&product_id=${product.product_id}" aria-label="Previous">
+								<span aria-hidden="true">&raquo;</span>
+							</a>
+						</li>
+					</c:otherwise>
+				</c:choose>
+			</ul>
 		</div>
 	</div>
 

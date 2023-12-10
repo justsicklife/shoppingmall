@@ -27,6 +27,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import kr.co.greenart.common.model.dto.PageInfo;
+import kr.co.greenart.common.template.Pagination;
 import kr.co.greenart.product.model.dto.ProductDTO;
 import kr.co.greenart.product.service.ProductService;
 import kr.co.greenart.review.model.dto.ReviewDTO;
@@ -54,25 +56,48 @@ public class ProductController {
 	}
 	
 	@GetMapping("/detail") 
-	public String getDetailePage(HttpServletResponse response,@RequestParam(value="product_id",required = true) int id,Model model) throws IOException {
+	public String getDetailePage(
+			HttpServletResponse response,
+			@RequestParam(value="product_id",required = true) int id,
+			Model model,
+			@RequestParam(value="cpage",defaultValue = "1") int currentPage
+			) throws IOException {
 		
+		// 상품을 가져온다
 		ProductDTO productDTO= productService.productFindById(id);
 		
+		// 상품이 없다면 404 페이지 보여준다
 		if (productDTO == null) {
 			response.sendError(404,"404에러가 발생했습니다");
 		}
 		
+		// 임시 유저 아이디
 		int memberId = 4;
 		
-		List<ReviewDTO> reviewList = reviewService.reviewFindByProductId(id);
+		int listCount = reviewService.selectListCount();
 		
+		System.out.println(listCount);
+		// 페이지 제한 수 
+		int pageLimit = 10;
+		// 리뷰 제한수
+		int boardLimit = 15;
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
+
+		
+		// 상품아이디 와 같은 리뷰를 가져올때
+		List<ReviewDTO> reviewList = reviewService.reviewFindByProductId(pi,id);
+				
 		Map<String,Integer> map = new HashMap<>();
 		map.put("member_id", memberId);
 		map.put("product_id",id);
 		
+		// 리뷰를 가져오는데 자기가 작성한 리뷰 를 가져온다.
 		ReviewDTO curUserReviewDTO = reviewService.findReviewByMemberAndProduct(map);
 		
-		System.out.println(curUserReviewDTO);
+		model.addAttribute("pi",pi);
+		
+		model.addAttribute("listCount",listCount);
 		
 		model.addAttribute("curUser",curUserReviewDTO);
 		
