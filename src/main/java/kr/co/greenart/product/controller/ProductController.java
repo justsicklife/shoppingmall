@@ -7,7 +7,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -20,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,6 +29,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.greenart.product.model.dto.ProductDTO;
 import kr.co.greenart.product.service.ProductService;
+import kr.co.greenart.review.model.dto.ReviewDTO;
+import kr.co.greenart.review.service.ReviewService;
 
 @Controller
 @RequestMapping("/product")
@@ -35,6 +38,9 @@ public class ProductController {
 		
 	@Autowired
 	private ProductService productService;
+	
+	@Autowired
+	private ReviewService reviewService;
 	
 	@GetMapping("/index")
 	public String getIndexPage() {
@@ -56,23 +62,28 @@ public class ProductController {
 			response.sendError(404,"404에러가 발생했습니다");
 		}
 		
+		int memberId = 4;
+		
+		List<ReviewDTO> reviewList = reviewService.reviewFindByProductId(id);
+		
+		Map<String,Integer> map = new HashMap<>();
+		map.put("member_id", memberId);
+		map.put("product_id",id);
+		
+		ReviewDTO curUserReviewDTO = reviewService.findReviewByMemberAndProduct(map);
+		
+		System.out.println(curUserReviewDTO);
+		
+		model.addAttribute("curUser",curUserReviewDTO);
+		
+		model.addAttribute("reviewList",reviewList);
+		
 		model.addAttribute("product",productDTO);
+		
+		model.addAttribute("member_id",memberId);
 		
 		return "/product/detail";
 	}
-	
-//	@GetMapping("/update/{product_id}")
-//	public String getUpdatePage(
-//			@PathVariable("product_id") int id,
-//			Model model
-//			) {
-//		
-//		ProductDTO productDTO= productService.productFindById(id);
-//		
-//		model.addAttribute("product",productDTO);
-//		
-//		return "/product/update";
-//	}
 	
 	@PostMapping("/create")
 	public String postCreatePage(ProductDTO product,
