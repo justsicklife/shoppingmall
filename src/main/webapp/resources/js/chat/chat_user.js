@@ -1,4 +1,4 @@
-function msgMaker(msg, userIdx, memberId) {
+function msgMaker(msg, userIdx, chatMessageDate,memberId) {
     let str = "";
     if (userIdx != memberId) {
         str += "<div class='incoming_msg'>";
@@ -10,7 +10,9 @@ function msgMaker(msg, userIdx, memberId) {
         str += "<p>"
         str += msg;
         str += "</p>"
-        str += "<span class='time_date'> 11:01 AM | June 9</span>";
+        str += "<span class='time_date'>"
+        str+= chatMessageDate;
+        str += "</span>";
         str += "</div>"
         str += "</div>"
         str += "</div>";
@@ -20,7 +22,9 @@ function msgMaker(msg, userIdx, memberId) {
         str += "<p>"
         str += msg;
         str += "</p>"
-        str += "<span class='time_date'> 11:01 AM | June 9</span>"
+        str += "<span class='time_date'>"
+        str += chatMessageDate;
+        str += "</span>"
         str += "</div>"
         str += "</div>";
     }
@@ -111,7 +115,7 @@ $("#start-button").on("click", function () {
                 let data = JSON.parse(chat.body);
                 console.log(data)
                 for (let i = 0; i < data.length; i++) {
-                    const tag = msgMaker(data[i].chatMessageContent, userIdx, data[i].memberId);
+                    const tag = msgMaker(data[i].chatMessageContent, userIdx,data[i].chatMessageDate, data[i].memberId);
                     $("#msgBox").append(tag);
                 }
                 $("#msgBox").scrollTop($("#msgBox")[0].scrollHeight);

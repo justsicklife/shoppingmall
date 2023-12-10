@@ -145,7 +145,7 @@ function changeRoom(roomIdx) {
             function (chat) {
                 let data = JSON.parse(chat.body);
                 for (let i = 0; i < data.length; i++) {
-                    const tag = msgMaker(data[i].chatMessageContent, userIdx, data[i].memberId);
+                    const tag = msgMaker(data[i].chatMessageContent, userIdx, data[i].chatMessageDate,data[i].memberId);
                     $("#msgBox").append(tag);
                 }
                 // 스크롤 맨아래로 
