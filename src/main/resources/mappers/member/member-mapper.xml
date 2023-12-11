@@ -3,6 +3,8 @@
 
 <mapper namespace="memberMapper">
 
+	<!-- <resultMap>.type: SELECT 결과를 저장할 클래스 이름 또는 MyBatis 설정파일에 설정된 alias
+		 <resultMap>.id: resultMap의 id -->
 	<resultMap type="MemberDto" id="memberResultSet">
 		<result column="m_index" property="memberIdx"/>
 		<result column="m_name" property="memberName"/>
@@ -131,6 +133,21 @@
 		UPDATE S_MEMBER SET m_password = #{memberPassword}
 							WHERE m_index = #{memberIdx}
 	</update>
+	
+	<!-- 마이페이지 -->
+	<select id="myPage" resultMap="memberResultSet">
+		SELECT * FROM S_MEMBER WHERE m_index = #{memberIdx}
+	</select>
+	
+	<!-- 마이페이지 수정 -->
+	<select id="updateMyPage" parameterType="MemberDto">
+		UPDATE S_MEMBER SET
+			m_name = #{memberName},
+			m_addressNum = #{memberAdrrNum},
+			m_addressFirst = #{memberAdrrFirst},
+			m_addressSecond = #{memberAdrrSecond}
+			WHERE m_index = #{memberIdx}
+	</select>
 	
 	<!-- 이메일 인증 발송 확인 ( 이메일, 암호키 저장 ) -->
 	<insert id="createAuthKey">

@@ -123,6 +123,20 @@ public class MemberServiceImpl implements MemberService{
 		return memberDao.changePw(sqlSession, memberdto);
 	}
 
+	//마이페이지 보기
+	@Override
+	public MemberDto myPage(int memberIdx) {
+		return memberDao.myPage(sqlSession, memberIdx);
+	}
+	
+	//마이페이지 업데이트
+	@Override
+	public int updateMyPage(MemberDto memberdto) {
+		return memberDao.updateMyPage(sqlSession, memberdto);
+	}
+	
+	
+	
 	//이메일 인증
     @Override
 	public void memberAuth(String memberEmail, String key) throws Exception{
@@ -152,6 +166,7 @@ public class MemberServiceImpl implements MemberService{
 		sendMail.send();
 	}
 	
+	//소셜 가입시 받은 데이터 insert
 	@Override
 	public int snsSingup(MemberDto memberdto) {
 		return memberDao.snsSingup(sqlSession, memberdto);
@@ -442,6 +457,5 @@ public class MemberServiceImpl implements MemberService{
 	         }
 			return userInfo;
 		}
-
 
 }
