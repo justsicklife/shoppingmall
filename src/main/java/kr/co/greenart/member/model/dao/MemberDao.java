@@ -89,5 +89,16 @@ public class MemberDao {
 	public int snsSingup(SqlSessionTemplate sqlSession, MemberDto md) {
 		return sqlSession.insert("memberMapper.snsSingup", md);
 	}
+	
+	
+	//마이페이지
+	public MemberDto myPage(SqlSessionTemplate sqlsession, int memberIdx) {
+		return sqlsession.selectOne("memberMapper.myPage", memberIdx);
+	}
+	
+	//마이페이지 업데이트
+	public int updateMyPage(SqlSessionTemplate sqlsession, MemberDto memberdto) {
+		return sqlsession.update("memberMapper.updateMyPage", memberdto);
+	}
 
 }

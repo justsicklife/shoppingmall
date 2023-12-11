@@ -38,11 +38,20 @@ public interface MemberService {
 	int changePw(MemberDto memberdto);
 	
 	
+	//마이페이지 보기
+	MemberDto myPage(int memberIdx);
+	
+	//마이페이지 업데이트
+	int updateMyPage(MemberDto memberdto);
+	
+	
+	
 	//이메일 인증
 	public void memberAuth(String memberEmail, String key) throws Exception;
 	
 	//이메일 발송
 	public void sendMail(MemberDto memberdto) throws Exception;
+	
 	
 	
 	//sns 로그인, 가입
