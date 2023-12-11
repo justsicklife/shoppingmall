@@ -22,6 +22,30 @@
 	integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
 	crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+<!-- important mandatory libraries -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<link
+	href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/css/star-rating.min.css"
+	media="all" rel="stylesheet" type="text/css" />
+
+<link
+	href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/themes/krajee-svg/theme.css"
+	media="all" rel="stylesheet" type="text/css" />
+
+<script
+	src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/js/star-rating.min.js"
+	type="text/javascript"></script>
+
+<!-- with v4.1.0 Krajee SVG theme is used as default (and must be loaded as below) - include any of the other theme JS files as mentioned below (and change the theme property of the plugin) -->
+<script
+	src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/themes/krajee-svg/theme.js"></script>
+
+<!-- optionally if you need translation for your language then include locale file as mentioned below (replace LANG.js with your own locale file) -->
+<script
+	src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/js/locales/LANG.js"></script>
+
+
 <link rel="stylesheet" href="/resources/css/product/detail/detail.css">
 
 <!-- chart.js -->
@@ -174,31 +198,12 @@
 					<div class="card p-3">
 						<div class="d-flex justify-content-between align-items-center">
 							<div class="user d-flex flex-row align-items-center">
-								<img
-									src="https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTAxL3JtNjA5LXNvbGlkaWNvbi13LTAwMi1wLnBuZw.png"
-									width="30" class="user-img rounded-circle mr-2"> <span>
-									<small class="font-weight-bold text-primary">닉네임</small>
-								</span>
+								<input name="review_score" id="input-id" type="text" class="rating" readonly data-size="sm" value="${curUser.review_score }">
 							</div>
 							<small> ${curUser.review_open_date} </small>
 						</div>
 						<div class="mt-2 px-4">${curUser.review_content }</div>
-
-						<div
-							class="action d-flex justify-content-between mt-2 align-items-center">
-
-							<div class="reply px-4">
-								<small>리뷰 삭제(작성자 한테만 보이게)</small> <span class="dots"></span> <small>추천</small>
-								<span class="dots"></span> <small>비추천</small>
-
-							</div>
-
-							<div class="icons align-items-center">
-
-								<div>이리뷰를 0명이 좋아요 합니다.</div>
-							</div>
-						</div>
-						<div>
+						<div class="d-flex justify-content-end">
 							<button>
 								<a href="/review/update?review_id=${curUser.review_id}"> 수정
 								</a>
@@ -218,33 +223,14 @@
 					<h5>작성된 리뷰 ${listCount }</h5>
 				</div>
 				<c:forEach var="review" items="${reviewList}">
-					<div class="card p-3">
+					<div class="card p-3 mb-3">
 						<div class="d-flex justify-content-between align-items-center">
 							<div class="user d-flex flex-row align-items-center">
-								<img
-									src="https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTAxL3JtNjA5LXNvbGlkaWNvbi13LTAwMi1wLnBuZw.png"
-									width="30" class="user-img rounded-circle mr-2"> <span>
-									<small class="font-weight-bold text-primary">닉네임</small>
-								</span>
+								<input name="review_score" id="input-id" type="text" class="rating" readonly data-size="sm" value="${review.review_score }">
 							</div>
 							<small> ${review.review_open_date} </small>
 						</div>
 						<div class="mt-2 px-4">${review.review_content }</div>
-
-						<div
-							class="action d-flex justify-content-between mt-2 align-items-center">
-
-							<div class="reply px-4">
-								<small>리뷰 삭제(작성자 한테만 보이게)</small> <span class="dots"></span> <small>추천</small>
-								<span class="dots"></span> <small>비추천</small>
-
-							</div>
-
-							<div class="icons align-items-center">
-
-								<div>이리뷰를 0명이 좋아요 합니다.</div>
-							</div>
-						</div>
 					</div>
 				</c:forEach>
 
@@ -340,5 +326,22 @@
 	integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
 	crossorigin="anonymous"></script>
 
+<script>
+	//initialize with defaults
+	$("#input-id").rating({
+		'size' : 'lg',
+		'step' : "1"
+		
+	});
+</script>
+
+<script
+	src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+	integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+	crossorigin="anonymous"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js"
+	integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa"
+	crossorigin="anonymous"></script>
 
 </html>

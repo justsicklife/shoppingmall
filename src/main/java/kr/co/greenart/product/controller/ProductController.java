@@ -76,11 +76,10 @@ public class ProductController {
 		
 		int listCount = reviewService.selectListCount();
 		
-		System.out.println(listCount);
 		// 페이지 제한 수 
 		int pageLimit = 10;
 		// 리뷰 제한수
-		int boardLimit = 15;
+		int boardLimit = 5;
 		
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
 
