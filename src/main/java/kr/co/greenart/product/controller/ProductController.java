@@ -45,7 +45,10 @@ public class ProductController {
 	private ReviewService reviewService;
 	
 	@GetMapping("/index")
-	public String getIndexPage() {
+	public String getIndexPage(
+			HttpSession session,
+			Model model
+			) {
 		
 		return "/product/index";
 	}

@@ -30,22 +30,8 @@ public class ChatController {
 	public String room(Model model,HttpSession session) {
 
 		// memberId
-		int id = 35;
-		
-//		ChatRoomDTO chatRoomDTO = new ChatRoomDTO(0,id);
-//		
-//		// 멤버 아이디로 채팅방 찾기
-//		ChatRoomDTO findChatRoomDTO = chatRoomService.chatRoomFindById(id);
-//		
-//		// 채팅방이 없다면
-//		if(findChatRoomDTO == null) {
-//			// 새로 생성
-//			int success = chatRoomService.chatRoomInsert(chatRoomDTO);
-//			
-//			findChatRoomDTO = new ChatRoomDTO(chatRoomDTO.getMemberId(),id);
-//		}
-		
-//		model.addAttribute("chatRoomId",findChatRoomDTO.getChatRoomId());
+		int id =  (Integer)session.getAttribute("memberIdx");
+
 		model.addAttribute("memberId",id);
 		
 		return "/chat/chat_user";
@@ -57,8 +43,8 @@ public class ChatController {
 		List<ChatRoomDTO> listChatRoomDTO = chatRoomService.chatRoomFindAll();
 		
 		// memberId 
-		int id = 20;
-		
+		int id =  (Integer)session.getAttribute("memberIdx");
+				
 		model.addAttribute("chatRoomList",listChatRoomDTO);
 		
 		model.addAttribute("memberId",id);

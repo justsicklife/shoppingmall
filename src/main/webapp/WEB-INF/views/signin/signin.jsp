@@ -116,6 +116,7 @@
                             </div>
                             <hr class="my-4">
                             <div class="sns_login_form">
+								<a href="/member/signupPage.do">회원가입</a>
                                 <p class="txt_c">
                                     <a class="btn btn-kakao" id="custom-login-btn" href="https://kauth.kakao.com/oauth/authorize?client_id=f50e884d53d77ca3295d6fb79fda096c&redirect_uri=http://localhost/member/kakaoLogin&response_type=code">카카오로 시작하기</a>
                                 </p>
