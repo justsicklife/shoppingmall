@@ -377,7 +377,7 @@ public class MemberController {
 			System.out.println(loginUser);
 			if (!Objects.isNull(loginUser)) {
 				System.out.println("데이터(네이버 계정) 있음");
-				session.setAttribute("memberNum", loginUser.getMemberIdx());
+				session.setAttribute("memberIdx", loginUser.getMemberIdx());
 				String sessionMemberIdx = String.valueOf(loginUser.getMemberIdx());
 				session.setAttribute("sessionMemberIdx", sessionMemberIdx);
 				session.setAttribute("memberName", loginUser.getMemberName());
@@ -450,7 +450,7 @@ public class MemberController {
 			System.out.println(loginUser);
 			if (!Objects.isNull(loginUser)) {
 				System.out.println("데이터(카카오 계정) 있음");
-				session.setAttribute("memberNum", loginUser.getMemberIdx());
+				session.setAttribute("memberIdx", loginUser.getMemberIdx());
 				String sessionMemberIdx = String.valueOf(loginUser.getMemberIdx());
 				session.setAttribute("sessionMemberIdx", sessionMemberIdx);
 				session.setAttribute("memberName", loginUser.getMemberName());
