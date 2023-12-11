@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -22,15 +23,16 @@
 	crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 <style>
-.nav-link-left,
-.nav-link-right {
-	color:black;
+.nav-link-left, .nav-link-right {
+	color: black;
 	text-decoration: none;
 	cursor: pointer;
 }
+
 .nav-item {
 	padding: 10px;
 }
+
 .category-button, .community-button {
 	color: #dadada;
 	cursor: pointer;
@@ -137,18 +139,21 @@
 				</form>
 				<div class="d-flex align-items-center">
 					<div class="px-2">
-						<a class="nav-link-right">
-							login
-						</a>
+						<c:choose>
+							<c:when
+								test="${sessionScope.sessionMemberIdx eq null && sessionScope.memberIdx eq null}">
+								<a href="/member/loginPage" class="nav-link-right"> login </a>
+							</c:when>
+							<c:otherwise>
+								<a href="/member/logout.do" class="nav-link-right">logout</a>
+							</c:otherwise>
+						</c:choose>
 					</div>
 					<div class="px-2">
-						<a class="nav-link-right">
-							order
-						</a></div>
+						<a class="nav-link-right"> order </a>
+					</div>
 					<div class="px-2">
-						<a class="nav-link-right">
-							basket
-						</a>
+						<a class="nav-link-right"> basket </a>
 					</div>
 				</div>
 				<button class="navbar-toggler" type="button"
@@ -203,8 +208,17 @@
 							<li class="mt-2"><a class="sidebar-link" href="#"> Q&A </a>
 							</li>
 							<li class="mt-2"><a class="sidebar-link" href="#">
-									Review </a></li>
-							<li class="mt-2"><a class="sidebar-link" href="#"> Chat
+									Review </a>
+							</li>
+							<li class="mt-2">
+							<c:choose>
+								<c:when test="${ sessionScope.memberId == 'admin'}">
+									<a href="/chat/admin" class="sidebar-link" href="#"> Chat
+								</c:when>
+								<c:otherwise>
+									<a href="/chat/user" class="sidebar-link" href="#"> Chat
+								</c:otherwise>
+							</c:choose>
 							</a></li>
 						</ul>
 					</div>
