@@ -140,7 +140,8 @@ public class MemberController {
 
 	//로그인 페이지 (임시)
 	//http://localhost/member/loginPage
-	//https://nid.naver.com/internalToken/view/tokenList/pc/ko
+	//https://nid.naver.com/internalToken/view/tokenList/pc/ko (네이버 가입 삭제 링크)
+	//https://accounts.kakao.com/login/?continue=https%3A%2F%2Faccounts.kakao.com%2Fweblogin%2Faccount%2Fpartner#login (카카오 가입 삭제 링크)
 	@GetMapping("loginPage")
 	public String loginPage() {
 		return "/signin/signin";
@@ -175,7 +176,55 @@ public class MemberController {
 		}
 	}
 	
+	//마이페이지 보기
+	//http://localhost/member/myPage
+	//http://localhost/member/myPage?memberIdx=(memberIdx 값)
+	@GetMapping("/editMyPage")
+	public String getMyPage(@RequestParam(value = "memberIdx") int memberIdx, Model model, HttpSession session) {
+		
+		System.out.println("memberIdx : " + session.getAttribute("memberIdx"));
+		if(session.getAttribute("memberIdx") == null) {
+			return "common/error404";
+		} else {
+			int idx = (int)session.getAttribute("memberIdx");
+			MemberDto result = memberService.myPage(idx);
+			
+			if(!Objects.isNull(result)) {
+				// 뷰의 myPage 객체로 / <c:when test="${myPage.memberIdx == user}">
+				model.addAttribute("myPage",result);
+				System.out.println("result : " + result);
+				
+				// session에서 받은 memberIdx를 뷰의 user로 초기화 / <c:when test="${myPage.memberIdx == user}">
+				model.addAttribute("user", idx);
+				System.out.println("user : " + idx);
+				
+				return "/member/mypage";
+			}else {
+				return "/member/mypage";
+			}
+		}
+	}
 	
+	//마이페이지 수정
+	@PostMapping("/updateMyPage.do")
+	public String editMyPage(MemberDto memberdto, HttpSession session) {
+		
+		int memberIdx = (int)session.getAttribute("memberIdx");
+		System.out.println("memberIdx : " + session.getAttribute("memberIdx"));
+		
+		int result = memberService.updateMyPage(memberdto);
+		System.out.println("result : " + memberService.updateMyPage(memberdto));
+		if(result > 0) {
+			System.out.println("회원 정보 수정 완료");
+			return "redirect:/member/myPage?memberIdx=" + memberdto.getMemberIdx();
+		}else {
+			return "common/error404";
+		}
+		
+	}
+	
+	
+	// 가입된 유저 체크
 	// ResponseBody 쓰지 않을 경우 : /WEB-INF/views/success.jsp
 	// ResponseBody 쓸 경우 : 문자열 success를 클라이언트에게 반환
 	@PostMapping("checkMember.do")
@@ -442,32 +491,4 @@ public class MemberController {
 
 	}
 
-	
-	
-	
-	
-	@GetMapping("/create")
-	public String getCreatePage() {
-		return "/shop/create";
-	}
-	
-	@GetMapping("/detail")
-	public String getDetail() {
-		return "/shop/detail";
-	}
-	
-	@GetMapping("/review")
-	public String getReview() {
-		return "/board/review";
-	}
-	
-	@GetMapping("/chat_admin")
-	public String getChatAdmin() {
-		return "/chat/chat_admin";
-	}
-	
-	@GetMapping("/chat_user")
-	public String getChatUser() {
-		return "/chat/chat_user";
-	}
 }
