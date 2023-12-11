@@ -30,6 +30,7 @@ public class ChatController {
 	public String room(Model model,HttpSession session) {
 
 		// memberId
+		System.out.println(session.getAttribute("memberIdx"));
 		int id =  (Integer)session.getAttribute("memberIdx");
 
 		model.addAttribute("memberId",id);
