@@ -7,7 +7,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -20,14 +22,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import kr.co.greenart.common.model.dto.PageInfo;
+import kr.co.greenart.common.template.Pagination;
 import kr.co.greenart.product.model.dto.ProductDTO;
 import kr.co.greenart.product.service.ProductService;
+import kr.co.greenart.review.model.dto.ReviewDTO;
+import kr.co.greenart.review.service.ReviewService;
 
 @Controller
 @RequestMapping("/product")
@@ -35,6 +40,9 @@ public class ProductController {
 		
 	@Autowired
 	private ProductService productService;
+	
+	@Autowired
+	private ReviewService reviewService;
 	
 	@GetMapping("/index")
 	public String getIndexPage() {
@@ -48,31 +56,58 @@ public class ProductController {
 	}
 	
 	@GetMapping("/detail") 
-	public String getDetailePage(HttpServletResponse response,@RequestParam(value="product_id",required = true) int id,Model model) throws IOException {
+	public String getDetailePage(
+			HttpServletResponse response,
+			@RequestParam(value="product_id",required = true) int id,
+			Model model,
+			@RequestParam(value="cpage",defaultValue = "1") int currentPage
+			) throws IOException {
 		
+		// 상품을 가져온다
 		ProductDTO productDTO= productService.productFindById(id);
 		
+		// 상품이 없다면 404 페이지 보여준다
 		if (productDTO == null) {
 			response.sendError(404,"404에러가 발생했습니다");
 		}
 		
+		// 임시 유저 아이디
+		int memberId = 4;
+		
+		int listCount = reviewService.selectListCount();
+		
+		// 페이지 제한 수 
+		int pageLimit = 10;
+		// 리뷰 제한수
+		int boardLimit = 5;
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
+
+		
+		// 상품아이디 와 같은 리뷰를 가져올때
+		List<ReviewDTO> reviewList = reviewService.reviewFindByProductId(pi,id);
+				
+		Map<String,Integer> map = new HashMap<>();
+		map.put("member_id", memberId);
+		map.put("product_id",id);
+		
+		// 리뷰를 가져오는데 자기가 작성한 리뷰 를 가져온다.
+		ReviewDTO curUserReviewDTO = reviewService.findReviewByMemberAndProduct(map);
+		
+		model.addAttribute("pi",pi);
+		
+		model.addAttribute("listCount",listCount);
+		
+		model.addAttribute("curUser",curUserReviewDTO);
+		
+		model.addAttribute("reviewList",reviewList);
+		
 		model.addAttribute("product",productDTO);
+		
+		model.addAttribute("member_id",memberId);
 		
 		return "/product/detail";
 	}
-	
-//	@GetMapping("/update/{product_id}")
-//	public String getUpdatePage(
-//			@PathVariable("product_id") int id,
-//			Model model
-//			) {
-//		
-//		ProductDTO productDTO= productService.productFindById(id);
-//		
-//		model.addAttribute("product",productDTO);
-//		
-//		return "/product/update";
-//	}
 	
 	@PostMapping("/create")
 	public String postCreatePage(ProductDTO product,

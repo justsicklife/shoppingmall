@@ -22,244 +22,34 @@
 	integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
 	crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+<!-- important mandatory libraries -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<link
+	href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/css/star-rating.min.css"
+	media="all" rel="stylesheet" type="text/css" />
+
+<link
+	href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/themes/krajee-svg/theme.css"
+	media="all" rel="stylesheet" type="text/css" />
+
+<script
+	src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/js/star-rating.min.js"
+	type="text/javascript"></script>
+
+<!-- with v4.1.0 Krajee SVG theme is used as default (and must be loaded as below) - include any of the other theme JS files as mentioned below (and change the theme property of the plugin) -->
+<script
+	src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/themes/krajee-svg/theme.js"></script>
+
+<!-- optionally if you need translation for your language then include locale file as mentioned below (replace LANG.js with your own locale file) -->
+<script
+	src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/js/locales/LANG.js"></script>
+
+
+<link rel="stylesheet" href="/resources/css/product/detail/detail.css">
+
 <!-- chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<style>
-@import
-	url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap')
-	;
-
-body {
-	font-family: "Poppins", sans-serif;
-	color: #444444;
-}
-
-a, a:hover {
-	text-decoration: none;
-	color: inherit;
-}
-
-.section-products {
-	padding: 80px 0 54px;
-}
-
-.section-products .header {
-	margin-bottom: 50px;
-}
-
-.section-products .header h3 {
-	font-size: 1rem;
-	color: #fe302f;
-	font-weight: 500;
-}
-
-.section-products .header h2 {
-	font-size: 2.2rem;
-	font-weight: 400;
-	color: #444444;
-}
-
-.section-products .single-product {
-	margin-bottom: 26px;
-}
-
-.section-products .single-product .part-1 {
-	position: relative;
-	height: 290px;
-	max-height: 290px;
-	margin-bottom: 20px;
-	overflow: hidden;
-}
-
-.section-products .single-product .part-1::before {
-	position: absolute;
-	content: "";
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	z-index: -1;
-	transition: all 0.3s;
-}
-
-.section-products .single-product:hover .part-1::before {
-	transform: scale(1.2, 1.2) rotate(5deg);
-}
-
-.section-products .single-product .part-1 .discount, .section-products .single-product .part-1 .new
-	{
-	position: absolute;
-	top: 15px;
-	left: 20px;
-	color: #ffffff;
-	background-color: #fe302f;
-	padding: 2px 8px;
-	text-transform: uppercase;
-	font-size: 0.85rem;
-}
-
-.section-products .single-product .part-1 .new {
-	left: 0;
-	background-color: #444444;
-}
-
-.section-products .single-product .part-1 ul {
-	position: absolute;
-	bottom: -41px;
-	left: 20px;
-	margin: 0;
-	padding: 0;
-	list-style: none;
-	opacity: 0;
-	transition: bottom 0.5s, opacity 0.5s;
-}
-
-.section-products .single-product:hover .part-1 ul {
-	bottom: 30px;
-	opacity: 1;
-}
-
-.section-products .single-product .part-1 ul li {
-	display: inline-block;
-	margin-right: 4px;
-}
-
-.section-products .single-product .part-1 ul li a {
-	display: inline-block;
-	width: 40px;
-	height: 40px;
-	line-height: 40px;
-	background-color: #ffffff;
-	color: #444444;
-	text-align: center;
-	box-shadow: 0 2px 20px rgb(50 50 50/ 10%);
-	transition: color 0.2s;
-}
-
-.section-products .single-product .part-1 ul li a:hover {
-	color: #fe302f;
-}
-
-.section-products .single-product .part-2 .product-title {
-	font-size: 1rem;
-}
-
-.section-products .single-product .part-2 h4 {
-	display: inline-block;
-	font-size: 1rem;
-}
-
-.section-products .single-product .part-2 .product-old-price {
-	position: relative;
-	padding: 0 7px;
-	margin-right: 2px;
-	opacity: 0.6;
-}
-
-.section-products .single-product .part-2 .product-old-price::after {
-	position: absolute;
-	content: "";
-	top: 50%;
-	left: 0;
-	width: 100%;
-	height: 1px;
-	background-color: #444444;
-	transform: translateY(-50%);
-}
-
-.list-link {
-	margin: 0;
-	padding: 0;
-	list-style: none;
-	gap: 30px;
-}
-
-.link {
-	font-size: 1.2rem;
-	font-weight: bold;
-	text-transform: uppercase;
-	color: #d8d8d8;
-}
-
-.link:hover {
-	color: #afafaf;
-	padding-bottom: 5px;
-	border-bottom: 3px solid;
-}
-
-.info-img {
-	width: 640px;
-	height: 640px;
-}
-
-/* review */
-.review-box {
-	width: 80%;
-	margin: 0 auto;
-}
-
-.score-box {
-	width: 80%;
-	margin: 0 auto;
-	height: 150px;
-}
-
-.score-chart {
-	width: inherit;
-	height: inherit;
-}
-
-.score-box-2 {
-	width: 100%;
-	height: 100%;
-	border: 1px solid #bfbfbf;
-}
-
-.review-save {
-	width: 233px;
-	height: 36px;
-	border: 0px;
-	background-color: rgba(113, 113, 113, 1);
-	color: white;
-	cursor: pointer;
-	border: 1px solid #bfbfbf;
-	border-top: none;
-	border-bottom: none;
-	border-left: none;
-}
-
-.review-button {
-	width: 236px;
-	height: 36px;
-	border: 0;
-	color: #575757;
-	cursor: pointer;
-	background: white;
-	border: 1px solid #bfbfbf;
-	border-top: none;
-	border-bottom: none;
-	border-right: none;
-}
-
-.review-button-box {
-	border: 1px solid #bfbfbf;
-	border-top: none;
-}
-
-.qa-button {
-	width: 233px;
-	height: 36px;
-	border: none;
-	background-color: rgba(113, 113, 113, 1);
-	color: white;
-}
-
-.main-image {
-	width: 300px;
-	height: 300px;
-}
-</style>
 
 </head>
 
@@ -289,13 +79,13 @@ a, a:hover {
 					</div>
 
 					<select name="" id="color">
-						<c:forTokens var="color" items="${ product.product_color_group}" delims=",">
+						<c:forTokens var="color" items="${ product.product_color_group}"
+							delims=",">
 							<option value="${color}">${color}</option>
 						</c:forTokens>
-					</select>
-					
-					<select name="" id="size">
-						<c:forTokens var="size" items="${ product.product_size_group}" delims=",">
+					</select> <select name="" id="size">
+						<c:forTokens var="size" items="${ product.product_size_group}"
+							delims=",">
 							<option value="${size}">${size }</option>
 						</c:forTokens>
 					</select>
@@ -343,7 +133,13 @@ a, a:hover {
 			</div>
 			<div class="review-button-box text-end d-flex justify-content-end">
 				<button class="review-button">후기게시판</button>
-				<button class="review-save">리뷰 등록하기</button>
+				<c:if test="${empty curUser}">
+					<button class="review-save">
+						<a
+							href="/review/create?member_id=${member_id}&product_id=${product.product_id}">후기작성
+						</a>
+					</button>
+				</c:if>
 			</div>
 		</div>
 	</div>
@@ -391,48 +187,94 @@ a, a:hover {
 
 	<div id="review" class="container mt-5">
 
-		<div class="row review-box">
+		<div class="review-box">
 
 			<div class="col-md-12">
+				<c:if test="${not empty curUser}">
+					<div
+						class="headings d-flex justify-content-between align-items-center mb-3">
+						<h5>내가 작성한 댓글</h5>
+					</div>
+					<div class="card p-3">
+						<div class="d-flex justify-content-between align-items-center">
+							<div class="user d-flex flex-row align-items-center">
+								<input name="review_score" id="input-id" type="text" class="rating" readonly data-size="sm" value="${curUser.review_score }">
+							</div>
+							<small> ${curUser.review_open_date} </small>
+						</div>
+						<div class="mt-2 px-4">${curUser.review_content }</div>
+						<div class="d-flex justify-content-end">
+							<button>
+								<a href="/review/update?review_id=${curUser.review_id}"> 수정
+								</a>
+							</button>
+							<form action="/review/delete" method="post">
+								<input type="hidden" name="review_id"
+									value="${curUser.review_id }" /> <input type="hidden"
+									name="product_id" value="${curUser.product_id }" />
+								<button>삭제</button>
+							</form>
+						</div>
+					</div>
+				</c:if>
 
 				<div
 					class="headings d-flex justify-content-between align-items-center mb-3">
-					<h5>Unread Review(6)</h5>
+					<h5>작성된 리뷰 ${listCount }</h5>
 				</div>
-				<div class="card p-3">
-					<div class="d-flex justify-content-between align-items-center">
-						<div class="user d-flex flex-row align-items-center">
-							<img
-								src="https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTAxL3JtNjA5LXNvbGlkaWNvbi13LTAwMi1wLnBuZw.png"
-								width="30" class="user-img rounded-circle mr-2"> <span>
-								<small class="font-weight-bold text-primary">닉네임</small> <small
-								class="font-weight-bold">상품명</small>
-							</span>
+				<c:forEach var="review" items="${reviewList}">
+					<div class="card p-3 mb-3">
+						<div class="d-flex justify-content-between align-items-center">
+							<div class="user d-flex flex-row align-items-center">
+								<input name="review_score" id="input-id" type="text" class="rating" readonly data-size="sm" value="${review.review_score }">
+							</div>
+							<small> ${review.review_open_date} </small>
 						</div>
-						<small> 작성날짜 </small>
+						<div class="mt-2 px-4">${review.review_content }</div>
 					</div>
-					<div class="mt-2 px-4">Lorem ipsum dolor sit amet
-						consectetur, adipisicing elit. Hic sunt nam maxime provident
-						nesciunt voluptatum sapiente aperiam perferendis non doloribus
-						autem accusantium, quaerat, quas illum enim deleniti nulla error
-						alias.</div>
+				</c:forEach>
 
-					<div
-						class="action d-flex justify-content-between mt-2 align-items-center">
-
-						<div class="reply px-4">
-							<small>리뷰 삭제(작성자 한테만 보이게)</small> <span class="dots"></span> <small>추천</small>
-							<span class="dots"></span> <small>비추천</small>
-
-						</div>
-
-						<div class="icons align-items-center">
-
-							<div>이리뷰를 0명이 좋아요 합니다.</div>
-						</div>
-					</div>
-				</div>
 			</div>
+			<ul>
+				<c:choose>
+					<c:when test="${pi.currentPage eq 1 }">
+						<li class="page-item">
+							<a class="page-link" href="#" aria-label="Previous">
+								<span aria-hidden="true">&laquo;</span>
+							</a>
+						</li>
+					</c:when>
+					<c:otherwise>
+					<li class="page-item">
+							<a class="page-link" href="detail?cpage=${pi.currentPage-1 }&product_id=${product.product_id}" aria-label="Previous">
+								<span aria-hidden="true">&laquo;</span>
+							</a>
+						</li>
+					</c:otherwise>
+				</c:choose>
+				<c:forEach var="p" begin="${pi.startPage}" end="${pi.endPage}">
+					<li class="page-item">
+						<a class="page-link" href="detail?cpage=${p }&product_id=${product.product_id}">${ p}</a>
+					</li>
+				</c:forEach>
+				
+				<c:choose>
+					<c:when test="${pi.currentPage eq pi.maxPage }">
+						<li class="page-item">
+							<a class="page-link" href="#" aria-label="Previous">
+								<span aria-hidden="true">&raquo;</span>
+							</a>
+						</li>
+					</c:when>
+					<c:otherwise>
+					<li class="page-item">
+							<a class="page-link" href="detail?cpage=${pi.currentPage+1 }&product_id=${product.product_id}" aria-label="Previous">
+								<span aria-hidden="true">&raquo;</span>
+							</a>
+						</li>
+					</c:otherwise>
+				</c:choose>
+			</ul>
 		</div>
 	</div>
 
@@ -484,5 +326,22 @@ a, a:hover {
 	integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
 	crossorigin="anonymous"></script>
 
+<script>
+	//initialize with defaults
+	$("#input-id").rating({
+		'size' : 'lg',
+		'step' : "1"
+		
+	});
+</script>
+
+<script
+	src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+	integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+	crossorigin="anonymous"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js"
+	integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa"
+	crossorigin="anonymous"></script>
 
 </html>

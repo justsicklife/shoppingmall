@@ -44,15 +44,16 @@
 
 <body>
 	<div class="container">
-		<form action="/review/create" method="post">
-			<input type="hidden" name="product_id" value="${product_id}">
-			<input type="hidden" name="member_id" value="${member_id}">
+		<form action="/review/update" method="post">
+			<input type="hidden" name="product_id" value="${review.product_id}">
+			<input type="hidden" name="member_id" value="${review.member_id}">
+			<input type="hidden" name="review_id" value="${review.review_id}">
 			<div class="form-group purple-border">
 				<label for="exampleFormControlTextarea4">Colorful border</label>
 				<textarea required name="review_content" class="form-control" id="exampleFormControlTextarea4"
-					rows="3"></textarea>
+					rows="3">${review.review_content}</textarea>
 			</div>
-			<input name="review_score" id="input-id" type="text" class="rating" required data-size="lg" value="5">
+			<input name="review_score" id="input-id" type="text" class="rating" required data-size="lg" value="${review.review_score}">
 			<button>제출</button>
 		</form>
 	</div>

@@ -18,6 +18,7 @@
 		<typeAlias type="kr.co.greenart.member.model.dto.MemberDto" alias="MemberDto"/>
 		<typeAlias type="kr.co.greenart.chat.model.dto.ChatRoomDTO" alias="chatRoom"/>
 		<typeAlias type="kr.co.greenart.chat.model.dto.ChatMessageDTO" alias="chatMessage"/>
+		<typeAlias type="kr.co.greenart.review.model.dto.ReviewDTO" alias="Review"/>
 	</typeAliases>
 	
 	<!-- SQL이 작성되는 mapper 파일 위치 등록 -->
@@ -26,5 +27,6 @@
 		<mapper resource="/mappers/member/member-mapper.xml"/>
 		<mapper resource="/mappers/chatRoom/chatRoom-mapper.xml"/>
 		<mapper resource="/mappers/chatMessage/chatMessage-mapper.xml"/>
+		<mapper resource="/mappers/review/review-mapper.xml"/>
 	</mappers>
 </configuration>
