@@ -61,6 +61,17 @@
 		</beans:property>
 	</beans:bean>
 	
+	<!-- interceptor 빈 생성 -->
+	<beans:bean id="LoginInterceptor" class="kr.co.greenart.interceptor.LoginInterceptor">
+		
+	</beans:bean>
+	
+	<interceptors>
+		<interceptor>
+			<mapping path="/chat/*"/>
+			<beans:ref bean="LoginInterceptor"></beans:ref> <!-- 어떤 interceptor 설정할지 -->
+		</interceptor>
+	</interceptors>
 	
 	<context:component-scan
 		base-package="kr.co.greenart" />
