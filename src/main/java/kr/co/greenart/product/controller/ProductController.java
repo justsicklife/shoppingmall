@@ -50,6 +50,29 @@ public class ProductController {
 			Model model
 			) {
 		
+		// 해야될거
+		// 1. 각자 type 에 맞는 상품 들을 불러온다
+		List<String> types = new ArrayList<>(Arrays.asList("outem","top","bottom","shoes"));
+	
+		Stream<String> straem= types.stream();
+		
+		straem.forEach((item) -> {
+			
+			List<ProductDTO> productType = productService.productFindByType(item);
+			
+			for(int i = 0 ; i < productType.size() ; i++) {
+				productType.get(i).setProduct_image((productType.get(i).getProduct_image_group().split(",")[0]));
+			}
+			
+			productType.forEach((type) -> {
+				type.setProduct_image(type.getProduct_image_group().split(",")[0]);
+			});
+			
+			
+			System.out.println(productType);
+			model.addAttribute(item,productType);
+		});
+		
 		return "/product/index";
 	}
 	
@@ -77,7 +100,7 @@ public class ProductController {
 		// 임시 유저 아이디
 		int memberId = 4;
 		
-		int listCount = reviewService.selectListCount();
+		int listCount = reviewService.selectListCount(id);
 		
 		// 페이지 제한 수 
 		int pageLimit = 10;

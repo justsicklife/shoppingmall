@@ -42,8 +42,8 @@ public class ReviewDAO {
 		return sql.delete("s_review.reviewDelete", review_id);
 	}
 
-	public int selectListCount(SqlSessionTemplate sql) {
-		return sql.selectOne("s_review.selectListCount");
+	public int selectListCount(SqlSessionTemplate sql,int id) {
+		return sql.selectOne("s_review.selectListCount",id);
 	}
 
 //	public List<ReviewDTO> reviewSelectListAll(SqlSessionTemplate sql, PageInfo pi) {

@@ -48,8 +48,8 @@ public class ReviewService {
 //		return reviewDAO.reviewSelectListAll(sql,pi);
 //	}
 
-	public int selectListCount() {
-		return reviewDAO.selectListCount(sql);
+	public int selectListCount(int id) {
+		return reviewDAO.selectListCount(sql,id);
 	}
 
 }

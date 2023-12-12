@@ -51,8 +51,8 @@
 		select * from s_review
 	</select>
 	
-	<select id="selectListCount" resultType="_int">
-		select count(*) from s_review
+	<select id="selectListCount" resultType="_int" parameterType="int">
+		select count(*) from s_review where p_id = #{id}
 	</select>
 	
 </mapper>

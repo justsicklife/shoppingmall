@@ -24,4 +24,8 @@ public class ProductDTO {
 	private String product_color_group;
 	private String product_size_group;
 	private String product_type;
+
+	// db에 없는값
+	
+	private String product_image;
 }

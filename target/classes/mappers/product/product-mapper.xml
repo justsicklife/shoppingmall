@@ -34,4 +34,8 @@
 	<select id="productFindById" resultMap="productResultMap">
 		select * from s_product where p_id=#{id}
 	</select>
+	
+	<select id="productFindByType" parameterType="String" resultMap="productResultMap">
+		select * from s_product where p_type = #{type}
+	</select>
 </mapper>
