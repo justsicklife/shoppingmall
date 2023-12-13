@@ -8,9 +8,9 @@ import lombok.ToString;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString
+@NoArgsConstructor // 파라미터가 없는 디폴트 생성자를 생성
+@AllArgsConstructor // 모든 필드 값을 파라미터로 받는 생성자를 생성
+@ToString // toString() 메소드를 자동으로 생성
 public class MemberDto {
 
 	private int memberIdx;

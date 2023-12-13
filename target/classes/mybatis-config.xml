@@ -14,6 +14,7 @@
 	
 	<!-- 별칭 작성 부분 -->
 	<typeAliases>
+		<typeAlias type="kr.co.greenart.board.model.dto.BoardDto" alias="BoardDto"/>
 		<typeAlias type="kr.co.greenart.product.model.dto.ProductDTO" alias="Product"/>
 		<typeAlias type="kr.co.greenart.member.model.dto.MemberDto" alias="MemberDto"/>
 		<typeAlias type="kr.co.greenart.chat.model.dto.ChatRoomDTO" alias="chatRoom"/>
@@ -23,6 +24,7 @@
 	
 	<!-- SQL이 작성되는 mapper 파일 위치 등록 -->
 	<mappers>
+		<mapper resource="/mappers/board/inquiry-mapper.xml"/>
 		<mapper resource="/mappers/product/product-mapper.xml"/>
 		<mapper resource="/mappers/member/member-mapper.xml"/>
 		<mapper resource="/mappers/chatRoom/chatRoom-mapper.xml"/>

@@ -133,7 +133,7 @@
 			</div>
 			<div class="review-button-box text-end d-flex justify-content-end">
 				<button class="review-button">후기게시판</button>
-				<c:if test="${empty reviewCurUser}">
+				<c:if test="${empty curUser}">
 					<button class="review-save">
 						<a
 							href="/review/create?member_id=${member_id}&product_id=${product.product_id}">후기작성
@@ -190,7 +190,7 @@
 		<div class="review-box">
 
 			<div class="col-md-12">
-				<c:if test="${not empty reviewCurUser}">
+				<c:if test="${not empty curUser}">
 					<div
 						class="headings d-flex justify-content-between align-items-center mb-3">
 						<h5>내가 작성한 댓글</h5>
@@ -198,20 +198,20 @@
 					<div class="card p-3">
 						<div class="d-flex justify-content-between align-items-center">
 							<div class="user d-flex flex-row align-items-center">
-								<input name="review_score" id="input-id" type="text" class="rating" readonly data-size="sm" value="${reviewCurUser.review_score }">
+								<input name="review_score" id="input-id" type="text" class="rating" readonly data-size="sm" value="${curUser.review_score }">
 							</div>
-							<small> ${reviewCurUser.review_open_date} </small>
+							<small> ${curUser.review_open_date} </small>
 						</div>
-						<div class="mt-2 px-4">${reviewCurUser.review_content }</div>
+						<div class="mt-2 px-4">${curUser.review_content }</div>
 						<div class="d-flex justify-content-end">
 							<button>
-								<a href="/review/update?review_id=${reviewCurUser.review_id}"> 수정
+								<a href="/review/update?review_id=${curUser.review_id}"> 수정
 								</a>
 							</button>
 							<form action="/review/delete" method="post">
 								<input type="hidden" name="review_id"
-									value="${reviewCurUser.review_id }" /> <input type="hidden"
-									name="product_id" value="${reviewCurUser.product_id }" />
+									value="${curUser.review_id }" /> <input type="hidden"
+									name="product_id" value="${curUser.product_id }" />
 								<button>삭제</button>
 							</form>
 						</div>
@@ -220,7 +220,7 @@
 
 				<div
 					class="headings d-flex justify-content-between align-items-center mb-3">
-					<h5>작성된 리뷰 ${reviewListCount }</h5>
+					<h5>작성된 리뷰 ${listCount }</h5>
 				</div>
 				<c:forEach var="review" items="${reviewList}">
 					<div class="card p-3 mb-3">
@@ -237,7 +237,7 @@
 			</div>
 			<ul>
 				<c:choose>
-					<c:when test="${reviewPi.currentPage eq 1 }">
+					<c:when test="${pi.currentPage eq 1 }">
 						<li class="page-item">
 							<a class="page-link" href="#" aria-label="Previous">
 								<span aria-hidden="true">&laquo;</span>
@@ -246,20 +246,20 @@
 					</c:when>
 					<c:otherwise>
 					<li class="page-item">
-							<a class="page-link" href="detail?cpage=${reviewPi.currentPage-1 }&product_id=${product.product_id}" aria-label="Previous">
+							<a class="page-link" href="detail?cpage=${pi.currentPage-1 }&product_id=${product.product_id}" aria-label="Previous">
 								<span aria-hidden="true">&laquo;</span>
 							</a>
 						</li>
 					</c:otherwise>
 				</c:choose>
-				<c:forEach var="p" begin="${reviewPi.startPage}" end="${reviewPi.endPage}">
+				<c:forEach var="p" begin="${pi.startPage}" end="${pi.endPage}">
 					<li class="page-item">
 						<a class="page-link" href="detail?cpage=${p }&product_id=${product.product_id}">${ p}</a>
 					</li>
 				</c:forEach>
 				
 				<c:choose>
-					<c:when test="${reviewPi.currentPage eq reviewPi.maxPage }">
+					<c:when test="${pi.currentPage eq pi.maxPage }">
 						<li class="page-item">
 							<a class="page-link" href="#" aria-label="Previous">
 								<span aria-hidden="true">&raquo;</span>
@@ -268,7 +268,7 @@
 					</c:when>
 					<c:otherwise>
 					<li class="page-item">
-							<a class="page-link" href="detail?cpage=${reviewPi.currentPage+1 }&product_id=${product.product_id}" aria-label="Previous">
+							<a class="page-link" href="detail?cpage=${pi.currentPage+1 }&product_id=${product.product_id}" aria-label="Previous">
 								<span aria-hidden="true">&raquo;</span>
 							</a>
 						</li>
@@ -293,88 +293,116 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-						<th scope="row">1</th>
-						<td>배송 문의</td>
-						<td>정**</td>
-						<td>2023-10-11</td>
-						<td>1</td>
-					</tr>
+                    <c:choose>
+                        <c:when test="${empty list}">
+                            <tr>
+                                <td colspan="5">
+                                    <h3 class="text-center">등록된 문의가 없습니다.</h3>
+                                </td>
+                            </tr>
+                        </c:when>
+                        <c:otherwise>
+                            <c:forEach var="item" items="${list}">
+                                <c:if test="${item.answerNum == 0}">
+                                    <tr onclick="location.href='/board/detailUserInquiry.do?questionNum=${item.questionNum}'">
+                                        <td class="td-num" >${row}</th>
+                                        <td class="td-title">${item.title}</td>
+                                        <td class="td-memberId">${item.memberId}</td>
+                                        <td class="td-indate">${item.indate}</td>
+                                        <td class="td-count">${item.count}</td>
+                                    </tr>
+                                </c:if>
+                                <c:if test="${item.answerNum == 1}">
+                                    <tr class="tr-reply" onclick="location.href='/board/detailUserInquiry.do?questionNum=${item.questionNum}'">
+                                        <td class="td-num" >${row}</td>
+                                        <td class="td-title">[답변] ${item.title}</td>
+                                        <td class="td-memberId">관리자</td>
+                                        <td class="td-indate">${item.indate}</td>
+                                        <td class="td-count">${item.count}</td>
+                                    </tr>
+                                </c:if>
+                                <c:set var="row" value="${row-1}" />
+                            </c:forEach>
+                        </c:otherwise>
+                    </c:choose>
 				</tbody>
 			</table>
 			<button class="qa-button">문의 하기</button>
 		</div>
+		<!-- 페이징 버튼 -->
+		<nav class="mt-3 mb-5">
+			<ul class="pagination justify-content-center">
+				<c:choose>
+					<c:when test="${ inquiryPi.currentPage eq 1 }">
+						<li class="page-item"><a class="page-link" href="#"
+							aria-label="Previous"> <span aria-hidden="true"><i
+									class="fa-solid fa-angles-left" style="color: gray;"></i></span>
+						</a></li>
+						<li class="page-item"><a class="page-link" href="#"
+							aria-label="Previous"> <span aria-hidden="true"><i
+									class="fa-solid fa-angle-left" style="color: gray;"></i></span>
+						</a></li>
+					</c:when>
+					<c:otherwise>
+						<li class="page-item">
+							<!-- 1, 11, 21, 31, 41, .......... --> <a class="page-link"
+							href="list.do?ipage=${ inquiryPi.startPage -1 }" aria-label="Previous">
+								<span aria-hidden="true"><i
+									class="fa-solid fa-angles-left" style="color: gray;"></i></span>
+						</a>
+						</li>
+						<li class="page-item"><a class="page-link"
+							href="list.do?ipage=${ inquiryPi.currentPage - 1}" aria-label="Previous">
+								<span aria-hidden="true"><i
+									class="fa-solid fa-angle-left" style="color: gray;"></i></span>
+						</a></li>
+					</c:otherwise>
+				</c:choose>
+	
+	
+				<c:forEach var="page" begin="${inquiryPi.startPage}" end="${inquiryPi.endPage}">
+					<li class="page-item">
+						<a style="color: gray;" class="page-link ${inquiryPi.currentPage == page ? 'text-danger' : '' }" href="list.do?ipage=${page}">${page}</a>
+					</li>	
+				</c:forEach>
+	
+	
+				<c:choose>
+					<c:when test="${inquiryPi.currentPage eq inquiryPi.maxPage}">
+						<li class="page-item"><a class="page-link" href="#"
+							aria-label="Next"> <span aria-hidden="true"><i
+									class="fa-solid fa-angle-right" style="color: gray;"></i></span>
+						</a></li>
+						<li class="page-item"><a class="page-link" href="#"
+							aria-label="Next"> <span aria-hidden="true"><i
+									class="fa-solid fa-angles-right" style="color: gray;"></i></span>
+						</a></li>
+					</c:when>
+					<c:when test="${inquiryPi.endPage eq inquiryPi.maxPage}">
+						<li class="page-item"><a class="page-link"
+							href="list.do?ipage=${inquiryPi.maxPage}" aria-label="Next"> <span
+								aria-hidden="true"><i class="fa-solid fa-angles-right"
+									style="color: gray;"></i></span>
+						</a></li>
+					</c:when>
+					<c:otherwise>
+						<li class="page-item"><a class="page-link"
+							href="list.do?ipage=${inquiryPi.currentPage + 1}" aria-label="Next">
+								<span aria-hidden="true"><i
+									class="fa-solid fa-angle-right" style="color: gray;"></i></span>
+						</a></li>
+						<li class="page-item">
+							<!-- 10, 20, 30, 40, .... --> <a class="page-link"
+							href="list.do?ipage=${inquiryPi.endPage+1}" aria-label="Next"> <span
+								aria-hidden="true"><i class="fa-solid fa-angles-right"
+									style="color: gray;"></i></span>
+						</a>
+						</li>
+					</c:otherwise>
+				</c:choose>
+			</ul>
+		</nav>
 	</section>
-	<!-- 페이징 버튼 -->
-	<nav class="mt-3 mb-5">
-		<ul class="pagination justify-content-center">
-			<c:choose>
-				<c:when test="${ pi.currentPage eq 1 }">
-					<li class="page-item"><a class="page-link" href="#"
-						aria-label="Previous"> <span aria-hidden="true"><i
-								class="fa-solid fa-angles-left" style="color: gray;"></i></span>
-					</a></li>
-					<li class="page-item"><a class="page-link" href="#"
-						aria-label="Previous"> <span aria-hidden="true"><i
-								class="fa-solid fa-angle-left" style="color: gray;"></i></span>
-					</a></li>
-				</c:when>
-				<c:otherwise>
-					<li class="page-item">
-						<!-- 1, 11, 21, 31, 41, .......... --> <a class="page-link"
-						href="list.do?cpage=${ pi.startPage -1 }" aria-label="Previous">
-							<span aria-hidden="true"><i
-								class="fa-solid fa-angles-left" style="color: gray;"></i></span>
-					</a>
-					</li>
-					<li class="page-item"><a class="page-link"
-						href="list.do?cpage=${ pi.currentPage - 1}" aria-label="Previous">
-							<span aria-hidden="true"><i
-								class="fa-solid fa-angle-left" style="color: gray;"></i></span>
-					</a></li>
-				</c:otherwise>
-			</c:choose>
-
-			<c:forEach var="page" begin="${pi.startPage}" end="${pi.endPage}">
-				<li class="page-item"><a style="color: gray;" class="page-link ${pi.currentPage == page ? 'text-danger' : '' }"
-					href="list.do?cpage=${page}">${page}</a></li>
-			</c:forEach>
-
-			<c:choose>
-				<c:when test="${pi.currentPage eq pi.maxPage}">
-					<li class="page-item"><a class="page-link" href="#"
-						aria-label="Next"> <span aria-hidden="true"><i
-								class="fa-solid fa-angle-right" style="color: gray;"></i></span>
-					</a></li>
-					<li class="page-item"><a class="page-link" href="#"
-						aria-label="Next"> <span aria-hidden="true"><i
-								class="fa-solid fa-angles-right" style="color: gray;"></i></span>
-					</a></li>
-				</c:when>
-				<c:when test="${pi.endPage eq pi.maxPage}">
-					<li class="page-item"><a class="page-link"
-						href="list.do?cpage=${pi.maxPage}" aria-label="Next"> <span
-							aria-hidden="true"><i class="fa-solid fa-angles-right"
-								style="color: gray;"></i></span>
-					</a></li>
-				</c:when>
-				<c:otherwise>
-					<li class="page-item"><a class="page-link"
-						href="list.do?cpage=${pi.currentPage + 1}" aria-label="Next">
-							<span aria-hidden="true"><i
-								class="fa-solid fa-angle-right" style="color: gray;"></i></span>
-					</a></li>
-					<li class="page-item">
-						<!-- 10, 20, 30, 40, .... --> <a class="page-link"
-						href="list.do?cpage=${pi.endPage+1}" aria-label="Next"> <span
-							aria-hidden="true"><i class="fa-solid fa-angles-right"
-								style="color: gray;"></i></span>
-					</a>
-					</li>
-				</c:otherwise>
-			</c:choose>
-		</ul>
-	</nav>
 
 	<%@ include file="/WEB-INF/views/common/chat-button.jsp"%>
 

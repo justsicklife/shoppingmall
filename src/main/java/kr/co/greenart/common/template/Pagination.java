@@ -17,5 +17,4 @@ public class Pagination {
 		
 		return new PageInfo(listCount,currentPage,pageLimit,boardLimit,maxPage,startPage,endPage);
 	}
-	
 }

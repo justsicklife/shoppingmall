@@ -36,7 +36,7 @@ import kr.co.greenart.member.model.dto.MemberDto;
 public class MemberServiceImpl implements MemberService{
 
 	@Autowired
-	private SqlSessionTemplate sqlSession;
+	private SqlSessionTemplate sqlSession; //mybatis에서 사용되는 내장 템플릿
 	
 	@Autowired
 	private MemberDao memberDao;
