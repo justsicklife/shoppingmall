@@ -61,15 +61,20 @@
 		</beans:property>
 	</beans:bean>
 	
-	<!-- interceptor 빈 생성 -->
+	<!-- interceptor 빈 생성 , class = 인터셉터 생성할 클래스 경로]-->
 	<beans:bean id="LoginInterceptor" class="kr.co.greenart.interceptor.LoginInterceptor">
-		
 	</beans:bean>
 	
 	<interceptors>
 		<interceptor>
+			<!-- 인터셉터 적용할 경로 -->
 			<mapping path="/chat/*"/>
-			<beans:ref bean="LoginInterceptor"></beans:ref> <!-- 어떤 interceptor 설정할지 -->
+			
+			<!-- 인터셉터 제외 경로 -->
+			<!-- <exclude-mapping path=""/>  -->
+			
+			<!-- 어떤 interceptor 설정할지 -->
+			<beans:ref bean="LoginInterceptor"/> 
 		</interceptor>
 	</interceptors>
 	

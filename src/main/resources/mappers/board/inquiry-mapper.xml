@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="inquiryMapper">
+
+	<resultMap type="BoardDto" id="boardResultSet">
+		<result column="b_question" property="questionNum"></result>
+		<result column="b_answer" property="answerNum"></result>
+		<result column="b_boardNum" property="boardNum"></result>
+		<result column="b_memberId" property="memberId"></result>
+		<result column="b_title" property="title"></result>
+		<result column="b_content" property="content"></result>
+		<result column="b_indate" property="indate"></result>
+		<result column="b_count" property="count"></result>
+	</resultMap>
+
+	<!-- 전체 게시글 조회 -->
+	<select id="selectListCount" resultType="_int">
+		SELECT COUNT(*) FROM S_BOARD
+	</select>
+	
+	<!-- 목록 불러오기 -->
+	<select id="selectListAll" resultMap="boardResultSet">
+		SELECT * FROM S_BOARD ORDER BY b_question DESC,b_answer ASC
+	</select>
+	
+</mapper>
