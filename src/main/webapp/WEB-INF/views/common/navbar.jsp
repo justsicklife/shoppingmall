@@ -102,7 +102,7 @@
 			<div>
 				<nav class="navbar navbar-expand-lg navbar-light ">
 					<div class="container-fluid">
-						<a class="navbar-brand" href="#">쇼핑몰</a>
+						<a class="navbar-brand" href="/product/index">쇼핑몰</a>
 						<button class="navbar-toggler" type="button"
 							data-bs-toggle="collapse" data-bs-target="#navbarScroll"
 							aria-controls="navbarScroll" aria-expanded="false"
@@ -124,6 +124,10 @@
 									tabindex="-1" aria-disabled="true">shoes</a></li>
 								<li class="nav-item"><a class="nav-link-left" href="#"
 									tabindex="-1" aria-disabled="true">acc</a></li>
+								<c:if test="${sessionScope.memberId eq 'admin' }">
+								<li class="nav-item"><a class="nav-link-left" href="/product/create"
+									tabindex="-1" aria-disabled="true">상품 추가</a></li>
+								</c:if>
 							</ul>
 						</div>
 					</div>
@@ -189,7 +193,8 @@
 						</div>
 					</div>
 					<div class="row pt-5">
-						<ul class="col-6 list-unstyled" id="category_display">
+						<ul class="col-6 list-unstyled d-flex flex-column"
+							id="category_display">
 							<li class="mt-2"><a class="sidebar-link" href="#"> 상품 </a></li>
 							<li class="mt-2"><a class="sidebar-link" href="#">
 									outerm </a></li>
@@ -202,24 +207,23 @@
 							<li class="mt-2"><a class="sidebar-link" href="#"> acc </a>
 							</li>
 						</ul>
-						<ul class="col-6 list-unstyled d-none" id="community_display">
+						<ul class="col-6 list-unstyled d-none d-flex flex-column"
+							id="community_display">
 							<li class="mt-2"><a class="sidebar-link" href="#">
 									Notice </a></li>
 							<li class="mt-2"><a class="sidebar-link" href="#"> Q&A </a>
 							</li>
 							<li class="mt-2"><a class="sidebar-link" href="#">
-									Review </a>
-							</li>
-							<li class="mt-2">
-							<c:choose>
-								<c:when test="${ sessionScope.memberId == 'admin'}">
-									<a href="/chat/admin" class="sidebar-link" href="#"> Chat
-								</c:when>
-								<c:otherwise>
-									<a href="/chat/user" class="sidebar-link" href="#"> Chat
-								</c:otherwise>
-							</c:choose>
-							</a></li>
+									Review </a></li>
+							<li class="mt-2"><c:choose>
+									<c:when test="${ sessionScope.memberId == 'admin'}">
+										<a href="/chat/admin" class="sidebar-link" href="#"> Chat
+										
+									</c:when>
+									<c:otherwise>
+										<a href="/chat/user" class="sidebar-link" href="#"> Chat 
+									</c:otherwise>
+								</c:choose> </a></li>
 						</ul>
 					</div>
 				</div>
