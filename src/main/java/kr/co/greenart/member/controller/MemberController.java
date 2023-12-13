@@ -165,6 +165,8 @@ public class MemberController {
 			session.setAttribute("memberIdx", loginUser.getMemberIdx());
 			session.setAttribute("memberId", loginUser.getMemberId());
 			
+			session.setAttribute("memberName", loginUser.getMemberName());
+			
 			return "redirect:/product/index";
 		} else if (Objects.isNull(loginUser)
 				|| !bcryptPasswordEncoder.matches(memberDto.getMemberPassword(), loginUser.getMemberPassword())) {
@@ -306,7 +308,7 @@ public class MemberController {
 //			rttr.addFlashAttribute("msg", "가입이 완료되었습니다");
 			rttr.addAttribute("memberEmail", memberDto.getMemberEmail());
 			rttr.addAttribute("memberId", memberDto.getMemberId());
-
+			
 			// 회원 가입 ( insert 서비스 실행)
 //			int result = memberService.signupMember(memberDto);
 			memberService.sendMail(memberDto);

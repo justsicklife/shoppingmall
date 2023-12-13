@@ -133,7 +133,7 @@
 			</div>
 			<div class="review-button-box text-end d-flex justify-content-end">
 				<button class="review-button">후기게시판</button>
-				<c:if test="${empty curUser}">
+				<c:if test="${empty reviewCurUser}">
 					<button class="review-save">
 						<a
 							href="/review/create?member_id=${member_id}&product_id=${product.product_id}">후기작성
@@ -190,7 +190,7 @@
 		<div class="review-box">
 
 			<div class="col-md-12">
-				<c:if test="${not empty curUser}">
+				<c:if test="${not empty reviewCurUser}">
 					<div
 						class="headings d-flex justify-content-between align-items-center mb-3">
 						<h5>내가 작성한 댓글</h5>
@@ -198,20 +198,20 @@
 					<div class="card p-3">
 						<div class="d-flex justify-content-between align-items-center">
 							<div class="user d-flex flex-row align-items-center">
-								<input name="review_score" id="input-id" type="text" class="rating" readonly data-size="sm" value="${curUser.review_score }">
+								<input name="review_score" id="input-id" type="text" class="rating" readonly data-size="sm" value="${reviewCurUser.review_score }">
 							</div>
-							<small> ${curUser.review_open_date} </small>
+							<small> ${reviewCurUser.review_open_date} </small>
 						</div>
-						<div class="mt-2 px-4">${curUser.review_content }</div>
+						<div class="mt-2 px-4">${reviewCurUser.review_content }</div>
 						<div class="d-flex justify-content-end">
 							<button>
-								<a href="/review/update?review_id=${curUser.review_id}"> 수정
+								<a href="/review/update?review_id=${reviewCurUser.review_id}"> 수정
 								</a>
 							</button>
 							<form action="/review/delete" method="post">
 								<input type="hidden" name="review_id"
-									value="${curUser.review_id }" /> <input type="hidden"
-									name="product_id" value="${curUser.product_id }" />
+									value="${reviewCurUser.review_id }" /> <input type="hidden"
+									name="product_id" value="${reviewCurUser.product_id }" />
 								<button>삭제</button>
 							</form>
 						</div>
@@ -220,7 +220,7 @@
 
 				<div
 					class="headings d-flex justify-content-between align-items-center mb-3">
-					<h5>작성된 리뷰 ${listCount }</h5>
+					<h5>작성된 리뷰 ${reviewListCount }</h5>
 				</div>
 				<c:forEach var="review" items="${reviewList}">
 					<div class="card p-3 mb-3">
@@ -237,7 +237,7 @@
 			</div>
 			<ul>
 				<c:choose>
-					<c:when test="${pi.currentPage eq 1 }">
+					<c:when test="${reviewPi.currentPage eq 1 }">
 						<li class="page-item">
 							<a class="page-link" href="#" aria-label="Previous">
 								<span aria-hidden="true">&laquo;</span>
@@ -246,20 +246,20 @@
 					</c:when>
 					<c:otherwise>
 					<li class="page-item">
-							<a class="page-link" href="detail?cpage=${pi.currentPage-1 }&product_id=${product.product_id}" aria-label="Previous">
+							<a class="page-link" href="detail?cpage=${reviewPi.currentPage-1 }&product_id=${product.product_id}" aria-label="Previous">
 								<span aria-hidden="true">&laquo;</span>
 							</a>
 						</li>
 					</c:otherwise>
 				</c:choose>
-				<c:forEach var="p" begin="${pi.startPage}" end="${pi.endPage}">
+				<c:forEach var="p" begin="${reviewPi.startPage}" end="${reviewPi.endPage}">
 					<li class="page-item">
 						<a class="page-link" href="detail?cpage=${p }&product_id=${product.product_id}">${ p}</a>
 					</li>
 				</c:forEach>
 				
 				<c:choose>
-					<c:when test="${pi.currentPage eq pi.maxPage }">
+					<c:when test="${reviewPi.currentPage eq reviewPi.maxPage }">
 						<li class="page-item">
 							<a class="page-link" href="#" aria-label="Previous">
 								<span aria-hidden="true">&raquo;</span>
@@ -268,7 +268,7 @@
 					</c:when>
 					<c:otherwise>
 					<li class="page-item">
-							<a class="page-link" href="detail?cpage=${pi.currentPage+1 }&product_id=${product.product_id}" aria-label="Previous">
+							<a class="page-link" href="detail?cpage=${reviewPi.currentPage+1 }&product_id=${product.product_id}" aria-label="Previous">
 								<span aria-hidden="true">&raquo;</span>
 							</a>
 						</li>

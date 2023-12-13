@@ -66,10 +66,17 @@
 		
 	</beans:bean>
 	
+	<beans:bean id="AdminInterceptor" class="kr.co.greenart.interceptor.AdminInterceptor"/>
+	
 	<interceptors>
 		<interceptor>
 			<mapping path="/chat/*"/>
+			<mapping path="/review/*"/>
 			<beans:ref bean="LoginInterceptor"></beans:ref> <!-- 어떤 interceptor 설정할지 -->
+		</interceptor>
+		<interceptor>
+			<mapping path="/product/create"/>
+			<beans:ref bean="AdminInterceptor"></beans:ref>
 		</interceptor>
 	</interceptors>
 	
