@@ -407,7 +407,7 @@ public class MemberController {
 				MemberDto loginUser = memberService.loginMember(m);
 				System.out.println(loginUser.toString());
 				if (!Objects.isNull(loginUser)) {
-					session.setAttribute("memberNum", loginUser.getMemberIdx());
+					session.setAttribute("memberIdx", loginUser.getMemberIdx());
 					String sessionMemberIdx = String.valueOf(loginUser.getMemberIdx());
 					session.setAttribute("sessionMemberIdx", sessionMemberIdx);
 					session.setAttribute("memberName", loginUser.getMemberName());
@@ -480,7 +480,7 @@ public class MemberController {
 				MemberDto loginUser = memberService.loginMember(m);
 				System.out.println(loginUser.toString());
 				if (!Objects.isNull(loginUser)) {
-					session.setAttribute("memberNum", loginUser.getMemberIdx());
+					session.setAttribute("memberIdx", loginUser.getMemberIdx());
 					String sessionMemberIdx = String.valueOf(loginUser.getMemberIdx());
 					session.setAttribute("sessionMemberIdx", sessionMemberIdx);
 					session.setAttribute("memberName", loginUser.getMemberName());
