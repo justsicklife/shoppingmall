@@ -86,7 +86,8 @@ public class ProductController {
 			HttpServletResponse response,
 			@RequestParam(value="product_id",required = true) int id,
 			Model model,
-			@RequestParam(value="cpage",defaultValue = "1") int currentPage
+			@RequestParam(value="cpage",defaultValue = "1") int currentPage,
+			HttpSession session
 			) throws IOException {
 		
 		// 상품을 가져온다
@@ -98,16 +99,21 @@ public class ProductController {
 		}
 		
 		// 임시 유저 아이디
-		int memberId = 4;
+		Object idObject =  session.getAttribute("memberIdx");
+		int memberId = -1;
 		
-		int listCount = reviewService.selectListCount(id);
+		if(session.getAttribute("memberIdx") != null && idObject instanceof Integer) {
+			memberId = (Integer)idObject;
+		}
+		
+		int reviewListCount = reviewService.selectListCount(id);
 		
 		// 페이지 제한 수 
-		int pageLimit = 10;
+		int reviewPageLimit = 10;
 		// 리뷰 제한수
-		int boardLimit = 5;
+		int reviewLimit = 5;
 		
-		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
+		PageInfo pi = Pagination.getPageInfo(reviewListCount, currentPage, reviewPageLimit, reviewLimit);
 
 		
 		// 상품아이디 와 같은 리뷰를 가져올때
@@ -120,11 +126,11 @@ public class ProductController {
 		// 리뷰를 가져오는데 자기가 작성한 리뷰 를 가져온다.
 		ReviewDTO curUserReviewDTO = reviewService.findReviewByMemberAndProduct(map);
 		
-		model.addAttribute("pi",pi);
+		model.addAttribute("reviewPi",pi);
 		
-		model.addAttribute("listCount",listCount);
+		model.addAttribute("reviewListCount",reviewListCount);
 		
-		model.addAttribute("curUser",curUserReviewDTO);
+		model.addAttribute("reviewCurUser",curUserReviewDTO);
 		
 		model.addAttribute("reviewList",reviewList);
 		

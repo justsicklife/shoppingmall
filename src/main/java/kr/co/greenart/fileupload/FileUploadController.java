@@ -16,7 +16,6 @@ import org.springframework.web.multipart.MultipartRequest;
 import kr.co.greenart.common.FileUpload;
 
 @Controller
-@RequestMapping("file")
 public class FileUploadController {
 	
 	@PostMapping("/fileUpload")
