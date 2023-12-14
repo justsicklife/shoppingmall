@@ -43,15 +43,15 @@
 			action="/product/create">
 
 			<div>
-				<label for="">상품이름</label> <input type="text" name="product_name"
-					id=""> <label for="">상품 설명</label> <input type="text"
-					name="product_content" id=""> <label for="">상품 가격</label> <input
-					type="number" name="product_price" id="">
+				<label for="name">상품이름</label> <input type="text"
+					name="product_name" id="name" required placeholder="상품 이름" max="10"> <label for="content">상품 설명</label> <input
+					type="text" name="product_content" id="content" placeholder="상품 설명"> <label for="">상품
+					가격</label> <input type="number" value="0" name="product_price" id="price">
 			</div>
 
 			<div>
-				  <label for="lang">옷 타입</label>
-				<select name="product_type" id="product_type">
+				<label for="lang">옷 타입</label> <select name="product_type"
+					id="product_type">
 					<option value="outem">outem</option>
 					<option value="top">top</option>
 					<option value="bottom">bottom</option>
@@ -63,6 +63,8 @@
 				type="text" placeholder="옵션을 입력해주세요" />
 			<button type="submit" id="option_button_color">추가</button>
 			<div id="option_group_color"></div>
+			
+			
 
 			<label for="">사이즈를 입력해주세요</label> <input id="option_input_size"
 				type="text" placeholder="옵션을 입력해주세요" />
@@ -71,7 +73,8 @@
 
 			<div id='image_preview'>
 				<h3>메인 사진</h3>
-				<input type='file' id='btnAtt' name="images" multiple='multiple' />
+				<input type='file' id='btnAtt' name="images" multiple='multiple'
+					value="" />
 				<div id='att_zone'
 					data-placeholder='파일을 첨부 하려면 파일 선택 버튼을 클릭하거나 파일을 드래그앤드롭 하세요'></div>
 			</div>
@@ -89,10 +92,17 @@
 		</form>
 	</div>
 </body>
+<script>
+	const msg = "${msg}";
 
+	if(msg != "") {
+		alert("이미지를 넣어주세요")
+	}
+
+</script>
 <script>
 
-			const option_evnet = function (input, group, button, name) {
+			const option_evnet = function (input, group, button, name,_class) {
 
 				const option_input = document.getElementById(input);
 				const option_group = document.getElementById(group)
@@ -117,6 +127,7 @@
 					deleteButton.innerText = "x";
 					input.value = value;
 					input.name = name;
+					input.classList.add(_class)
 					div.append(input);
 					div.append(deleteButton)
 					option_group.append(div);
@@ -124,8 +135,8 @@
 				})
 			}
 
-			option_evnet("option_input_color", "option_group_color", "option_button_color", "product_color_group")
-			option_evnet("option_input_size", "option_group_size", "option_button_size", "product_size_group");
+			option_evnet("option_input_color", "option_group_color", "option_button_color", "product_color_group","color")
+			option_evnet("option_input_size", "option_group_size", "option_button_size", "product_size_group","size");
 
 		</script>
 
@@ -148,14 +159,36 @@
 			var onWrite = function () {
 				oEditors.getById["txtContent"].exec("UPDATE_CONTENTS_FIELD", []); // 에디터의 내용이 textarea에 적용합니다.
 
-				// var contents = document.getElementById("txtContent").value;
-				// var title = document.getElementById("title").value;
-				// localStorage.setItem("contents", contents);
-				// localStorage.setItem("title", title); //localStorage에 제목과 내용을 저장.
-
 				var boardWriteForm = document.getElementById("boardWriteForm");
-				//boardWriteForm.action ="writeSubmit";			//저장할 페이지로 쏩니다.              
-				boardWriteForm.submit();
+				
+				const name = document.querySelector("#name");
+				const content = document.querySelector("#content");
+				const price = document.querySelector("#price")
+				
+				const colorList = document.querySelectorAll(".color")
+				const sizeList = document.querySelectorAll(".size")
+				
+
+
+				if (name.value == "") {
+					alert("상품 이름을 작성해주세요")
+				} 
+				else if(content.value == "") {
+					alert("상품 설명을 작성해주세요")
+				}
+				else if(price.value == null) {
+					alert("가격을 작성해주세요")
+				} 
+				else if(colorList.length == 0) {
+					alert("색상을 작성해주세요")	
+				}
+				else if(sizeList.length == 0) {
+					alert("사이즈를 작성해주세요")
+				}
+				else {
+					boardWriteForm.submit();
+				}
+				
 			};
 
 			var pasteHTML = function (filename) {

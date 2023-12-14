@@ -77,7 +77,14 @@ public class ProductController {
 	}
 	
 	@GetMapping("/create")
-	public String getCreatePage() {
+	public String getCreatePage(HttpSession session,Model model) {
+	
+		String msg = (String)session.getAttribute("msg");
+	
+		session.removeAttribute("msg");
+		
+		model.addAttribute("msg",msg);
+		
 		return "/product/create";
 	}
 	
@@ -143,7 +150,7 @@ public class ProductController {
 	
 	@PostMapping("/create")
 	public String postCreatePage(ProductDTO product,
-			@RequestParam("images") MultipartFile[] upload,
+			@RequestParam(name="images" ,defaultValue = "" ,required =false) MultipartFile[] upload,
 			HttpServletRequest request,
 			Model model,
 			HttpSession session
@@ -153,11 +160,18 @@ public class ProductController {
 		
 		List<String> filePathList = new ArrayList<>();
 		
+		System.out.println(upload.length);
+		System.out.println(upload);
+		
 		if(upload.length != 0) {
 			Stream<MultipartFile> arrayUpload = Arrays.stream(upload);
 			arrayUpload.forEach(file -> {
 				// 원본 파일명
 				String originalName = file.getOriginalFilename();
+				
+				if(file.getOriginalFilename().equals("")) {
+					return;
+				}
 				
 				// 확장자 구하기
 				String extension = originalName.substring(originalName.lastIndexOf("."));
@@ -201,6 +215,12 @@ public class ProductController {
 		if(filePathList.size() != 0) {
 			 String filePathStr = String.join(",",filePathList);
 			 product.setProduct_image_group(filePathStr);
+		}
+		
+		
+		if(product.getProduct_image_group() == null) {
+			session.setAttribute("msg", "이미지가 없습니다.");
+			return "redirect:/product/create";
 		}
 		
 		
