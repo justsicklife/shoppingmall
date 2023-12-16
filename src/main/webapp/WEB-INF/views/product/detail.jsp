@@ -129,7 +129,8 @@
 		<div class="score-box ">
 			<div class="score-box-2 d-flex align-items-center">
 				<div>
-					<h1>${sumScore}</h1>
+					<h1 class="px-5 score_sum">${sumScore}</h1>
+					<div class="text-center"><span class="review_title">리뷰</span> <span class="review_count">${reviewListCount}</span></div>
 				</div>
 				<canvas style="width: 100%; height: 100%;" class="score-chart"
 					id="myChart"></canvas>

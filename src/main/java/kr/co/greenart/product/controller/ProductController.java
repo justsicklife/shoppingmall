@@ -116,9 +116,17 @@ public class ProductController {
 				})
 				.collect(Collectors.toList());
 
-		IntSummaryStatistics sumScore = scoreNums.stream().mapToInt(num -> num).summaryStatistics();
+		IntSummaryStatistics countScore = scoreNums.stream().mapToInt(num -> num).summaryStatistics();
 		
-		model.addAttribute("sumScore",sumScore.getSum());
+		double sumScore = 0;
+		
+		for (int i = 1 ; i <= 5 ; i++) { 
+			sumScore += scoreNums.get(i-1) * i;
+		}
+		
+		sumScore /= countScore.getSum();
+		
+		model.addAttribute("sumScore",sumScore);
 		
 		model.addAttribute("scores",scoreNums);
 		
