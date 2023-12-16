@@ -242,3 +242,17 @@ ul {
 li {
 	list-style: none;
 }
+
+.review_title{
+	font-weight: bold;
+	color: rgba(0, 0, 0, 0.342) ;
+}
+
+.review_count{
+	font-weight: bold;
+	font-size: 1.2rem;
+}
+
+.score_sum{
+	font-weight: bold;
+}

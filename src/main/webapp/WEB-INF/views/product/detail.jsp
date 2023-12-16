@@ -59,6 +59,9 @@
 	<%@ include file="/WEB-INF/views/common/navbar.jsp"%>
 
 
+	<c:forEach var="score" items="${scores }" varStatus="status">
+		<input type="hidden" id="score-${status.count}" value="${score}"/>
+	</c:forEach>
 	<!-- Product section-->
 	<section class="py-5">
 		<div class="container px-4 px-lg-5 my-5">
@@ -126,7 +129,8 @@
 		<div class="score-box ">
 			<div class="score-box-2 d-flex align-items-center">
 				<div>
-					<h1>45</h1>
+					<h1 class="px-5 score_sum">${sumScore}</h1>
+					<div class="text-center"><span class="review_title">리뷰</span> <span class="review_count">${reviewListCount}</span></div>
 				</div>
 				<canvas style="width: 100%; height: 100%;" class="score-chart"
 					id="myChart"></canvas>
@@ -145,6 +149,14 @@
 	</div>
 
 	<script>
+		
+		let scores= []
+
+		for(let i = 1 ; i <=  5 ; i++) {
+			const score = document.getElementById("score-"+i);
+			scores.push(parseInt(score.value));			
+		}
+
 		const ctx = document.getElementById('myChart').getContext('2d');
 		const myChart = new Chart(ctx,
 				{
@@ -162,7 +174,7 @@
 						labels : [ '5 Starts', '4 Starts', '3 Starts',
 								'2 Starts', '1 Starts' ],
 						datasets : [ {
-							data : [ 12, 100, 3, 5, 2, 3 ],
+							data : scores,
 							backgroundColor : [ 'rgba(113, 113, 113, 1)',
 									'rgba(113, 113, 113, 1)',
 									'rgba(113, 113, 113, 1)',

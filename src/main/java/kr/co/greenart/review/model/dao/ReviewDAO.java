@@ -53,5 +53,10 @@ public class ReviewDAO {
 //
 //		return sql.selectList("s_review.selectListAll", null, rowBounds);
 //	}
+	
+	public int getStarCountById(SqlSessionTemplate sql, Map<String, Integer> map) {
+		// TODO Auto-generated method stub
+		return sql.selectOne("s_review.getStarCountById",map);
+	}
 
 }
