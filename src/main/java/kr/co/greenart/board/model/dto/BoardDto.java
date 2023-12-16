@@ -13,12 +13,15 @@ import lombok.ToString;
 @ToString // toString() 메소드를 자동으로 생성
 public class BoardDto {
 	
-	private int questionNum;
-	private int answerNum;
-	private int boardNum;
-	private String memberId;
-	private String title;
-	private String content;
-	private String indate;
-	private int count;
+	private int boardQuestionNum;
+	private int boardAnswerNum;
+	private int boardProductNum;
+	private int boardMemberIdx;
+	private String boardMemberId;
+	private String boardCategory;
+	private String boardSecret;
+	private String boardTitle;
+	private String boardContent;
+	private String boardIndate;
+	private int boardAnswer_Y;
 }

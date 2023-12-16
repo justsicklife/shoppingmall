@@ -285,11 +285,12 @@
 			<table class="table">
 				<thead>
 					<tr>
-						<th scope="col">번호</th>
-						<th scope="col">제목</th>
-						<th scope="col">작성자</th>
-						<th scope="col">작성일</th>
-						<th scope="col">조회</th>
+						<th scope="col" style="width: 5%; text-align: center;">번호</th>
+						<th scope="col"	style="width: 10%; text-align: center;">답변여부</th>
+						<th scope="col" style="width: 15%; text-align: center;">구분</th>
+						<th scope="col" style="width: 40%; text-align: center;">제목</th>
+						<th scope="col" style="width: 15%; text-align: center;">작성자</th>
+						<th scope="col" style="width: 15%; text-align: center;">작성일</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -303,31 +304,79 @@
                         </c:when>
                         <c:otherwise>
                             <c:forEach var="item" items="${list}">
-                                <c:if test="${item.answerNum == 0}">
-                                    <tr onclick="location.href='/board/detailUserInquiry.do?questionNum=${item.questionNum}'">
-                                        <td class="td-num" >${row}</th>
-                                        <td class="td-title">${item.title}</td>
-                                        <td class="td-memberId">${item.memberId}</td>
-                                        <td class="td-indate">${item.indate}</td>
-                                        <td class="td-count">${item.count}</td>
-                                    </tr>
+                                <c:if test="${item.boardAnswerNum == 0}">
+									<tr id="question-${item.boardQuestionNum}"  onclick="toggleRow('${item.boardQuestionNum}','${item.boardSecret}', '${item.boardMemberId}', '${memberId}')">
+										<input type="hidden" name="memberId" value="${memberId}">
+										<td class="td-num" style="width: 5%; text-align: center;">${row}</td>
+										<td class="td-AnswerNum" style="width: 10%; text-align: center;">
+											<c:choose>
+												<c:when test="${item.boardAnswer_Y == 1}">
+													답변 완료
+												</c:when>
+												<c:otherwise>
+													답변 대기중
+												</c:otherwise>
+											</c:choose> 
+										</td>
+										<td class="td-boardCategory" style="width: 15%; text-align: center;">${item.boardCategory}</td>
+										<td class="td-boardTitle" style="width: 40%; text-align: center;">${item.boardTitle}</td>
+										<td class="td-memberId" style="width: 15%; text-align: center;">${item.boardMemberId}</td>
+										<td class="td-indate" style="width: 15%; text-align: center;">${item.boardIndate}</td>								
+									</tr>
+									<tr id="hidden-${item.boardQuestionNum}" class="hidden-content-row1-user" style="display: none; text-align: left;">
+										<td colspan="6">
+											<div class="hidden-content" >
+												<p style="font-weight:bolder; font-size: 1.2em;">${item.boardTitle}</p>
+												${item.boardContent}
+												<c:if test="${item.boardMemberId eq memberId}">
+													<div style="text-align: right; margin-top: 10px;">
+														<button onclick="deleteInquiry('${item.boardQuestionNum}')">삭제</button>
+														<!-- 답변이 있을 경우 수정 못함 -->
+														<c:if test="${item.boardAnswer_Y == 0}">
+															<button onclick="openEdit('${item.boardQuestionNum}')">수정</button>
+														</c:if>
+													</div>
+												</c:if>
+												<c:if test="${memberId eq 'admin' and item.boardAnswer_Y == 0}">
+													<div style="text-align: right; margin-top: 10px;">
+														<button class="as-button" onclick="openAnswer('${item.boardQuestionNum}', '${memberId}')">답변</button>
+													</div>
+												</c:if>
+											</div>									
+										</td>
+									</tr>
                                 </c:if>
-                                <c:if test="${item.answerNum == 1}">
-                                    <tr class="tr-reply" onclick="location.href='/board/detailUserInquiry.do?questionNum=${item.questionNum}'">
-                                        <td class="td-num" >${row}</td>
-                                        <td class="td-title">[답변] ${item.title}</td>
-                                        <td class="td-memberId">관리자</td>
-                                        <td class="td-indate">${item.indate}</td>
-                                        <td class="td-count">${item.count}</td>
-                                    </tr>
-                                </c:if>
-                                <c:set var="row" value="${row-1}" />
+								<c:set var="row" value="${row-1}" />
+								<c:forEach var="answerItem" items="${answerList}">
+									<c:if test="${item.boardQuestionNum == answerItem.boardQuestionNum && answerItem.boardAnswerNum == 1}">											
+										<tr id="answer-${item.boardQuestionNum}" class="hidden-content-row-admin" style="display: none; text-align: left; background-color:lightgray" >
+											<td colspan="5">
+												<div>
+													<p style="font-weight:bolder; font-size: 1.2em;">[답변] 관리자</p>
+													${answerItem.boardContent}													
+												</div>
+											</td>
+											<td colspan="1">
+												<div style="text-align: center;">
+													${answerItem.boardIndate}
+												</div>
+												<c:if test="${memberId eq 'admin'}">
+													<div style="text-align: right; margin-top: 10px;">
+														<button onclick="openAnswerEdit('${item.boardQuestionNum}', '${memberId}')">수정</button>
+													</div>
+												</c:if>
+											</td>
+										</tr>
+									</c:if>
+								</c:forEach>
                             </c:forEach>
                         </c:otherwise>
                     </c:choose>
 				</tbody>
 			</table>
-			<button class="qa-button">문의 하기</button>
+			<c:if test="${memberId ne 'admin' and not empty memberId}">
+				<button class="qa-button" onclick="openWrite()">문의 하기</button>
+			</c:if>
 		</div>
 		<!-- 페이징 버튼 -->
 		<nav class="mt-3 mb-5">
@@ -395,7 +444,7 @@
 							<!-- 10, 20, 30, 40, .... --> <a class="page-link"
 							href="list.do?ipage=${inquiryPi.endPage+1}" aria-label="Next"> <span
 								aria-hidden="true"><i class="fa-solid fa-angles-right"
-									style="color: gray;"></i></span>
+								style="color: gray;"></i></span>
 						</a>
 						</li>
 					</c:otherwise>
@@ -441,5 +490,7 @@
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js"
 	integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa"
 	crossorigin="anonymous"></script>
+
+<script src="/resources/js/board/inquiry.js"></script>
 
 </html>
