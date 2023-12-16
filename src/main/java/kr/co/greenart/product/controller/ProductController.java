@@ -8,6 +8,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.IntSummaryStatistics;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -104,6 +105,22 @@ public class ProductController {
 		if (productDTO == null) {
 			response.sendError(404,"404에러가 발생했습니다");
 		}
+	
+		List<Integer> scoreNums = Arrays.asList(1,2,3,4,5).stream()
+				.map(x -> {
+					Map<String,Integer> map = new HashMap<>();
+					map.put("score", x);
+					map.put("id", productDTO.getProduct_id());
+					
+					return reviewService.getStarCountById(map);
+				})
+				.collect(Collectors.toList());
+
+		IntSummaryStatistics sumScore = scoreNums.stream().mapToInt(num -> num).summaryStatistics();
+		
+		model.addAttribute("sumScore",sumScore.getSum());
+		
+		model.addAttribute("scores",scoreNums);
 		
 		// 임시 유저 아이디
 		Object idObject =  session.getAttribute("memberIdx");

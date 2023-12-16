@@ -55,4 +55,8 @@
 		select count(*) from s_review where p_id = #{id}
 	</select>
 	
+	<select id="getStarCountById" parameterType="Map" resultType="_int">
+		select count(*) from s_review where p_id=#{id} and r_score = #{score}
+	</select>
+	
 </mapper>

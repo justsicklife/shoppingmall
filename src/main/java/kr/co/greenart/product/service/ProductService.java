@@ -1,6 +1,7 @@
 package kr.co.greenart.product.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,4 +30,5 @@ public class ProductService {
 	public List<ProductDTO> productFindByType(String type) {
 		return productDAO.productFindByType(sql,type);
 	}
+
 }

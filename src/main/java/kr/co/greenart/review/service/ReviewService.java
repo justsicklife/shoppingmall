@@ -51,5 +51,9 @@ public class ReviewService {
 	public int selectListCount(int id) {
 		return reviewDAO.selectListCount(sql,id);
 	}
-
+	
+	public int getStarCountById(Map<String, Integer> map) {
+		return reviewDAO.getStarCountById(sql,map);
+	}
+	
 }

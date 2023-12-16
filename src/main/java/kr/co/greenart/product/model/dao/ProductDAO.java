@@ -1,6 +1,7 @@
 package kr.co.greenart.product.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
@@ -22,5 +23,6 @@ public class ProductDAO {
 	public List<ProductDTO> productFindByType(SqlSessionTemplate sql, String type) {
 		return sql.selectList("s_product.productFindByType",type);
 	}
+
 
 }
