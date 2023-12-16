@@ -200,8 +200,7 @@ public class MemberController {
 				model.addAttribute("myPage", result);
 				System.out.println("result : " + result);
 
-				// session에서 받은 memberIdx를 뷰의 user로 초기화 / <c:when test="${myPage.memberIdx ==
-				// user}">
+				// session에서 받은 memberIdx를 뷰의 user로 초기화 / <c:when test="${myPage.memberIdx == user}">
 				model.addAttribute("user", idx);
 				System.out.println("user : " + idx);
 

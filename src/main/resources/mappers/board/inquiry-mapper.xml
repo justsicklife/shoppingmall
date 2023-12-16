@@ -4,24 +4,128 @@
 <mapper namespace="inquiryMapper">
 
 	<resultMap type="BoardDto" id="boardResultSet">
-		<result column="b_question" property="questionNum"></result>
-		<result column="b_answer" property="answerNum"></result>
-		<result column="b_boardNum" property="boardNum"></result>
-		<result column="b_memberId" property="memberId"></result>
-		<result column="b_title" property="title"></result>
-		<result column="b_content" property="content"></result>
-		<result column="b_indate" property="indate"></result>
-		<result column="b_count" property="count"></result>
+		<result column="b_question" property="boardQuestionNum"></result>
+		<result column="b_answer" property="boardAnswerNum"></result>
+		<result column="b_productNum" property="boardProductNum"></result>
+		<result column="b_memberIdx" property="boardMemberIdx"></result>
+		<result column="b_memberId" property="boardMemberId"></result>
+		<result column="b_category" property="boardCategory"></result>
+		<result column="b_secret" property="boardSecret"></result>
+		<result column="b_title" property="boardTitle"></result>
+		<result column="b_content" property="boardContent"></result>
+		<result column="b_indate" property="boardIndate"></result>
+		<result column="b_answer_Y" property="boardAnswer_Y"></result>
 	</resultMap>
 
 	<!-- 전체 게시글 조회 -->
 	<select id="selectListCount" resultType="_int">
-		SELECT COUNT(*) FROM S_BOARD
+		SELECT COUNT(*) FROM S_BOARD WHERE b_answer = 0 AND b_productNum = #{boardProductNum}
 	</select>
 	
-	<!-- 목록 불러오기 -->
+	<!-- 문의 목록 불러오기 -->
 	<select id="selectListAll" resultMap="boardResultSet">
-		SELECT * FROM S_BOARD ORDER BY b_question DESC,b_answer ASC
+		<!-- SELECT * FROM S_BOARD ORDER BY b_question DESC,b_answer ASC -->
+		SELECT * FROM S_BOARD WHERE b_answer = 0  AND b_productNum = #{boardProductNum} ORDER BY b_question DESC
 	</select>
 	
+	<!-- 답변 목록 불러오기 -->
+	<select id="selectAnswerAll" resultMap="boardResultSet">
+		<!-- SELECT * FROM S_BOARD ORDER BY b_question DESC,b_answer ASC -->
+		SELECT * FROM S_BOARD WHERE b_answer = 1 AND b_productNum = #{boardProductNum}
+	</select>
+	
+	<!-- 유저 글 작성 -->
+	<insert id="insertInquiry" parameterType="BoardDto">
+		INSERT INTO s_board(b_question,
+							b_answer,
+							b_productNum,
+							b_memberIdx,
+							b_memberId,
+							b_category,
+							b_secret,
+							b_title,
+							b_content,
+							b_indate,
+							b_answer_Y)
+					VALUES(seq_b_question.NEXTVAL,
+							0,
+							#{boardProductNum},
+							#{boardMemberIdx},
+							#{boardMemberId},
+							#{boardCategory},
+							#{boardSecret},
+							#{boardTitle},
+							#{boardContent},
+							SYSDATE,
+							0)
+	</insert>
+	
+	<!-- 관리자 답변 하기 -->
+	<insert id="inquiryAnswer" parameterType="BoardDto">
+		INSERT INTO s_board(b_question,
+							b_answer,
+							b_productNum,
+							b_memberIdx,
+							b_memberId,
+							b_category,
+							b_secret,
+							b_title,
+							b_content,
+							b_indate,
+							b_answer_Y)
+					VALUES(#{boardQuestionNum},
+							1,
+							#{boardProductNum},
+							#{boardMemberIdx},
+							#{boardMemberId},
+							'답변',
+							0,
+							'답변',
+							#{boardContent},
+							SYSDATE,
+							1)
+	</insert>
+	
+	<!-- 문의에 답변 했을시 체크 업데이트 -->
+	<update id="answerChkUpdate" parameterType="BoardDto">
+		UPDATE S_BOARD SET b_answer_Y = 1 
+		WHERE b_question = #{boardQuestionNum}
+	</update>
+	
+	
+	<!-- 유저 문의 수정 페이지-->
+	<select id="inquiryEditPage" resultMap="boardResultSet">
+		SELECT b_question, b_productNum, b_memberIdx, b_memberId, b_category, b_secret, b_title, b_content 
+		FROM S_BOARD 
+		WHERE b_answer = 0 AND b_question = #{boardQuestionNum}
+	</select>
+	
+	<!-- 유저 문의 업데이트-->
+	<update id="inquiryUpdate" parameterType="BoardDto">
+		UPDATE S_BOARD 
+		SET b_category = #{boardCategory},
+			b_secret = #{boardSecret},
+			b_title = #{boardTitle},
+			b_content = #{boardContent}
+		WHERE b_answer = 0 AND b_question = #{boardQuestionNum}
+	</update>
+	
+	<!-- 유저 문의 삭제 -->
+	<delete id="inquiryDelete" parameterType="BoardDto">
+		DELETE S_BOARD WHERE b_question = #{boardQuestionNum}	
+	</delete>
+	
+	<!-- 관리자 답변 수정 페이지 -->
+	<select id="answerEditPage" resultMap="boardResultSet">
+		SELECT b_question, b_productNum, b_memberIdx, b_memberId, b_content
+		FROM S_BOARD
+		WHERE b_answer = 1 AND b_question = #{boardQuestionNum}
+	</select>
+	
+	<!-- 관리자 답변 업데이트 -->
+	<update id="answerUpdate" parameterType="BoardDto">
+		UPDATE S_BOARD
+		SET b_content = #{boardContent}
+		WHERE b_answer = 1 AND b_question = #{boardQuestionNum}
+	</update>
 </mapper>
