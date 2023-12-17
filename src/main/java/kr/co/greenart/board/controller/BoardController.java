@@ -92,11 +92,11 @@ public class BoardController {
 		System.out.println(boardDto);
 
 		String memberId = (String) session.getAttribute("memberName");
-		String memberIdx = (String) session.getAttribute("sessionMemberIdx");
+		int memberIdx = (Integer)session.getAttribute("memberIdx");
 
 //		boardDto.setBoardProductNum(productNum);
 		boardDto.setBoardMemberId(memberId);
-		boardDto.setBoardMemberIdx(Integer.parseInt(memberIdx));
+		boardDto.setBoardMemberIdx(memberIdx);
 
 		int result = boardservice.insertInquiry(boardDto);
 		System.out.println("result : " + result);
@@ -208,7 +208,7 @@ public class BoardController {
 		BoardDto result = boardservice.inquiryEditPage(boardQuestionNum);
 
 		String memberId = (String) session.getAttribute("memberName");
-		String memberIdx = (String) session.getAttribute("sessionMemberIdx");
+		int memberIdx = (Integer) session.getAttribute("memberIdx");
 
 		if (!Objects.isNull(result)) {
 			model.addAttribute("detail", result);
