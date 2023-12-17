@@ -19,19 +19,19 @@
 
 	<!-- 전체 게시글 조회 -->
 	<select id="selectListCount" resultType="_int">
-		SELECT COUNT(*) FROM S_BOARD WHERE b_answer = 0 AND b_productNum = #{boardProductNum}
+		SELECT COUNT(*) FROM S_BOARD WHERE b_answer = 0 AND b_productNum = #{id}
 	</select>
 	
 	<!-- 문의 목록 불러오기 -->
-	<select id="selectListAll" resultMap="boardResultSet">
+	<select id="selectListAll" resultMap="boardResultSet" parameterType="int">
 		<!-- SELECT * FROM S_BOARD ORDER BY b_question DESC,b_answer ASC -->
-		SELECT * FROM S_BOARD WHERE b_answer = 0  AND b_productNum = #{boardProductNum} ORDER BY b_question DESC
+		SELECT * FROM S_BOARD WHERE b_answer = 0  AND b_productNum = #{id} ORDER BY b_question DESC
 	</select>
 	
 	<!-- 답변 목록 불러오기 -->
-	<select id="selectAnswerAll" resultMap="boardResultSet">
+	<select id="selectAnswerAll" resultMap="boardResultSet" parameterType="int">
 		<!-- SELECT * FROM S_BOARD ORDER BY b_question DESC,b_answer ASC -->
-		SELECT * FROM S_BOARD WHERE b_answer = 1 AND b_productNum = #{boardProductNum}
+		SELECT * FROM S_BOARD WHERE b_answer = 1 AND b_productNum = #{id}
 	</select>
 	
 	<!-- 유저 글 작성 -->

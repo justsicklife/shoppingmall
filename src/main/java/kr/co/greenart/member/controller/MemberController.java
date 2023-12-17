@@ -165,7 +165,7 @@ public class MemberController {
 			session.setAttribute("memberIdx", loginUser.getMemberIdx());
 			session.setAttribute("memberId", loginUser.getMemberId());
 			
-			session.setAttribute("memberName", loginUser.getMemberName());
+			session.setAttribute("memberName", loginUser.getMemberId());
 			
 			return "redirect:/product/index";
 		} else if (Objects.isNull(loginUser)
@@ -381,7 +381,7 @@ public class MemberController {
 				session.setAttribute("memberIdx", loginUser.getMemberIdx());
 				String sessionMemberIdx = String.valueOf(loginUser.getMemberIdx());
 				session.setAttribute("sessionMemberIdx", sessionMemberIdx);
-				session.setAttribute("memberName", loginUser.getMemberName());
+				session.setAttribute("memberName", loginUser.getMemberId());
 				return "redirect:/product/index";
 			} else {
 //					model.addAttribute("msg", "아이디 비밀번호를 확인해 주세요!");
@@ -454,7 +454,8 @@ public class MemberController {
 				session.setAttribute("memberIdx", loginUser.getMemberIdx());
 				String sessionMemberIdx = String.valueOf(loginUser.getMemberIdx());
 				session.setAttribute("sessionMemberIdx", sessionMemberIdx);
-				session.setAttribute("memberName", loginUser.getMemberName());
+				session.setAttribute("memberName", loginUser.getMemberId());
+				System.out.println("memberName : " + loginUser.getMemberId());
 				return "redirect:/product/index";
 			} else {
 //				model.addAttribute("msg", "아이디 비밀번호를 확인해 주세요!");

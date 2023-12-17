@@ -60,6 +60,7 @@
 		<hr>
 		<br>
 		<form action="/board/insert.do" method="post" >
+			<input type="hidden" name="boardProductNum" value="${productId}"/>
 			<div class="row">
 				<div class="col-3 mb-3">
 					<select class="form-select" id="category" name="boardCategory" required="required">
@@ -87,7 +88,7 @@
 				<div class="col text-center">
 					<button type="button" class="btn btn-outline-secondary"
 						onclick="window.opener.location.reload(); window.close();">취소</button>
-					<button type="button" class="btn btn-outline-warning" onclick="submitForm(event)">작성</button>
+					<button type="button" class="btn btn-outline-warning" onclick="submitForm()">작성</button>
 				</div>
 			</div>
 		</form>

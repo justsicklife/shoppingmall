@@ -14,23 +14,23 @@ import kr.co.greenart.member.model.dto.MemberDto;
 public class BoardDao {
 	
 	// 전체 게시글 수 조회
-	public int selectListCount(SqlSessionTemplate sqlsseion, BoardDto bo) {
-		return sqlsseion.selectOne("inquiryMapper.selectListCount", bo);
+	public int selectListCount(SqlSessionTemplate sqlsseion, int id) {
+		return sqlsseion.selectOne("inquiryMapper.selectListCount", id);
 	}
 	
 	// 문의 목록 불러오기
-	public List<BoardDto> selectListAll(SqlSessionTemplate sqlsseion, PageInfo inquiryPi, BoardDto bo){
+	public List<BoardDto> selectListAll(SqlSessionTemplate sqlsseion, PageInfo inquiryPi, int id){
 		
 		int offset = (inquiryPi.getCurrentPage() - 1) * inquiryPi.getBoardLimit();
 		int limit = inquiryPi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		
-		return sqlsseion.selectList("inquiryMapper.selectListAll", bo, rowBounds);
+		return sqlsseion.selectList("inquiryMapper.selectListAll", id, rowBounds);
 	}
 	
 	// 답변 목록 불러오기
-	public List<BoardDto> selectAnswerAll(SqlSessionTemplate sqlsession, BoardDto bo){
-		return sqlsession.selectList("inquiryMapper.selectAnswerAll", bo);
+	public List<BoardDto> selectAnswerAll(SqlSessionTemplate sqlsession, int id){
+		return sqlsession.selectList("inquiryMapper.selectAnswerAll", id);
 	}
 	
 	// 글 작성

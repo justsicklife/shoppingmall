@@ -60,10 +60,11 @@
 		<hr>
 		<br>
 		<form action="/board/answer.do" method="post" >
-			<c:choose>>
+			<c:choose>
 				<c:when test="${user eq 'admin'}">
 					<input type="hidden" name="boardQuestionNum" id="boardQuestionNum" value="${boardQuestionNum}">
 					<input type="hidden" name="memberId" id="memberId" value="${memberId}">
+					<input type="hidden" name="boardProductNum" value="${boardProductNum}"/>
 					<div class="row">
 					</div>
 					<div id="write" class="mb-3 justify-content-center" style="background-color:#fff;">

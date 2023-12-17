@@ -1,14 +1,15 @@
 // 문의하기 클릭
-function openWrite(){
-    window.open("/board/enrollForm.do", "_blank", "width=800, height=900");
+function openWrite(id){
+    window.open("/board/enrollForm.do?product_id=" + id, "_blank", "width=800, height=900");
 }
 
 // 관리자 답변 클릭
-function openAnswer(boardQuestionNum, memberId ) {
+function openAnswer(boardQuestionNum, memberId ,productId) {
     console.log('boardQuestionNum:', boardQuestionNum);
     console.log('memberId:', memberId);
+    console.log(productId);
     // 새 창 열기
-    const newWindow =  window.open(`/board/answerForm.do?boardQuestionNum=${boardQuestionNum}&MemberId=${memberId}`, "_blank", "width=600, height=600");
+    const newWindow =  window.open(`/board/answerForm.do?boardQuestionNum=${boardQuestionNum}&MemberId=${memberId}&boardProductNum=${productId}`, "_blank", "width=600, height=600");
 
     // 새 창이 로드되었을 때의 이벤트 리스너 등록
     newWindow.onload = function () {
@@ -31,11 +32,10 @@ function openEdit(boardQuestionNum) {
 }
 
 //관리자 답변 수정 클릭
-function openAnswerEdit(boardQuestionNum, memberId){
-    console.log('boardQuestionNum:', boardQuestionNum);
-    console.log('memberId:', memberId);
+function openAnswerEdit(boardQuestionNum, memberId,productId){
+    console.log('productId : ' + productId);
     // 새 창 열기
-    const newWindow =  window.open(`/board/answerEditForm.do?boardQuestionNum=${boardQuestionNum}&MemberId=${memberId}`, "_blank", "width=600, height=600");
+    const newWindow =  window.open(`/board/answerEditForm.do?boardQuestionNum=${boardQuestionNum}&MemberId=${memberId}&boardProductNum=${productId}`, "_blank", "width=600, height=600");
 
     // 새 창이 로드되었을 때의 이벤트 리스너 등록
     newWindow.onload = function () {
@@ -94,7 +94,7 @@ if (itemMemberId === loggedInMemberId || loggedInMemberId === 'admin') {
     } 
 }
 
-function deleteInquiry(boardQuestionNum) {
+function deleteInquiry(boardQuestionNum,productId) {
     if (confirm('정말로 삭제하시겠습니까?')) {
         fetch('/board/inquiryDelete.do', {
             method: 'POST',
@@ -106,7 +106,7 @@ function deleteInquiry(boardQuestionNum) {
         .then(response => {
             if (response.ok) {
                 // 서버에서 응답이 성공인 경우, 필요한 작업을 수행합니다.
-                window.location.href = '/board/list.do'; // 성공 시 페이지 리다이렉션
+                window.location.href = '/product/detail?product_id=' +productId; // 성공 시 페이지 리다이렉션
             } else {
                 // 에러 케이스를 처리합니다.
                 console.error('문의 삭제 실패');

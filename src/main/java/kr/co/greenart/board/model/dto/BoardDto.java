@@ -19,7 +19,7 @@ public class BoardDto {
 	private int boardMemberIdx;
 	private String boardMemberId;
 	private String boardCategory;
-	private String boardSecret;
+	private int boardSecret;
 	private String boardTitle;
 	private String boardContent;
 	private String boardIndate;

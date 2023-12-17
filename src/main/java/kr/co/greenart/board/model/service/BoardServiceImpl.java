@@ -23,20 +23,20 @@ public class BoardServiceImpl implements BoardService{
 	
 	// 전체 게시글 수 조회
 	@Override
-	public int selectListCount(BoardDto bo) {
-		return boardDao.selectListCount(sqlsession, bo);
+	public int selectListCount(int id) {
+		return boardDao.selectListCount(sqlsession, id);
 	}
 
 	// 문의 목록 불러오기
 	@Override
-	public List<BoardDto> selectListAll(PageInfo inquiryPi, BoardDto bo) {
-		return boardDao.selectListAll(sqlsession, inquiryPi, bo);
+	public List<BoardDto> selectListAll(PageInfo inquiryPi, int id ) {
+		return boardDao.selectListAll(sqlsession, inquiryPi, id);
 	}
 
 	// 답변 목록 불러오기
 	@Override
-	public List<BoardDto> selectAnswerAll(BoardDto bo) {
-		return boardDao.selectAnswerAll(sqlsession, bo);
+	public List<BoardDto> selectAnswerAll(int id) {
+		return boardDao.selectAnswerAll(sqlsession, id);
 	}
 	
 	// 글 작성
