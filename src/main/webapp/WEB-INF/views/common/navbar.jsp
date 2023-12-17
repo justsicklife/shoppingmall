@@ -114,16 +114,16 @@
 								style="-bs-scroll-height: 100px;">
 								<li class="nav-item"><a class="nav-link-left" href="#">
 										상품 </a></li>
-								<li class="nav-item"><a class="nav-link-left" href="#">outerm</a>
+								<li class="nav-item"><a class="nav-link-left" href="#">아우터</a>
 								</li>
 								<li class="nav-item"><a class="nav-link-left" href="#"
-									tabindex="-1" aria-disabled="true">top</a></li>
+									tabindex="-1" aria-disabled="true">상의</a></li>
 								<li class="nav-item"><a class="nav-link-left" href="#"
-									tabindex="-1" aria-disabled="true">bottom</a></li>
+									tabindex="-1" aria-disabled="true">하의</a></li>
 								<li class="nav-item"><a class="nav-link-left" href="#"
-									tabindex="-1" aria-disabled="true">shoes</a></li>
+									tabindex="-1" aria-disabled="true">신발</a></li>
 								<li class="nav-item"><a class="nav-link-left" href="#"
-									tabindex="-1" aria-disabled="true">acc</a></li>
+									tabindex="-1" aria-disabled="true">액세서리</a></li>
 								<c:if test="${sessionScope.memberId eq 'admin' }">
 								<li class="nav-item"><a class="nav-link-left" href="/product/create"
 									tabindex="-1" aria-disabled="true">상품 추가</a></li>
@@ -144,20 +144,17 @@
 				<div class="d-flex align-items-center">
 					<div class="px-2">
 						<c:choose>
-							<c:when
-								test="${sessionScope.sessionMemberIdx eq null && sessionScope.memberIdx eq null}">
-								<a href="/member/loginPage" class="nav-link-right"> login </a>
+							<c:when test="${sessionScope.sessionMemberIdx eq null && sessionScope.memberIdx eq null}">
+								<a href="/member/loginPage" class="nav-link-right"> 로그인 </a>
 							</c:when>
 							<c:otherwise>
-								<a href="/member/logout.do" class="nav-link-right">logout</a>
+								<a href="/member/logout.do" class="nav-link-right">로그아웃</a>
+								<a class="nav-link-right" href="/member/editMyPage"> 마이페이지 </a>
 							</c:otherwise>
 						</c:choose>
 					</div>
 					<div class="px-2">
-						<a class="nav-link-right"> order </a>
-					</div>
-					<div class="px-2">
-						<a class="nav-link-right"> basket </a>
+						<a class="nav-link-right"> 장바구니 </a>
 					</div>
 				</div>
 				<button class="navbar-toggler" type="button"
@@ -176,7 +173,6 @@
 		<div class="offcanvas offcanvas-end" tabindex="-1"
 			id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
 			<div class="offcanvas-header">
-				<h5 class="offcanvas-title" id="offcanvasNavbarLabel">Offcanvas</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="offcanvas"
 					aria-label="Close"></button>
 			</div>
@@ -185,11 +181,11 @@
 					<div class="row">
 						<div class="col-6">
 							<h5 class="text-uppercase category-button sidebar-button-active"
-								id="category_button">category</h5>
+								id="category_button">카테고리</h5>
 						</div>
 						<div class="col-6">
 							<h5 class="text-uppercase community-button" id="community_button">
-								community</h5>
+								커뮤니티</h5>
 						</div>
 					</div>
 					<div class="row pt-5">
@@ -197,31 +193,31 @@
 							id="category_display">
 							<li class="mt-2"><a class="sidebar-link" href="#"> 상품 </a></li>
 							<li class="mt-2"><a class="sidebar-link" href="#">
-									outerm </a></li>
-							<li class="mt-2"><a class="sidebar-link" href="#"> top </a>
+									아우터 </a></li>
+							<li class="mt-2"><a class="sidebar-link" href="#"> 상의 </a>
 							</li>
 							<li class="mt-2"><a class="sidebar-link" href="#">
-									bottom </a></li>
-							<li class="mt-2"><a class="sidebar-link" href="#"> shoes
+									하의 </a></li>
+							<li class="mt-2"><a class="sidebar-link" href="#"> 신발
 							</a></li>
-							<li class="mt-2"><a class="sidebar-link" href="#"> acc </a>
+							<li class="mt-2"><a class="sidebar-link" href="#"> 액세서리 </a>
 							</li>
 						</ul>
 						<ul class="col-6 list-unstyled d-none d-flex flex-column"
 							id="community_display">
 							<li class="mt-2"><a class="sidebar-link" href="#">
-									Notice </a></li>
+									공지사항 </a></li>
 							<li class="mt-2"><a class="sidebar-link" href="#"> Q&A </a>
 							</li>
 							<li class="mt-2"><a class="sidebar-link" href="#">
-									Review </a></li>
+									리뷰 </a></li>
 							<li class="mt-2"><c:choose>
 									<c:when test="${ sessionScope.memberId == 'admin'}">
-										<a href="/chat/admin" class="sidebar-link" href="#"> Chat
+										<a href="/chat/admin" class="sidebar-link" href="#"> 관리자 채팅
 										
 									</c:when>
 									<c:otherwise>
-										<a href="/chat/user" class="sidebar-link" href="#"> Chat 
+										<a href="/chat/user" class="sidebar-link" href="#"> 1:1 상담 
 									</c:otherwise>
 								</c:choose> </a></li>
 						</ul>

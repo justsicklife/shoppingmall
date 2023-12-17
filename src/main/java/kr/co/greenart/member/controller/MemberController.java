@@ -164,8 +164,7 @@ public class MemberController {
 
 			session.setAttribute("memberIdx", loginUser.getMemberIdx());
 			session.setAttribute("memberId", loginUser.getMemberId());
-			
-			session.setAttribute("memberName", loginUser.getMemberId());
+			session.setAttribute("memberName", loginUser.getMemberName());
 			
 			return "redirect:/product/index";
 		} else if (Objects.isNull(loginUser)
@@ -186,9 +185,8 @@ public class MemberController {
 	// http://localhost/member/myPage
 	// http://localhost/member/myPage?memberIdx=(memberIdx 값)
 	@GetMapping("/editMyPage")
-	public String getMyPage(@RequestParam(value = "memberIdx") int memberIdx, Model model, HttpSession session) {
-
-		System.out.println("memberIdx : " + session.getAttribute("memberIdx"));
+	public String getMyPage(Model model, HttpSession session) {
+		
 		if (session.getAttribute("memberIdx") == null) {
 			return "common/error404";
 		} else {
@@ -196,7 +194,7 @@ public class MemberController {
 			MemberDto result = memberService.myPage(idx);
 
 			if (!Objects.isNull(result)) {
-				// 뷰의 myPage 객체로 / <c:when test="${myPage.memberIdx == user}">
+				// 뷰의 myPage 객체로 / <c:when test="${myPage.
 				model.addAttribute("myPage", result);
 				System.out.println("result : " + result);
 

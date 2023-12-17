@@ -204,8 +204,8 @@ a, a:hover {
 			<div class="row justify-content-center text-center">
 				<div class="col-md-8 col-lg-6">
 					<div class="header">
-						<h3>outem</h3>
-						<h2>Popular Products</h2>
+						<h3>아우터</h3>
+						<h2>인기 상품</h2>
 					</div>
 				</div>
 			</div>
@@ -232,8 +232,8 @@ a, a:hover {
 			<div class="row justify-content-center text-center">
 				<div class="col-md-8 col-lg-6">
 					<div class="header">
-						<h3>top</h3>
-						<h2>Popular Products</h2>
+						<h3>상의</h3>
+						<h2>인기 상품</h2>
 					</div>
 				</div>
 			</div>
@@ -260,8 +260,8 @@ a, a:hover {
 			<div class="row justify-content-center text-center">
 				<div class="col-md-8 col-lg-6">
 					<div class="header">
-						<h3>bottom</h3>
-						<h2>Popular Products</h2>
+						<h3>하의</h3>
+						<h2>인기 상품</h2>
 					</div>
 				</div>
 			</div>
@@ -288,8 +288,8 @@ a, a:hover {
 			<div class="row justify-content-center text-center">
 				<div class="col-md-8 col-lg-6">
 					<div class="header">
-						<h3>shoes</h3>
-						<h2>Popular Products</h2>
+						<h3>신발</h3>
+						<h2>인기 상품</h2>
 					</div>
 				</div>
 			</div>
