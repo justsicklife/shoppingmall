@@ -379,8 +379,8 @@ public class MemberController {
 			if (!Objects.isNull(loginUser)) {
 				System.out.println("데이터(네이버 계정) 있음");
 				session.setAttribute("memberIdx", loginUser.getMemberIdx());
-				String sessionMemberIdx = String.valueOf(loginUser.getMemberIdx());
-				session.setAttribute("sessionMemberIdx", sessionMemberIdx);
+//				String sessionMemberIdx = String.valueOf(loginUser.getMemberIdx());
+//				session.setAttribute("sessionMemberIdx", sessionMemberIdx);
 				session.setAttribute("memberName", loginUser.getMemberId());
 				return "redirect:/product/index";
 			} else {
@@ -452,8 +452,8 @@ public class MemberController {
 			if (!Objects.isNull(loginUser)) {
 				System.out.println("데이터(카카오 계정) 있음");
 				session.setAttribute("memberIdx", loginUser.getMemberIdx());
-				String sessionMemberIdx = String.valueOf(loginUser.getMemberIdx());
-				session.setAttribute("sessionMemberIdx", sessionMemberIdx);
+//				String sessionMemberIdx = String.valueOf(loginUser.getMemberIdx());
+//				session.setAttribute("sessionMemberIdx", sessionMemberIdx);
 				session.setAttribute("memberName", loginUser.getMemberId());
 				System.out.println("memberName : " + loginUser.getMemberId());
 				return "redirect:/product/index";

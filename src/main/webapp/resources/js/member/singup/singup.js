@@ -192,7 +192,7 @@ function join(event) {
     if (emailRegex.test(user_email) && idRegex.test(user_id) && selectAllCheckbox.checked 
         && passwordRegex.test(password) && password === passwordChk && birthDate
         && phone && gender && address1 && address2 && name) {
-        alert("필수 항목 모두 입력 완료, ajax 실행");
+        // alert("필수 항목 모두 입력 완료, ajax 실행");
         console.log("필수 항목 모두 입력 완료, ajax 실행");
         $.ajax({
             type: "POST",
@@ -203,7 +203,7 @@ function join(event) {
             },
             success: function (memberChk) {
                 if (memberChk === "success") {
-                    alert("(TEST중 가입 완료, 이메일 인증 미구현) 메일함을 확인 후 인증 버튼을 눌러주세요");
+                    alert("메일함을 확인 후 인증 버튼을 눌러주세요");
 
                     // 폼 제출
                     document.getElementById("submitForm").submit();

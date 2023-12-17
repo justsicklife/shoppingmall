@@ -297,7 +297,7 @@
                     <c:choose>
                         <c:when test="${empty list}">
                             <tr>
-                                <td colspan="5">
+                                <td colspan="6">
                                     <h3 class="text-center">등록된 문의가 없습니다.</h3>
                                 </td>
                             </tr>
