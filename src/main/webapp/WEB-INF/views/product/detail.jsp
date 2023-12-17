@@ -60,8 +60,9 @@
 
 
 	<c:forEach var="score" items="${scores }" varStatus="status">
-		<input type="hidden" id="score-${status.count}" value="${score}"/>
+		<input type="hidden" id="score-${status.count}" value="${score}" />
 	</c:forEach>
+	<input type="hidden" id="product_id" value="${product.product_id }"/>
 	<!-- Product section-->
 	<section class="py-5">
 		<div class="container px-4 px-lg-5 my-5">
@@ -130,7 +131,9 @@
 			<div class="score-box-2 d-flex align-items-center">
 				<div>
 					<h1 class="px-5 score_sum">${sumScore}</h1>
-					<div class="text-center"><span class="review_title">리뷰</span> <span class="review_count">${reviewListCount}</span></div>
+					<div class="text-center">
+						<span class="review_title">리뷰</span> <span class="review_count">${reviewListCount}</span>
+					</div>
 				</div>
 				<canvas style="width: 100%; height: 100%;" class="score-chart"
 					id="myChart"></canvas>
@@ -149,12 +152,11 @@
 	</div>
 
 	<script>
-		
-		let scores= []
+		let scores = []
 
-		for(let i = 1 ; i <=  5 ; i++) {
-			const score = document.getElementById("score-"+i);
-			scores.push(parseInt(score.value));			
+		for (let i = 1; i <= 5; i++) {
+			const score = document.getElementById("score-" + i);
+			scores.push(parseInt(score.value));
 		}
 
 		const ctx = document.getElementById('myChart').getContext('2d');
@@ -210,15 +212,17 @@
 					<div class="card p-3">
 						<div class="d-flex justify-content-between align-items-center">
 							<div class="user d-flex flex-row align-items-center">
-								<input name="review_score" id="input-id" type="text" class="rating" readonly data-size="sm" value="${reviewCurUser.review_score }">
+								<input name="review_score" id="input-id" type="text"
+									class="rating" readonly data-size="sm"
+									value="${reviewCurUser.review_score }">
 							</div>
 							<small> ${reviewCurUser.review_open_date} </small>
 						</div>
 						<div class="mt-2 px-4">${reviewCurUser.review_content }</div>
 						<div class="d-flex justify-content-end">
 							<button>
-								<a href="/review/update?review_id=${reviewCurUser.review_id}"> 수정
-								</a>
+								<a href="/review/update?review_id=${reviewCurUser.review_id}">
+									수정 </a>
 							</button>
 							<form action="/review/delete" method="post">
 								<input type="hidden" name="review_id"
@@ -238,7 +242,9 @@
 					<div class="card p-3 mb-3">
 						<div class="d-flex justify-content-between align-items-center">
 							<div class="user d-flex flex-row align-items-center">
-								<input name="review_score" id="input-id" type="text" class="rating" readonly data-size="sm" value="${review.review_score }">
+								<input name="review_score" id="input-id" type="text"
+									class="rating" readonly data-size="sm"
+									value="${review.review_score }">
 							</div>
 							<small> ${review.review_open_date} </small>
 						</div>
@@ -250,40 +256,35 @@
 			<ul>
 				<c:choose>
 					<c:when test="${reviewPi.currentPage eq 1 }">
-						<li class="page-item">
-							<a class="page-link" href="#" aria-label="Previous">
-								<span aria-hidden="true">&laquo;</span>
-							</a>
-						</li>
+						<li class="page-item"><a class="page-link" href="#"
+							aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
+						</a></li>
 					</c:when>
 					<c:otherwise>
-					<li class="page-item">
-							<a class="page-link" href="detail?cpage=${reviewPi.currentPage-1 }&product_id=${product.product_id}" aria-label="Previous">
-								<span aria-hidden="true">&laquo;</span>
-							</a>
-						</li>
+						<li class="page-item"><a class="page-link"
+							href="detail?cpage=${reviewPi.currentPage-1 }&product_id=${product.product_id}"
+							aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
+						</a></li>
 					</c:otherwise>
 				</c:choose>
-				<c:forEach var="p" begin="${reviewPi.startPage}" end="${reviewPi.endPage}">
-					<li class="page-item">
-						<a class="page-link" href="detail?cpage=${p }&product_id=${product.product_id}">${ p}</a>
+				<c:forEach var="p" begin="${reviewPi.startPage}"
+					end="${reviewPi.endPage}">
+					<li class="page-item"><a class="page-link"
+						href="detail?cpage=${p }&product_id=${product.product_id}">${ p}</a>
 					</li>
 				</c:forEach>
-				
+
 				<c:choose>
 					<c:when test="${reviewPi.currentPage eq reviewPi.maxPage }">
-						<li class="page-item">
-							<a class="page-link" href="#" aria-label="Previous">
-								<span aria-hidden="true">&raquo;</span>
-							</a>
-						</li>
+						<li class="page-item"><a class="page-link" href="#"
+							aria-label="Previous"> <span aria-hidden="true">&raquo;</span>
+						</a></li>
 					</c:when>
 					<c:otherwise>
-					<li class="page-item">
-							<a class="page-link" href="detail?cpage=${reviewPi.currentPage+1 }&product_id=${product.product_id}" aria-label="Previous">
-								<span aria-hidden="true">&raquo;</span>
-							</a>
-						</li>
+						<li class="page-item"><a class="page-link"
+							href="detail?cpage=${reviewPi.currentPage+1 }&product_id=${product.product_id}"
+							aria-label="Previous"> <span aria-hidden="true">&raquo;</span>
+						</a></li>
 					</c:otherwise>
 				</c:choose>
 			</ul>
@@ -297,101 +298,193 @@
 			<table class="table">
 				<thead>
 					<tr>
-						<th scope="col">번호</th>
-						<th scope="col">제목</th>
-						<th scope="col">작성자</th>
-						<th scope="col">작성일</th>
-						<th scope="col">조회</th>
+						<th scope="col" style="width: 5%; text-align: center;">번호</th>
+						<th scope="col" style="width: 10%; text-align: center;">답변여부</th>
+						<th scope="col" style="width: 15%; text-align: center;">구분</th>
+						<th scope="col" style="width: 40%; text-align: center;">제목</th>
+						<th scope="col" style="width: 15%; text-align: center;">작성자</th>
+						<th scope="col" style="width: 15%; text-align: center;">작성일</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-						<th scope="row">1</th>
-						<td>배송 문의</td>
-						<td>정**</td>
-						<td>2023-10-11</td>
-						<td>1</td>
-					</tr>
+					<c:choose>
+						<c:when test="${empty boardList}">
+							<tr>
+								<td colspan="5">
+									<h3 class="text-center">등록된 문의가 없습니다.</h3>
+								</td>
+							</tr>
+						</c:when>
+						<c:otherwise>
+							<c:forEach var="item" items="${boardList}">
+								<c:if test="${item.boardAnswerNum == 0}">
+									<tr id="question-${item.boardQuestionNum}"
+										onclick="toggleRow('${item.boardQuestionNum}','${item.boardSecret}', '${item.boardMemberId}', '${memberName}')">
+										<input type="hidden" name="memberId" value="${memberName}">
+										<td class="td-num" style="width: 5%; text-align: center;">${boardRow}</td>
+										<td class="td-AnswerNum"
+											style="width: 10%; text-align: center;"><c:choose>
+												<c:when test="${item.boardAnswer_Y == 1}">
+													답변 완료
+												</c:when>
+												<c:otherwise>
+													답변 대기중
+												</c:otherwise>
+											</c:choose></td>
+										<td class="td-boardCategory"
+											style="width: 15%; text-align: center;">${item.boardCategory}</td>
+										<td class="td-boardTitle"
+											style="width: 40%; text-align: center;">${item.boardTitle}</td>
+										<td class="td-memberId"
+											style="width: 15%; text-align: center;">${item.boardMemberId}</td>
+										<td class="td-indate" style="width: 15%; text-align: center;">${item.boardIndate}</td>
+									</tr>
+									<tr id="hidden-${item.boardQuestionNum}"
+										class="hidden-content-row1-user"
+										style="display: none; text-align: left;">
+										<td colspan="6">
+											<div class="hidden-content">
+												<p style="font-weight: bolder; font-size: 1.2em;">${item.boardTitle}</p>
+												${item.boardContent}
+												<c:if test="${item.boardMemberId eq memberName}">
+													<div style="text-align: right; margin-top: 10px;">
+														<button
+															onclick="deleteInquiry('${item.boardQuestionNum}','${product.product_id }')">삭제</button>
+														<!-- 답변이 있을 경우 수정 못함 -->
+														<c:if test="${item.boardAnswer_Y == 0}">
+															<button onclick="openEdit('${item.boardQuestionNum}')">수정</button>
+														</c:if>
+													</div>
+												</c:if>
+												<c:if
+													test="${memberName eq 'admin' and item.boardAnswer_Y == 0}">
+													<div style="text-align: right; margin-top: 10px;">
+														<button class="as-button"
+															onclick="openAnswer('${item.boardQuestionNum}', '${memberName}','${ product.product_id}')">답변</button>
+													</div>
+												</c:if>
+											</div>
+										</td>
+									</tr>
+								</c:if>
+								<c:forEach var="answerItem" items="${answerList}">
+									<c:if
+										test="${item.boardQuestionNum == answerItem.boardQuestionNum && answerItem.boardAnswerNum == 1}">
+										<tr id="answer-${item.boardQuestionNum}"
+											class="hidden-content-row-admin"
+											style="display: none; text-align: left; background-color: lightgray">
+											<td colspan="5">
+												<div>
+													<p style="font-weight: bolder; font-size: 1.2em;">[답변]
+														관리자</p>
+													${answerItem.boardContent}
+												</div>
+											</td>
+											<td colspan="1">
+												<div style="text-align: center;">
+													${answerItem.boardIndate}</div> <c:if
+													test="${memberName eq 'admin'}">
+													<div style="text-align: right; margin-top: 10px;">
+														<button
+															onclick="openAnswerEdit('${item.boardQuestionNum}', '${memberName}','${ product.product_id}')">수정</button>
+													</div>
+												</c:if>
+											</td>
+										</tr>
+									</c:if>
+								</c:forEach>
+							</c:forEach>
+						</c:otherwise>
+					</c:choose>
 				</tbody>
 			</table>
-			<button class="qa-button">문의 하기</button>
+			<c:if test="${memberName ne 'admin' and not empty memberName}">
+				<button class="qa-button" onclick="openWrite('${product_id}')">문의 하기</button>
+			</c:if>
 		</div>
+		<!-- 페이징 버튼 -->
+		<nav class="mt-3 mb-5">
+			<ul class="pagination justify-content-center">
+				<c:choose>
+					<c:when test="${ inquiryPi.currentPage eq 1 }">
+						<li class="page-item"><a class="page-link" href="#"
+							aria-label="Previous"> <span aria-hidden="true"><i
+									class="fa-solid fa-angles-left" style="color: gray;"></i></span>
+						</a></li>
+						<li class="page-item"><a class="page-link" href="#"
+							aria-label="Previous"> <span aria-hidden="true"><i
+									class="fa-solid fa-angle-left" style="color: gray;"></i></span>
+						</a></li>
+					</c:when>
+					<c:otherwise>
+						<li class="page-item">
+							<!-- 1, 11, 21, 31, 41, .......... --> <a class="page-link"
+							href="list.do?ipage=${ inquiryPi.startPage -1 }"
+							aria-label="Previous"> <span aria-hidden="true"><i
+									class="fa-solid fa-angles-left" style="color: gray;"></i></span>
+						</a>
+						</li>
+						<li class="page-item"><a class="page-link"
+							href="list.do?ipage=${ inquiryPi.currentPage - 1}"
+							aria-label="Previous"> <span aria-hidden="true"><i
+									class="fa-solid fa-angle-left" style="color: gray;"></i></span>
+						</a></li>
+					</c:otherwise>
+				</c:choose>
+
+
+				<c:forEach var="page" begin="${inquiryPi.startPage}"
+					end="${inquiryPi.endPage}">
+					<li class="page-item"><a style="color: gray;"
+						class="page-link ${inquiryPi.currentPage == page ? 'text-danger' : '' }"
+						href="list.do?ipage=${page}">${page}</a></li>
+				</c:forEach>
+
+
+				<c:choose>
+					<c:when test="${inquiryPi.currentPage eq inquiryPi.maxPage}">
+						<li class="page-item"><a class="page-link" href="#"
+							aria-label="Next"> <span aria-hidden="true"><i
+									class="fa-solid fa-angle-right" style="color: gray;"></i></span>
+						</a></li>
+						<li class="page-item"><a class="page-link" href="#"
+							aria-label="Next"> <span aria-hidden="true"><i
+									class="fa-solid fa-angles-right" style="color: gray;"></i></span>
+						</a></li>
+					</c:when>
+					<c:when test="${inquiryPi.endPage eq inquiryPi.maxPage}">
+						<li class="page-item"><a class="page-link"
+							href="list.do?ipage=${inquiryPi.maxPage}" aria-label="Next">
+								<span aria-hidden="true"><i
+									class="fa-solid fa-angles-right" style="color: gray;"></i></span>
+						</a></li>
+					</c:when>
+					<c:otherwise>
+						<li class="page-item"><a class="page-link"
+							href="list.do?ipage=${inquiryPi.currentPage + 1}"
+							aria-label="Next"> <span aria-hidden="true"><i
+									class="fa-solid fa-angle-right" style="color: gray;"></i></span>
+						</a></li>
+						<li class="page-item">
+							<!-- 10, 20, 30, 40, .... --> <a class="page-link"
+							href="list.do?ipage=${inquiryPi.endPage+1}" aria-label="Next">
+								<span aria-hidden="true"><i
+									class="fa-solid fa-angles-right" style="color: gray;"></i></span>
+						</a>
+						</li>
+					</c:otherwise>
+				</c:choose>
+			</ul>
+		</nav>
 	</section>
-	<!-- 페이징 버튼 -->
-	<nav class="mt-3 mb-5">
-		<ul class="pagination justify-content-center">
-			<c:choose>
-				<c:when test="${ pi.currentPage eq 1 }">
-					<li class="page-item"><a class="page-link" href="#"
-						aria-label="Previous"> <span aria-hidden="true"><i
-								class="fa-solid fa-angles-left" style="color: gray;"></i></span>
-					</a></li>
-					<li class="page-item"><a class="page-link" href="#"
-						aria-label="Previous"> <span aria-hidden="true"><i
-								class="fa-solid fa-angle-left" style="color: gray;"></i></span>
-					</a></li>
-				</c:when>
-				<c:otherwise>
-					<li class="page-item">
-						<!-- 1, 11, 21, 31, 41, .......... --> <a class="page-link"
-						href="list.do?cpage=${ pi.startPage -1 }" aria-label="Previous">
-							<span aria-hidden="true"><i
-								class="fa-solid fa-angles-left" style="color: gray;"></i></span>
-					</a>
-					</li>
-					<li class="page-item"><a class="page-link"
-						href="list.do?cpage=${ pi.currentPage - 1}" aria-label="Previous">
-							<span aria-hidden="true"><i
-								class="fa-solid fa-angle-left" style="color: gray;"></i></span>
-					</a></li>
-				</c:otherwise>
-			</c:choose>
-
-			<c:forEach var="page" begin="${pi.startPage}" end="${pi.endPage}">
-				<li class="page-item"><a style="color: gray;" class="page-link ${pi.currentPage == page ? 'text-danger' : '' }"
-					href="list.do?cpage=${page}">${page}</a></li>
-			</c:forEach>
-
-			<c:choose>
-				<c:when test="${pi.currentPage eq pi.maxPage}">
-					<li class="page-item"><a class="page-link" href="#"
-						aria-label="Next"> <span aria-hidden="true"><i
-								class="fa-solid fa-angle-right" style="color: gray;"></i></span>
-					</a></li>
-					<li class="page-item"><a class="page-link" href="#"
-						aria-label="Next"> <span aria-hidden="true"><i
-								class="fa-solid fa-angles-right" style="color: gray;"></i></span>
-					</a></li>
-				</c:when>
-				<c:when test="${pi.endPage eq pi.maxPage}">
-					<li class="page-item"><a class="page-link"
-						href="list.do?cpage=${pi.maxPage}" aria-label="Next"> <span
-							aria-hidden="true"><i class="fa-solid fa-angles-right"
-								style="color: gray;"></i></span>
-					</a></li>
-				</c:when>
-				<c:otherwise>
-					<li class="page-item"><a class="page-link"
-						href="list.do?cpage=${pi.currentPage + 1}" aria-label="Next">
-							<span aria-hidden="true"><i
-								class="fa-solid fa-angle-right" style="color: gray;"></i></span>
-					</a></li>
-					<li class="page-item">
-						<!-- 10, 20, 30, 40, .... --> <a class="page-link"
-						href="list.do?cpage=${pi.endPage+1}" aria-label="Next"> <span
-							aria-hidden="true"><i class="fa-solid fa-angles-right"
-								style="color: gray;"></i></span>
-					</a>
-					</li>
-				</c:otherwise>
-			</c:choose>
-		</ul>
-	</nav>
 
 	<%@ include file="/WEB-INF/views/common/chat-button.jsp"%>
 
 
 </body>
+
+<script src="/resources/js/board/inquiry.js"></script>
+
 
 <script
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
@@ -413,7 +506,7 @@
 	$("#input-id").rating({
 		'size' : 'lg',
 		'step' : "1"
-		
+
 	});
 </script>
 
@@ -425,5 +518,8 @@
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js"
 	integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa"
 	crossorigin="anonymous"></script>
+
+<script src="/resources/js/board/inquiry.js"></script>
+
 
 </html>

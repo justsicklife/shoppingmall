@@ -10,13 +10,13 @@ import kr.co.greenart.member.model.dto.MemberDto;
 public interface BoardService {
 	
 	// 전체 게시글 수 조회
-	int selectListCount(BoardDto bo);
+	int selectListCount(int id);
 	
 	// 문의 목록 불러오기
-	List<BoardDto> selectListAll(PageInfo inquiryPi, BoardDto bo);
+	List<BoardDto> selectListAll(PageInfo inquiryPi, int id );
 	
 	// 답변 목록 불러오기
-	List<BoardDto> selectAnswerAll(BoardDto bo);
+	public List<BoardDto> selectAnswerAll(int id);
 	
 	// 글 작성
 	public int insertInquiry(BoardDto bo);
