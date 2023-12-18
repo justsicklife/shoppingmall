@@ -19,7 +19,7 @@
         .chat-button {
             padding: 15px; 
             border-radius: 50%;
-            border: none;
+            border: 1px dashed;
 
         }
         .chat-box {

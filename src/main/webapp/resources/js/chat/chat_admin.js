@@ -1,4 +1,3 @@
-// 
 let sockJs;
 let stomp;
 

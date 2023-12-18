@@ -256,3 +256,12 @@ li {
 .score_sum{
 	font-weight: bold;
 }
+
+.button_group{
+	display: flex;
+	gap: 5px;
+}
+
+.division{
+	border-bottom: 1px solid rgb(201, 201, 201);
+}

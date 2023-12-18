@@ -17,4 +17,5 @@ public class ChatRoomDTO {
 	private int chatRoomId;
 	private int memberId;
 	private String chatRoomTitle;
+	private int chatRoomAlertCount;
 }

@@ -20,6 +20,8 @@
 
 <script src="/resources/se/js/jindo.min.js"></script>
 
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
 <style type="text/css">
 #att_zone {
 	width: 660px;
@@ -33,6 +35,10 @@
 	color: #999;
 	font-size: .9em;
 }
+body {
+	font-size: 16px;
+}
+
 </style>
 </head>
 
@@ -52,10 +58,10 @@
 			<div>
 				<label for="lang">옷 타입</label> <select name="product_type"
 					id="product_type">
-					<option value="outem">outem</option>
-					<option value="top">top</option>
-					<option value="bottom">bottom</option>
-					<option value="shoes">shoes</option>
+					<option value="outer">아우터</option>
+					<option value="top">상의</option>
+					<option value="bottom">하의</option>
+					<option value="shoes">신발</option>
 				</select>
 			</div>
 
@@ -84,7 +90,7 @@
 				<textarea id="txtContent" name="product_info" rows="30"
 					style="width: 100%;"></textarea>
 			</div>
-			<div class="buttonDiv">
+			<div class="buttonDiv d-flex justify-content-end">
 				<button type="button" class="btn btn-primary" onclick="onWrite()">쓰기</button>
 				<button type="button" class="btn btn-primary"
 					onclick="history.go(-1);">취소</button>
@@ -303,4 +309,6 @@
     )('att_zone', 'btnAtt')
     
     </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+	
 </html>

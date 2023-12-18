@@ -55,7 +55,7 @@ public class ProductController {
 
 		// 해야될거
 		// 1. 각자 type 에 맞는 상품 들을 불러온다
-		List<String> types = new ArrayList<>(Arrays.asList("outem", "top", "bottom", "shoes"));
+		List<String> types = new ArrayList<>(Arrays.asList("outer", "top", "bottom", "shoes"));
 
 		Stream<String> straem = types.stream();
 
@@ -124,8 +124,12 @@ public class ProductController {
 		}
 
 		// 평균 구하는거
-		sumScore /= countScore.getSum();
-
+		if(sumScore != 0) {
+			sumScore /= countScore.getSum();			
+		} else {
+			sumScore = 0;
+		}
+		
 		model.addAttribute("sumScore", sumScore);
 
 		model.addAttribute("scores", scoreNums);

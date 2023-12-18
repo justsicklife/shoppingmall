@@ -62,7 +62,7 @@
 	<c:forEach var="score" items="${scores }" varStatus="status">
 		<input type="hidden" id="score-${status.count}" value="${score}" />
 	</c:forEach>
-	<input type="hidden" id="product_id" value="${product.product_id }"/>
+	<input type="hidden" id="product_id" value="${product.product_id }" />
 	<!-- Product section-->
 	<section class="py-5">
 		<div class="container px-4 px-lg-5 my-5">
@@ -76,25 +76,32 @@
 					</div>
 				</div>
 				<div class="col-md-6">
-					<h1 class="display-5 fw-bolder">${product.product_name }</h1>
+					<h3 class="fw-bolder pb-2 division">${product.product_name }</h3>
 
-					<div class="fs-5">
+					<h5 class="pb-2 division">${product.product_content }</h5>
+
+					<div class="fs-5 pb-2 mb-3 division">
 						<span>가격 : </span> <span>${product.product_price}</span>
 					</div>
 
-					<select name="" id="color">
-						<c:forTokens var="color" items="${ product.product_color_group}"
-							delims=",">
-							<option value="${color}">${color}</option>
-						</c:forTokens>
-					</select> <select name="" id="size">
+					<div class="mb-1 ">
+						<select name="" id="color">
+							<c:forTokens var="color" items="${ product.product_color_group}"
+								delims=",">
+								<option value="${color}">${color}</option>
+							</c:forTokens>
+						</select>
+					</div>
+					<div class="mb-3 division pb-3">
+						<select name="" id="size">						
 						<c:forTokens var="size" items="${ product.product_size_group}"
 							delims=",">
 							<option value="${size}">${size }</option>
 						</c:forTokens>
-					</select>
+						</select>
+					</div>
 
-					<div class="d-flex">
+					<div class="mb-3 button_group">
 						<button class="btn btn-outline-dark flex-shrink-0" type="button">찜하기</button>
 						<button class="btn btn-outline-dark flex-shrink-0" type="button">장바구니</button>
 						<button class="btn btn-outline-dark flex-shrink-0" type="button">
@@ -110,10 +117,9 @@
 		<div class="container px-4 px-lg-5 my-5">
 			<ul class="d-flex list-link">
 				<li class="li-link"><a class="link" href="#info"> info </a></li>
-				<li class="li-link"><a class="link"> guide </a></li>
 				<li class="li-link"><a href="#review" class="link"> reviews
 				</a></li>
-				<li class="li-link"><a class="link"> q&a </a></li>
+				<li class="li-link"><a class="link" href="#qna"> q&a </a></li>
 			</ul>
 		</div>
 	</section>
@@ -141,11 +147,10 @@
 			<div class="review-button-box text-end d-flex justify-content-end">
 				<button class="review-button">후기게시판</button>
 				<c:if test="${empty reviewCurUser}">
-					<button class="review-save">
-						<a
-							href="/review/create?member_id=${member_id}&product_id=${product.product_id}">후기작성
-						</a>
-					</button>
+					<a class="d-block"
+						href="/review/create?member_id=${member_id}&product_id=${product.product_id}">
+						<button class="review-save">후기작성</button>
+					</a>
 				</c:if>
 			</div>
 		</div>
@@ -173,8 +178,8 @@
 						}
 					},
 					data : {
-						labels : [ '5 Starts', '4 Starts', '3 Starts',
-								'2 Starts', '1 Starts' ],
+						labels : [ '1 Starts', '2 Starts', '3 Starts',
+								'4 Starts', '5 Starts' ],
 						datasets : [ {
 							data : scores,
 							backgroundColor : [ 'rgba(113, 113, 113, 1)',
@@ -214,21 +219,22 @@
 							<div class="user d-flex flex-row align-items-center">
 								<input name="review_score" id="input-id" type="text"
 									class="rating" readonly data-size="sm"
-									value="${reviewCurUser.review_score }">
+									value="${reviewCurUser.review_score }"
+									data-show-caption="false" data-show-clear="false">
 							</div>
 							<small> ${reviewCurUser.review_open_date} </small>
 						</div>
 						<div class="mt-2 px-4">${reviewCurUser.review_content }</div>
 						<div class="d-flex justify-content-end">
-							<button>
-								<a href="/review/update?review_id=${reviewCurUser.review_id}">
-									수정 </a>
-							</button>
+							<a class="d-block"
+								href="/review/update?review_id=${reviewCurUser.review_id}">
+								<button class="btn btn-primary">수정</button>
+							</a>
 							<form action="/review/delete" method="post">
 								<input type="hidden" name="review_id"
 									value="${reviewCurUser.review_id }" /> <input type="hidden"
 									name="product_id" value="${reviewCurUser.product_id }" />
-								<button>삭제</button>
+								<button class="btn btn-warning">삭제</button>
 							</form>
 						</div>
 					</div>
@@ -244,7 +250,8 @@
 							<div class="user d-flex flex-row align-items-center">
 								<input name="review_score" id="input-id" type="text"
 									class="rating" readonly data-size="sm"
-									value="${review.review_score }">
+									value="${review.review_score }" data-show-caption="false"
+									data-show-clear="false">
 							</div>
 							<small> ${review.review_open_date} </small>
 						</div>
@@ -267,6 +274,7 @@
 						</a></li>
 					</c:otherwise>
 				</c:choose>
+
 				<c:forEach var="p" begin="${reviewPi.startPage}"
 					end="${reviewPi.endPage}">
 					<li class="page-item"><a class="page-link"
@@ -293,7 +301,7 @@
 
 
 	<!-- q&a 게시판 -->
-	<section class="container py-5">
+	<section id="qna" class="container py-5">
 		<div class="table-container text-end">
 			<table class="table">
 				<thead>
@@ -310,7 +318,7 @@
 					<c:choose>
 						<c:when test="${empty boardList}">
 							<tr>
-								<td colspan="5">
+								<td colspan="6">
 									<h3 class="text-center">등록된 문의가 없습니다.</h3>
 								</td>
 							</tr>
@@ -321,30 +329,36 @@
 									<tr id="question-${item.boardQuestionNum}"
 										onclick="toggleRow('${item.boardQuestionNum}','${item.boardSecret}', '${item.boardMemberId}', '${memberName}')">
 										<input type="hidden" name="memberId" value="${memberName}">
-										<td class="td-num" style="width: 5%; text-align: center;">${boardRow}</td>
+										<td class="td-num" style="width: 5%; text-align: center;">
+											${item.boardQuestionNum}</td>
 										<td class="td-AnswerNum"
 											style="width: 10%; text-align: center;"><c:choose>
 												<c:when test="${item.boardAnswer_Y == 1}">
-													답변 완료
-												</c:when>
+																답변 완료
+															</c:when>
 												<c:otherwise>
-													답변 대기중
-												</c:otherwise>
+																답변 대기중
+															</c:otherwise>
 											</c:choose></td>
 										<td class="td-boardCategory"
-											style="width: 15%; text-align: center;">${item.boardCategory}</td>
+											style="width: 15%; text-align: center;">${item.boardCategory}
+										</td>
 										<td class="td-boardTitle"
-											style="width: 40%; text-align: center;">${item.boardTitle}</td>
+											style="width: 40%; text-align: center;">
+											${item.boardTitle}</td>
 										<td class="td-memberId"
-											style="width: 15%; text-align: center;">${item.boardMemberId}</td>
-										<td class="td-indate" style="width: 15%; text-align: center;">${item.boardIndate}</td>
+											style="width: 15%; text-align: center;">
+											${item.boardMemberId}</td>
+										<td class="td-indate" style="width: 15%; text-align: center;">
+											${item.boardIndate}</td>
 									</tr>
 									<tr id="hidden-${item.boardQuestionNum}"
 										class="hidden-content-row1-user"
 										style="display: none; text-align: left;">
 										<td colspan="6">
 											<div class="hidden-content">
-												<p style="font-weight: bolder; font-size: 1.2em;">${item.boardTitle}</p>
+												<p style="font-weight: bolder; font-size: 1.2em;">
+													${item.boardTitle}</p>
 												${item.boardContent}
 												<c:if test="${item.boardMemberId eq memberName}">
 													<div style="text-align: right; margin-top: 10px;">
@@ -399,7 +413,8 @@
 				</tbody>
 			</table>
 			<c:if test="${memberName ne 'admin' and not empty memberName}">
-				<button class="qa-button" onclick="openWrite('${product_id}')">문의 하기</button>
+				<button class="qa-button" onclick="openWrite('${product_id}')">문의
+					하기</button>
 			</c:if>
 		</div>
 		<!-- 페이징 버튼 -->
@@ -419,13 +434,13 @@
 					<c:otherwise>
 						<li class="page-item">
 							<!-- 1, 11, 21, 31, 41, .......... --> <a class="page-link"
-							href="list.do?ipage=${ inquiryPi.startPage -1 }"
+							href="/product/detail?cpage=${reviewPi.currentPage }&product_id=${product.product_id}&ipage=${inquiryPi.currentPage - 1}"
 							aria-label="Previous"> <span aria-hidden="true"><i
 									class="fa-solid fa-angles-left" style="color: gray;"></i></span>
 						</a>
 						</li>
 						<li class="page-item"><a class="page-link"
-							href="list.do?ipage=${ inquiryPi.currentPage - 1}"
+							href="detail?cpage=${reviewPi.currentPage }&product_id=${product.product_id}&ipage=${inquiryPi.currentPage - 1}"
 							aria-label="Previous"> <span aria-hidden="true"><i
 									class="fa-solid fa-angle-left" style="color: gray;"></i></span>
 						</a></li>
@@ -437,7 +452,8 @@
 					end="${inquiryPi.endPage}">
 					<li class="page-item"><a style="color: gray;"
 						class="page-link ${inquiryPi.currentPage == page ? 'text-danger' : '' }"
-						href="list.do?ipage=${page}">${page}</a></li>
+						href="/product/detail?cpage=${reviewPi.currentPage }&product_id=${product.product_id}&ipage=${page}"
+						>${page}</a></li>
 				</c:forEach>
 
 
@@ -454,20 +470,20 @@
 					</c:when>
 					<c:when test="${inquiryPi.endPage eq inquiryPi.maxPage}">
 						<li class="page-item"><a class="page-link"
-							href="list.do?ipage=${inquiryPi.maxPage}" aria-label="Next">
+							href="/product/detail?cpage=${reviewPi.currentPage }&product_id=${product.product_id}&ipage=${inquiryPi.maxPage}" aria-label="Next">
 								<span aria-hidden="true"><i
 									class="fa-solid fa-angles-right" style="color: gray;"></i></span>
 						</a></li>
 					</c:when>
 					<c:otherwise>
 						<li class="page-item"><a class="page-link"
-							href="list.do?ipage=${inquiryPi.currentPage + 1}"
+							href="/product/detail?cpage=${reviewPi.currentPage }&product_id=${product.product_id}&ipage=${page}&ipage=${inquiryPi.currentPage + 1}"
 							aria-label="Next"> <span aria-hidden="true"><i
 									class="fa-solid fa-angle-right" style="color: gray;"></i></span>
 						</a></li>
 						<li class="page-item">
 							<!-- 10, 20, 30, 40, .... --> <a class="page-link"
-							href="list.do?ipage=${inquiryPi.endPage+1}" aria-label="Next">
+							href="/product/detail?cpage=${reviewPi.currentPage }&product_id=${product.product_id}&ipage=${page}&ipage=${inquiryPi.endPage+1}" aria-label="Next">
 								<span aria-hidden="true"><i
 									class="fa-solid fa-angles-right" style="color: gray;"></i></span>
 						</a>
@@ -520,6 +536,7 @@
 	crossorigin="anonymous"></script>
 
 <script src="/resources/js/board/inquiry.js"></script>
+
 
 
 </html>
