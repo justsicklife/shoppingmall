@@ -2,6 +2,7 @@ package kr.co.greenart.member.controller;
 
 import java.io.File;
 import java.lang.System.Logger;
+import java.lang.annotation.Retention;
 import java.sql.Date;
 import java.util.HashMap;
 import java.util.Objects;
@@ -155,16 +156,19 @@ public class MemberController {
 
 		// Objects.isNull(loginUser) = null : true
 		// ! null : false 논리 부정 사용했으니 비어있다면 false
+		//bcryptPasswordEncoder 유저가 입력한 비밀번호 , db에서 불러올 암호화된 비밀번호 순서 지켜야함
 		// getMemberPassword - 사용자 입력 패스워드 / getMemberPassword - db에 자정된 패스워드
 		if (!Objects.isNull(loginUser)
 				&& bcryptPasswordEncoder.matches(memberDto.getMemberPassword(), loginUser.getMemberPassword())
 				&& loginUser.getMemberAuth() == 1) {
 
 			System.out.println("로그인 성공");
+			System.out.println("유저가 입력한 비밀번호 : " + memberDto.getMemberPassword());
 
 			session.setAttribute("memberIdx", loginUser.getMemberIdx());
 			session.setAttribute("memberId", loginUser.getMemberId());
 			session.setAttribute("memberName", loginUser.getMemberName());
+			session.setAttribute("memberEmail", loginUser.getMemberEmail());
 			
 			return "redirect:/product/index";
 		} else if (Objects.isNull(loginUser)
@@ -182,8 +186,8 @@ public class MemberController {
 	}
 
 	// 마이페이지 보기
-	// http://localhost/member/myPage
-	// http://localhost/member/myPage?memberIdx=(memberIdx 값)
+	// http://localhost/member/editMyPage
+	// http://localhost/member/editMyPage?memberIdx=(memberIdx 값)
 	@GetMapping("/editMyPage")
 	public String getMyPage(Model model, HttpSession session) {
 		
@@ -211,18 +215,17 @@ public class MemberController {
 
 	// 마이페이지 수정
 	@PostMapping("/updateMyPage.do")
+	@ResponseBody
 	public String editMyPage(MemberDto memberdto, HttpSession session) {
-
-		int memberIdx = (int) session.getAttribute("memberIdx");
-		System.out.println("memberIdx : " + session.getAttribute("memberIdx"));
-
+		
 		int result = memberService.updateMyPage(memberdto);
 		System.out.println("result : " + memberService.updateMyPage(memberdto));
+		
 		if (result > 0) {
 			System.out.println("회원 정보 수정 완료");
-			return "redirect:/member/myPage?memberIdx=" + memberdto.getMemberIdx();
+			return "success"; // ajax로 수정 성공 메시지 리턴
 		} else {
-			return "common/error404";
+			return "fail"; // ajax로 수정 실패 메시지 리턴
 		}
 
 	}
@@ -379,7 +382,8 @@ public class MemberController {
 				session.setAttribute("memberIdx", loginUser.getMemberIdx());
 //				String sessionMemberIdx = String.valueOf(loginUser.getMemberIdx());
 //				session.setAttribute("sessionMemberIdx", sessionMemberIdx);
-				session.setAttribute("memberName", loginUser.getMemberId());
+				session.setAttribute("memberName", loginUser.getMemberName());
+				session.setAttribute("memberId", loginUser.getMemberId());
 				return "redirect:/product/index";
 			} else {
 //					model.addAttribute("msg", "아이디 비밀번호를 확인해 주세요!");
@@ -405,9 +409,10 @@ public class MemberController {
 				System.out.println(loginUser.toString());
 				if (!Objects.isNull(loginUser)) {
 					session.setAttribute("memberIdx", loginUser.getMemberIdx());
-					String sessionMemberIdx = String.valueOf(loginUser.getMemberIdx());
-					session.setAttribute("sessionMemberIdx", sessionMemberIdx);
+//					String sessionMemberIdx = String.valueOf(loginUser.getMemberIdx());
+//					session.setAttribute("sessionMemberIdx", sessionMemberIdx);
 					session.setAttribute("memberName", loginUser.getMemberName());
+					session.setAttribute("memberId", loginUser.getMemberId());
 					return "redirect:/product/index";
 				} else {
 //						model.addAttribute("msg", "아이디 비밀번호를 확인해 주세요!");
@@ -452,8 +457,8 @@ public class MemberController {
 				session.setAttribute("memberIdx", loginUser.getMemberIdx());
 //				String sessionMemberIdx = String.valueOf(loginUser.getMemberIdx());
 //				session.setAttribute("sessionMemberIdx", sessionMemberIdx);
-				session.setAttribute("memberName", loginUser.getMemberId());
-				System.out.println("memberName : " + loginUser.getMemberId());
+				session.setAttribute("memberId", loginUser.getMemberId());
+				System.out.println("memberId : " + loginUser.getMemberId());
 				return "redirect:/product/index";
 			} else {
 //				model.addAttribute("msg", "아이디 비밀번호를 확인해 주세요!");
@@ -479,9 +484,10 @@ public class MemberController {
 				System.out.println(loginUser.toString());
 				if (!Objects.isNull(loginUser)) {
 					session.setAttribute("memberIdx", loginUser.getMemberIdx());
-					String sessionMemberIdx = String.valueOf(loginUser.getMemberIdx());
-					session.setAttribute("sessionMemberIdx", sessionMemberIdx);
-					session.setAttribute("memberName", loginUser.getMemberName());
+//					String sessionMemberIdx = String.valueOf(loginUser.getMemberIdx());
+//					session.setAttribute("sessionMemberIdx", sessionMemberIdx);
+					session.setAttribute("memberId", loginUser.getMemberId());
+					System.out.println("memberId : " + loginUser.getMemberId());
 					return "redirect:/product/index";
 				} else {
 //					model.addAttribute("msg", "아이디 비밀번호를 확인해 주세요!");
@@ -492,6 +498,47 @@ public class MemberController {
 			return "/signin/signin";
 		}
 
+	}
+	
+	//회원 탈퇴 페이지
+	@GetMapping("/memberDeletePage")
+	public String memberDeletePage(HttpSession session, Model model) {
+		
+		model.addAttribute("memberId", session.getAttribute("memberId"));
+		model.addAttribute("memberEmail", session.getAttribute("memberEmail"));
+		
+		return "/member/member_delete";
+	}
+
+	
+	//회원 탈퇴
+	@PostMapping("/memberDelete.do")
+	@ResponseBody // dto 사용 하고 ajax에서 받아올때 dto 필드명 같아야함
+	public String memberDelete(MemberDto memberdto, HttpSession session, Model model) {		
+		
+		MemberDto loginUser = memberService.loginMember(memberdto);
+		System.out.println("loginUser : " + loginUser);
+		
+		System.out.println("memberDto : " + memberdto.getMemberPassword());
+		
+		//bcryptPasswordEncoder 유저가 입력한 비밀번호 , db에서 불러올 암호화된 비밀번호 순서 지켜야함
+		if(bcryptPasswordEncoder.matches(memberdto.getMemberPassword(), loginUser.getMemberPassword())) {
+			
+			memberService.memberDelete(loginUser);
+			memberService.memberAuthDelete(loginUser);
+			
+			session.invalidate();
+			
+			System.out.println("탈퇴 성공");
+			
+			return "success";
+//			return "/product/index";
+		} else {
+			System.out.println("탈퇴 실패");
+			
+			return "failled";
+//			return "redirect:/member/editMyPage" ;
+		}
 	}
 
 }

@@ -145,7 +145,8 @@
 			m_name = #{memberName},
 			m_addressNum = #{memberAdrrNum},
 			m_addressFirst = #{memberAdrrFirst},
-			m_addressSecond = #{memberAdrrSecond}
+			m_addressSecond = #{memberAdrrSecond},
+			m_phoneNum = #{memberphoneNum}
 			WHERE m_index = #{memberIdx}
 	</select>
 	
@@ -158,5 +159,19 @@
 	<update id="memberAuth">
 		<![CDATA[update S_MEMBER set m_auth = 1 where (select count(*) from S_MEMBER_AUTH where m_email = #{memberEmail} AND AUTHKEY = #{authKey}) > 0]]>
 	</update>
-
+	
+	
+	<!-- 회원 탈퇴 -->
+	<delete id="memberDelete">
+		DELETE FROM S_MEMBER
+		WHERE m_id = #{memberId} 
+		AND m_password =#{memberPassword}
+	</delete>
+	
+	<!-- 회원 탈퇴 ( 이메일 인증 코드 삭제 ) -->
+	<delete id="memberAuthDelete">
+		DELETE FROM S_MEMBER_AUTH
+		WHERE MEMBEREMAIL = #{memberEmail} 
+	</delete>
+	
 </mapper>
