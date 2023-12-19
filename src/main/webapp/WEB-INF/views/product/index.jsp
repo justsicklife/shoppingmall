@@ -210,7 +210,7 @@ a, a:hover {
 				</div>
 			</div>
 			<div class="row">
-				<c:forEach var="item" items="${outem}">
+				<c:forEach var="item" items="${outer}">
 					<div class="col-md-6 col-lg-4 col-xl-3">
 						<div id="product-1" class="single-product">
 							<a href="/product/detail?product_id=${item.product_id }">

@@ -40,21 +40,34 @@
 <script
 	src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/js/locales/LANG.js"></script>
 
+
+<style> 
+	.form{
+		width: 60%;
+		height: 300px;
+		margin: 0 20%;
+		font-size: 16px;
+	}
+	.review_content{
+		width:100%;
+	}
+</style>
 </head>
 
 <body>
 	<div class="container">
-		<form action="/review/update" method="post">
+		<form class="form" action="/review/update" method="post">
 			<input type="hidden" name="product_id" value="${review.product_id}">
 			<input type="hidden" name="member_id" value="${review.member_id}">
 			<input type="hidden" name="review_id" value="${review.review_id}">
 			<div class="form-group purple-border">
-				<label for="exampleFormControlTextarea4">Colorful border</label>
-				<textarea required name="review_content" class="form-control" id="exampleFormControlTextarea4"
+				<textarea required name="review_content" class="review_content" id="exampleFormControlTextarea4"
 					rows="3">${review.review_content}</textarea>
 			</div>
-			<input name="review_score" id="input-id" type="text" class="rating" required data-size="lg" value="${review.review_score}">
-			<button>제출</button>
+			<input name="review_score" id="input-id" type="text" class="rating" data-show-caption="false" data-show-clear="false" required data-size="lg" value="5">
+			<div class="d-flex justify-content-end">
+				<button class="btn btn-primary">제출</button>
+			</div>
 		</form>
 	</div>
 </body>

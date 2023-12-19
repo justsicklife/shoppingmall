@@ -94,6 +94,12 @@
 .fa-search {
 	font-size: 15px;
 }
+.navbar-brand{
+	font-weight: bold;
+}
+.margin-left-2{
+	margin-left: 10px;
+}
 </style>
 </head>
 <body>
@@ -135,7 +141,7 @@
 			</div>
 
 			<div class="d-flex">
-				<form class="d-flex">
+				<form class="d-flex align-items-center margin-left-2">
 					<div class="search-bar">
 						<input class="search-bar__input" type="search" /> <i
 							class="fas fa-search"></i>
@@ -145,11 +151,11 @@
 					<div class="px-2">
 						<c:choose>
 							<c:when test="${sessionScope.sessionMemberIdx eq null && sessionScope.memberIdx eq null}">
-								<a href="/member/loginPage" class="nav-link-right"> 로그인 </a>
+								<a href="/member/loginPage" class="nav-link-right margin-left-2"> 로그인 </a>
 							</c:when>
 							<c:otherwise>
-								<a href="/member/logout.do" class="nav-link-right">로그아웃</a>
-								<a class="nav-link-right" href="/member/editMyPage"> 마이페이지 </a>
+								<a href="/member/logout.do" class="nav-link-right margin-left-2">로그아웃</a>
+								<a class="nav-link-right margin-left-2" href="/member/editMyPage"> 마이페이지 </a>
 							</c:otherwise>
 						</c:choose>
 					</div>
@@ -160,7 +166,7 @@
 				<button class="navbar-toggler" type="button"
 					data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
 					aria-controls="offcanvasNavbar">
-					<span class="navbar-toggler-icon"> <svg
+					<span class="navbar-toggler-icon d-flex align-items-center"> <svg
 							xmlns="http://www.w3.org/2000/svg" width="16" height="16"
 							fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
                             <path fill-rule="evenodd"

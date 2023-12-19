@@ -256,3 +256,25 @@ li {
 .score_sum{
 	font-weight: bold;
 }
+
+.button_group{
+	display: flex;
+	gap: 5px;
+}
+
+.division{
+	border-bottom: 1px solid rgb(201, 201, 201);
+}
+.image_list {
+	display: inline-flex;
+	width: 300px;
+	flex-direction: column;
+}
+.image_list img:nth-child(1){
+	width: 300px;
+	height: 300px;
+}
+.image_list img {
+	width: 100px;
+	height: 100px;
+}

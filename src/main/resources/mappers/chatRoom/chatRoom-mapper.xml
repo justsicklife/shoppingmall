@@ -9,6 +9,7 @@
 		<result column="cr_id" property="chatRoomId"/>
 		<result column="m_id" property="memberId"/>
 		<result column="cr_title" property="chatRoomTitle"/>
+		<result column="cr_alert_count" property="chatRoomAlertCount"/>
 	</resultMap>
 	
 	<select id="findById" parameterType="int" resultMap="chatRoomResultMap">
