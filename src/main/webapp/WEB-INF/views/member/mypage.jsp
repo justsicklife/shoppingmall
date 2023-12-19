@@ -162,121 +162,10 @@
 
 <body>
 
-   <nav class="navbar fixed-top">
-      <div class="container-fluid">
-         <div>
-            <nav class="navbar navbar-expand-lg navbar-light ">
-               <div class="container-fluid">
-                  <a class="navbar-brand" href="#">쇼핑몰</a>
-                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                     data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false"
-                     aria-label="Toggle navigation">
-                     <span class="navbar-toggler-icon"></span>
-                  </button>
-                  <div class="collapse navbar-collapse" id="navbarScroll">
-                     <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll"
-                        style="-bs-scroll-height: 100px;">
-                        <li class="nav-item"><a class="nav-link-left" href="#">
-                              상품 </a></li>
-                        <li class="nav-item"><a class="nav-link-left" href="#">outerm</a>
-                        </li>
-                        <li class="nav-item"><a class="nav-link-left" href="#" tabindex="-1"
-                              aria-disabled="true">top</a></li>
-                        <li class="nav-item"><a class="nav-link-left" href="#" tabindex="-1"
-                              aria-disabled="true">bottom</a></li>
-                        <li class="nav-item"><a class="nav-link-left" href="#" tabindex="-1"
-                              aria-disabled="true">shoes</a></li>
-                        <li class="nav-item"><a class="nav-link-left" href="#" tabindex="-1"
-                              aria-disabled="true">acc</a></li>
-                     </ul>
-                  </div>
-               </div>
-            </nav>
-         </div>
-
-         <div class="d-flex">
-            <form class="d-flex">
-               <div class="search-bar">
-                  <input class="search-bar__input" type="search" /> <i class="fas fa-search"></i>
-               </div>
-            </form>
-            <div class="d-flex align-items-center">
-               <div class="px-2">
-                  <a class="nav-link-right">
-                     login
-                  </a>
-               </div>
-               <div class="px-2">
-                  <a class="nav-link-right">
-                     order
-                  </a>
-               </div>
-               <div class="px-2">
-                  <a class="nav-link-right">
-                     basket
-                  </a>
-               </div>
-            </div>
-            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
-               data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
-               <span class="navbar-toggler-icon"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                     fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
-                     <path fill-rule="evenodd"
-                        d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z" />
-                  </svg>
-               </span>
-            </button>
-         </div>
-      </div>
-      <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-         <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Offcanvas</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-         </div>
-         <div class="offcanvas-body sidebar-body p-5">
-            <div>
-               <div class="row">
-                  <div class="col-6">
-                     <h5 class="text-uppercase category-button sidebar-button-active" id="category_button">
-                        category</h5>
-                  </div>
-                  <div class="col-6">
-                     <h5 class="text-uppercase community-button" id="community_button">
-                        community</h5>
-                  </div>
-               </div>
-               <div class="row pt-5">
-                  <ul class="col-6 list-unstyled" id="category_display">
-                     <li class="mt-2"><a class="sidebar-link" href="#"> 상품 </a></li>
-                     <li class="mt-2"><a class="sidebar-link" href="#">
-                           outerm </a></li>
-                     <li class="mt-2"><a class="sidebar-link" href="#"> top </a>
-                     </li>
-                     <li class="mt-2"><a class="sidebar-link" href="#">
-                           bottom </a></li>
-                     <li class="mt-2"><a class="sidebar-link" href="#"> shoes
-                        </a></li>
-                     <li class="mt-2"><a class="sidebar-link" href="#"> acc </a>
-                     </li>
-                  </ul>
-                  <ul class="col-6 list-unstyled d-none" id="community_display">
-                     <li class="mt-2"><a class="sidebar-link" href="#">
-                           Notice </a></li>
-                     <li class="mt-2"><a class="sidebar-link" href="#"> Q&A </a>
-                     </li>
-                     <li class="mt-2"><a class="sidebar-link" href="#">
-                           Review </a></li>
-                     <li class="mt-2"><a class="sidebar-link" href="#"> Chat
-                        </a></li>
-                  </ul>
-               </div>
-            </div>
-         </div>
-      </div>
-   </nav>
+   <%@ include file="/WEB-INF/views/common/navbar.jsp"%>
 
 
-
+<!-- 
    <aside class="aside">
       <div class="aside_header">
          <h3>마이페이지</h3>
@@ -295,44 +184,46 @@
             </div>
          </div>
       </div>
-   </aside>
+   </aside> -->
 
 
    <main class="main">
-      <form action="/member/updateMypage.do" method="post" class="main_form form-row">
+      <form action="/member/updateMypage.do" method="post" id="updateForm" class="main_form form-row">
          <c:choose>
-            <%-- myPage =  컨트롤러 MemberDto result = memberService.myPage(memberIdx); --%>
+            <%-- myPage =  컨트롤러 MemberDto result = memberService.myPage(idx); --%>
             <%-- user = 컨트롤러 model.addAttribute("user", idx); --%>
 				<c:when test="${myPage.memberIdx == user}">
                <input type="hidden" name="memberIdx" value="${myPage.memberIdx}">
-               <div class="form-group col-md-12">
+               <div class="form-group col-md-12 my-2">
                   <label for="user_id">아이디</label>
-                  <input type="text"  readonly class="form-control"  id="user_id" name="memberId" value="${myPage.memberId }" placeholder="아이디">
+                  <input type="text"  readonly class="form-control"  id="memberId" name="memberId" value="${myPage.memberId }" placeholder="아이디">
                </div>
-               <div class="form-group col-md-12">
+               <div class="form-group col-md-12 my-2">
                   <label for="user_email">이메일</label>
-                  <input type="email" readonly class="form-control" id="user_email" name="memberEmail" value="${myPage.memberEmail }" placeholder="이메일">
+                  <input type="email" readonly class="form-control" id="memberEmail" name="memberEmail" value="${myPage.memberEmail }" placeholder="이메일">
                </div>
-               <div class="form-group col-md-12">
+               <div class="form-group col-md-12 my-2">
                   <label for="user_name">이름</label>
                   <input type="text" class="form-control" id="user_name" name="memberName" value="${myPage.memberName }" value="이름">
                </div>
-               <div class="form-group col-md-12">
+               <div class="form-group col-md-12 my-2">
+                  <label for="user_adress">주소</label>
+                  <br>
                   <input readonly style="width: 80px;" type="text" id="user_addrNum" name="memberAdrrNum" value="${myPage.memberAdrrNum }" required="required">
                   <a href="#none" onclick="execDaumPostcode()" id="postBtn" class="btn_none btn_04">우편번호</a>
                   <br>
-                  <input readonly style="width: 270px; margin: 5px 0 0;" placeholder="도로명주소" type="text" id="user_addr1" name="memberAdrrFirst" value="${myPage.memberAdrrFirst }" required="required" >
+                  <input readonly style="width: 100%; margin: 5px 0 0;" placeholder="도로명주소" type="text" id="user_addr1" name="memberAdrrFirst" value="${myPage.memberAdrrFirst }" required="required" >
                   <br>
-                  <input style="width: 270px; margin: 5px 0 0;" placeholder="상세주소" type="text" id="user_addr2" name="memberAdrrSecond" value="${myPage.memberAdrrSecond }" required="required" onfocus="this.placeholder = ''" onblur="this.placeholder = '상세주소'" >
+                  <input style="width: 100%; margin: 5px 0 0;" placeholder="상세주소" type="text" id="user_addr2" name="memberAdrrSecond" value="${myPage.memberAdrrSecond }" required="required" onfocus="this.placeholder = ''" onblur="this.placeholder = '상세주소'" >
                </div>
-               <div class="form-group col-md-12">
+               <div class="form-group col-md-12 my-2">
                   <label for="inputEmail4">핸드폰번호</label>
                   <input class="form-control" type="text" id="user_phonNumber" name="memberphoneNum" value="${myPage.memberphoneNum }" value="핸드폰번호" maxlength="14" required="required">
                </div>
                <div class="button_group">
-                  <button type="submit">수정하기</button> 
-                  <button> <a href="">비밀번호 변경</a></button>
-                  <button>탈퇴</button>
+                  <button type="submit" onclick="update(event)">수정하기</button> 
+                  <a>비밀번호 변경</a>
+                  <a href="/member/memberDeletePage">탈퇴</a>
                </div>
             </c:when>
 
@@ -345,6 +236,8 @@
       </form>
    </main>
 
+   <%@ include file="/WEB-INF/views/common/chat-button.jsp"%>
+
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
@@ -352,8 +245,10 @@
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script src="/resources/js/member/singup/singup.js"></script>
+
 <script>
-   //우편번호 검색
+
+//우편번호 검색
 function execDaumPostcode() {
     new daum.Postcode( {
       oncomplete: function( data ) {
@@ -363,5 +258,45 @@ function execDaumPostcode() {
       }
     } ).open();
   }
+
+//수정하기 버튼 클릭
+function update(event){
+   console.log("수정 버튼 클릭");
+
+   // 폼 데이터 직렬화
+   var formData = $("#updateForm").serialize();
+
+   // 폼 제출의 기본 동작 막기
+   event.preventDefault();
+
+   // AJAX 요청 보내기
+   $.ajax({
+      type: "POST",
+      url: "/member/updateMyPage.do",
+      data: formData,
+      success: function(response) {
+         console.log(formData);
+         if (response === "success") {
+            // 폼 제출 
+            // 컨트롤러에서 바로 저장하기 때문에 form 제출해서 다시 저장 할 필요 없음 ( 두번 실행시 에러 발생 )
+            // document.getElementById("updateForm").submit();
+
+            alert("개인정보가 수정되었습니다");
+
+            // 현재 창 리로드
+            location.reload();
+         } else {
+            alert("수정 실패");
+
+            // 현재 창 리로드
+            location.reload();
+         }
+      },
+      error: function() {
+         alert("서버 오류");
+      }
+   })
+}
+
 </script>
 </html>

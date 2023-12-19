@@ -100,5 +100,15 @@ public class MemberDao {
 	public int updateMyPage(SqlSessionTemplate sqlsession, MemberDto memberdto) {
 		return sqlsession.update("memberMapper.updateMyPage", memberdto);
 	}
-
+	
+	//회원 탈퇴
+	public int memberDelete(SqlSessionTemplate sqlsession, MemberDto bo) {
+		return sqlsession.delete("memberMapper.memberDelete", bo);
+	}
+	
+	//회원 탈퇴 ( 이메일 코드 삭제 )
+	public int memberAuthDelete(SqlSessionTemplate sqlsession, MemberDto bo) {
+		return sqlsession.delete("memberMapper.memberAuthDelete", bo);
+	}
+	
 }
