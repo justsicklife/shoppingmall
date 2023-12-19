@@ -458,4 +458,16 @@ public class MemberServiceImpl implements MemberService{
 			return userInfo;
 		}
 
+	// 회원 탈퇴
+	@Override
+	public int memberDelete(MemberDto bo) {
+		return memberDao.memberDelete(sqlSession, bo);
+	}
+	
+	// 회원 탈퇴 ( 이메일 인증 삭제 )
+	@Override
+	public int memberAuthDelete(MemberDto bo) {
+		return memberDao.memberAuthDelete(sqlSession, bo);
+	}
+	
 }

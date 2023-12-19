@@ -67,4 +67,12 @@ public interface MemberService {
 	String getAccessTokenNaver(String authorize_code) throws Throwable;
 	
 	public HashMap<String, Object> getUserInfoNaver(String access_Token) throws Throwable;
+	
+	
+	//회원 탈퇴
+	int memberDelete(MemberDto bo);
+	
+	//회원 탈퇴 ( 이메일 인증 삭제 )
+	int memberAuthDelete(MemberDto bo);
+	
 }
