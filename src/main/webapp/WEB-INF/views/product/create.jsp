@@ -231,28 +231,28 @@ body {
         
       
         // 탐색기에서 드래그앤 드롭 사용
-        attZone.addEventListener('dragenter', function(e){
-          e.preventDefault();
-          e.stopPropagation();
-        }, false)
+        // attZone.addEventListener('dragenter', function(e){
+        //   e.preventDefault();
+        //   e.stopPropagation();
+        // }, false)
         
-        attZone.addEventListener('dragover', function(e){
-          e.preventDefault();
-          e.stopPropagation();
+        // attZone.addEventListener('dragover', function(e){
+        //   e.preventDefault();
+        //   e.stopPropagation();
           
-        }, false)
+        // }, false)
       
-        attZone.addEventListener('drop', function(e){
-          var files = {};
-          e.preventDefault();
-          e.stopPropagation();
-          var dt = e.dataTransfer;
-          files = dt.files;
-          for(f of files){
-            imageLoader(f);
-          }
+        // attZone.addEventListener('drop', function(e){
+        //   var files = {};
+        //   e.preventDefault();
+        //   e.stopPropagation();
+        //   var dt = e.dataTransfer;
+        //   files = dt.files;
+        //   for(f of files){
+        //     imageLoader(f);
+        //   }
           
-        }, false)
+        // }, false)
         
     
         

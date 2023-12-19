@@ -68,10 +68,10 @@
 		<div class="container px-4 px-lg-5 my-5">
 			<div class="row gx-4 gx-lg-5 align-items-center">
 				<div class="col-md-6">
-					<div>
+					<div class="image_list">
 						<c:forTokens var="image" items="${product.product_image_group }"
 							delims=",">
-							<img class="main-image" src="${image}" />
+							<img src="${image}" />
 						</c:forTokens>
 					</div>
 				</div>
@@ -434,7 +434,7 @@
 					<c:otherwise>
 						<li class="page-item">
 							<!-- 1, 11, 21, 31, 41, .......... --> <a class="page-link"
-							href="/product/detail?cpage=${reviewPi.currentPage }&product_id=${product.product_id}&ipage=${inquiryPi.currentPage - 1}"
+							href="/product/detail?cpage=${reviewPi.currentPage }&product_id=${product.product_id}&ipage=${1}"
 							aria-label="Previous"> <span aria-hidden="true"><i
 									class="fa-solid fa-angles-left" style="color: gray;"></i></span>
 						</a>
@@ -470,20 +470,20 @@
 					</c:when>
 					<c:when test="${inquiryPi.endPage eq inquiryPi.maxPage}">
 						<li class="page-item"><a class="page-link"
-							href="/product/detail?cpage=${reviewPi.currentPage }&product_id=${product.product_id}&ipage=${inquiryPi.maxPage}" aria-label="Next">
+							href="/product/detail?cpage=${reviewPi.currentPage }&product_id=${product.product_id}&ipage=${inquiryPi.maxPage + 1}" aria-label="Next">
 								<span aria-hidden="true"><i
 									class="fa-solid fa-angles-right" style="color: gray;"></i></span>
 						</a></li>
 					</c:when>
 					<c:otherwise>
 						<li class="page-item"><a class="page-link"
-							href="/product/detail?cpage=${reviewPi.currentPage }&product_id=${product.product_id}&ipage=${page}&ipage=${inquiryPi.currentPage + 1}"
+							href="/product/detail?cpage=${reviewPi.currentPage }&product_id=${product.product_id}&ipage=${inquiryPi.currentPage + 1}"
 							aria-label="Next"> <span aria-hidden="true"><i
 									class="fa-solid fa-angle-right" style="color: gray;"></i></span>
 						</a></li>
 						<li class="page-item">
 							<!-- 10, 20, 30, 40, .... --> <a class="page-link"
-							href="/product/detail?cpage=${reviewPi.currentPage }&product_id=${product.product_id}&ipage=${page}&ipage=${inquiryPi.endPage+1}" aria-label="Next">
+							href="/product/detail?cpage=${reviewPi.currentPage }&product_id=${product.product_id}&ipage=${inquiryPi.maxPage}" aria-label="Next">
 								<span aria-hidden="true"><i
 									class="fa-solid fa-angles-right" style="color: gray;"></i></span>
 						</a>
