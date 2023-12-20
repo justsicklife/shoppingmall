@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import kr.co.greenart.chat.model.dto.ChatMessageDTO;
+import kr.co.greenart.chat.model.dto.ChatRoomDTO;
 
 @Repository
 public class ChatMessageDAO {

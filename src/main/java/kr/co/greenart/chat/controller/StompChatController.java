@@ -31,7 +31,7 @@ public class StompChatController {
 	// 메세지를 입력했을때
 	@MessageMapping(value="/chat/message")
 	public void message(ChatMessageDTO message) {
-//		System.out.println("message : " + message);
+		System.out.println("message : " + message);
 		int ok = chatMessageService.ChatMessageInsert(message);
 
 		template.convertAndSend("/sub/chat/room/" + message.getChatRoomId() ,message);
@@ -81,12 +81,17 @@ public class StompChatController {
 	@MessageMapping(value="/chat/alarm")
 	public void alarm(ChatRoomDTO chatRoomDTO) {
 		
+		// 선택된걸 찾는다 0 이라면 현재 선택된게 아님 
 		int selected = chatRoomService.chatRoomFindSelected(chatRoomDTO);
+		// 마지막 메시지를 가져옴 
+		int lastMessageSuccess = chatRoomService.ChatMessageGetLastMessage(chatRoomDTO);
+		System.out.println("lastMessageSuccess : " + lastMessageSuccess);
+		
 		if(selected == 0) {
 			int success = chatRoomService.chatRoomAddAlert(chatRoomDTO);
 			template.convertAndSend("/sub/chat/alarm",chatRoomDTO);
 		} else {
-			template.convertAndSend("/sub/chat/alarm",new ChatRoomDTO(-1,-1,-1,-1,null,null));		
+			template.convertAndSend("/sub/chat/alarm",new ChatRoomDTO(-1,-1,-1,-1,null,null,null));		
 		}
 		
 	}

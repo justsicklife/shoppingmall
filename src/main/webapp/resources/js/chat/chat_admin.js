@@ -39,10 +39,10 @@ $(document).ready(
                 stomp.subscribe("/sub/chat/list",
                     function (chat) {
                         let data = JSON.parse(chat.body);
-                        console.log(document.getElementById("inbox-chat"));
+                        console.log(data);
                         $("#inbox-chat").empty();
                         for (let i = 0; i < data.length; i++) {
-                            $("#inbox-chat").append(listMaker(data[i].chatRoomId, data[i].memberId, curRoomIdx,data[i].chatRoomAlertCount));
+                            $("#inbox-chat").append(listMaker(data[i].chatRoomId, data[i].memberId, curRoomIdx,data[i].chatRoomAlertCount,data[i].chatRoomMessage));
                             console.log(data[i]);
                         }
                     })
@@ -54,8 +54,10 @@ $(document).ready(
                         console.log(data);
                         if(data.chatRoomId !== -1) {
                             const alarmCount = document.getElementById(`chat_date_${data.chatRoomId}`)
-                            console.log(alarmCount);
+                            const chatRoomMessage = document.getElementById("chat_message");
                             alarmCount.innerHTML = data.chatRoomAlertCount;
+                            chatRoomMessage.innerHTML = data.chatRoomMessage;
+
                         }
                     })
 
@@ -76,16 +78,23 @@ $(document).ready(
 )
 
 // 채팅방 목록 태그 만들어주는거
-function listMaker(chatRoomId, memberId, curRoomIdx,chatRoomAlertCount) {
-    console.log(chatRoomId, curRoomIdx);
+function listMaker(chatRoomId, memberId, curRoomIdx,chatRoomAlertCount,chatRoomMessage) {
     let str = `<div class='chat_list ${curRoomIdx === chatRoomId ? "active_chat" : ""}' id='chat-${chatRoomId}' onclick='changeRoom(${chatRoomId})'>
     <div class='chat_people'>
     <div class='chat_img'>
     <img src='https://ptetutorials.com/images/user-profile.png' alt='sunil'>
     </div>
     <div class='chat_ib'>
-    <h5>${memberId} <span class='chat_alarm' id='chat_date_${chatRoomId}'>${chatRoomAlertCount}</span></h5>
-    <p></p></div>내용</div></div>`;
+    <h5>${memberId}</h5>
+    <div>
+    <div class='d-flex'>
+    <div class='flex-grow-1' id='chat_message'>${chatRoomMessage}</div>
+    <span class='chat_alarm' id='chat_date_${chatRoomId}'>${chatRoomAlertCount}</span>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>`;
     return str;
 }
 
@@ -134,7 +143,7 @@ function msgSendButtonEvent() {
 
     write_msg.value = "";
 
-    let nowDate = `${new Date().getFullYear()}:${new Date().getMonth()}:${new Date().getHours()}:${new Date().getMinutes()}`;
+    let nowDate = `${new Date().getFullYear()}:${new Date().getMonth()}:${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`;
 
 
     // 메세지를 구독한 분에게 전달해준다 JSON 형태로
@@ -165,9 +174,7 @@ function changeRoom(roomIdx) {
     $("#chat-" + roomIdx).addClass("active_chat");
     // 현재 선택된 방에 class 넣어주는거
     $("#chat-" + curRoomIdx).removeClass("active_chat");
-
-    $("#chat-" + curRoomIdx).removeClass("alram");
-
+    
     curRoomIdx = roomIdx;
 
     stomp.send("/pub/chat/delete_alarm",

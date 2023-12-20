@@ -53,5 +53,9 @@ public class ChatRoomService {
 	public int chatRoomSelectedReset() {
 		return chatRoomDAO.chatRoomSelectedReset(sql);
 	}
+
+	public int ChatMessageGetLastMessage(ChatRoomDTO chatRoomDTO) {
+		return chatRoomDAO.ChatMessageGetLastMessage(sql,chatRoomDTO);
+	}
 	
 }

@@ -46,4 +46,8 @@ public class ChatRoomDAO {
 		return sql.update("s_chatRoom.chatRoomSelectedReset");
 	}
 
+	public int ChatMessageGetLastMessage(SqlSessionTemplate sql, ChatRoomDTO chatRoomDTO) {
+		return sql.update("s_chatRoom.ChatMessageGetLastMessage",chatRoomDTO);
+	}
+
 }

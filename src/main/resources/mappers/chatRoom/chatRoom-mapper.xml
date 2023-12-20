@@ -10,7 +10,8 @@
 		<result column="m_index" property="memberIdx" />
 		<result column="cr_alert_count" property="chatRoomAlertCount" />
 		<result column="cr_selected" property="chatRoomSelected" />
-		
+		<result column="cr_message" property="chatRoomMessage" />
+
 		<result column="m_name" property="memberName" />
 		<result column="m_id" property="memberId" />
 	</resultMap>
@@ -25,6 +26,7 @@
 		select c.cr_id,
 		c.m_index,
 		c.cr_alert_count,
+		c.cr_message,
 		m.m_name,
 		m.m_id
 		from
@@ -39,31 +41,55 @@
 		insert into s_chat_room(cr_id,m_index)
 		VALUES(s_chat_room_seq.nextval,#{memberIdx})
 	</insert>
-	
+
 	<update id="chatRoomSelected">
-		update s_chat_room set cr_selected = 1 where cr_id = #{id}
+		update s_chat_room set cr_selected = 1 where cr_id =
+		#{id}
 	</update>
-	
+
 	<update id="chatRoomSelectedRemove">
-		update s_chat_room set cr_selected = 0 where cr_selected = 1 
+		update s_chat_room set cr_selected = 0 where
+		cr_selected = 1
 	</update>
-	
+
 	<update id="chatRoomAddAlert">
-		update s_chat_room set cr_alert_count = cr_alert_count + 1 where cr_id = #{chatRoomId}
-		<selectKey resultType="int" keyProperty="chatRoomAlertCount" order="AFTER">
-			select cr_alert_count from s_chat_room where cr_id = #{chatRoomId}
+		update s_chat_room set cr_alert_count = cr_alert_count + 1 where cr_id
+		= #{chatRoomId}
+		<selectKey resultType="int" keyProperty="chatRoomAlertCount"
+			order="AFTER">
+			select cr_alert_count from s_chat_room where cr_id =
+			#{chatRoomId}
 		</selectKey>
 	</update>
-	
+
 	<update id="chatRoomRemoveAlert">
-		update s_chat_room set cr_alert_count = 0 where cr_id = #{chatRoomId}
+		update s_chat_room set cr_alert_count = 0 where cr_id
+		= #{chatRoomId}
 	</update>
-	
+
 	<select id="chatRoomFindSelected" resultType="int">
-		select count(*) from s_chat_room where cr_id = #{chatRoomId} and cr_selected = 1
+		select count(*)
+		from s_chat_room where cr_id = #{chatRoomId} and cr_selected = 1
 	</select>
-	
+
 	<update id="chatRoomSelectedReset">
 		update s_chat_room set cr_selected = 0
+	</update>
+
+	<update id="ChatMessageGetLastMessage">
+		update s_chat_room set cr_message = (SELECT
+		cm_content
+		FROM (
+		SELECT *
+		FROM s_chat_message
+		WHERE cr_id = #{chatRoomId}
+		ORDER BY cm_date DESC
+		)
+		WHERE ROWNUM = 1 )
+	where cr_id = #{chatRoomId}
+	<selectKey resultType="String" keyProperty="chatRoomMessage"
+			order="AFTER">
+			select cr_message from s_chat_room where cr_id = #{chatRoomId}
+			</selectKey>
 	</update>
 </mapper>

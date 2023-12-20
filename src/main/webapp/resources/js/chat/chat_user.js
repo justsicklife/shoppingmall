@@ -139,7 +139,7 @@ function sendButtonEvent() {
 
     write_msg.value = "";
 
-    let nowDate = `${new Date().getFullYear()}:${new Date().getMonth()}:${new Date().getHours()}:${new Date().getMinutes()}`;
+    let nowDate = `${new Date().getFullYear()}:${new Date().getMonth()}:${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`;
 
     console.log(nowDate);
 

@@ -14,11 +14,12 @@
 	</resultMap>
 	
 	<select id="ChatMessageFindById" parameterType="int" resultMap="chatRoomResultMap">
-		select * from s_chat_message where cr_id = #{chatRoomId} order by cm_date asc
+		select * from s_chat_message where cr_id = #{chatRoomId} order by cm_date
 	</select>
 	
 	<insert id="ChatMessageInsert" parameterType="chatMessage">
 		insert into s_chat_message(cm_id,m_idx,cr_id,cm_content,cm_date) values(s_chat_message_seq.nextval,#{memberIdx}, #{chatRoomId},#{chatMessageContent},#{chatMessageDate})
 	</insert>
+	
 	
 </mapper>

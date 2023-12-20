@@ -61,7 +61,7 @@ public class ChatController {
 		ChatRoomDTO findChatRoomDTO = chatRoomService.chatRoomFindById(chatRoomDTO.getMemberIdx());
 		
 		if(findChatRoomDTO == null) {
-			return new ChatRoomDTO(-1,-1,0,0,null,null);
+			return new ChatRoomDTO(-1,-1,0,0,null,null,null);
 		} else {
 			return findChatRoomDTO;			
 		}
@@ -77,7 +77,7 @@ public class ChatController {
 		System.out.println("success : " + success);
 		
 		
-		ChatRoomDTO findChatRoomDTO = new ChatRoomDTO(chatRoomDTO.getChatRoomId(),chatRoomDTO.getMemberIdx(),0,0,null,null);
+		ChatRoomDTO findChatRoomDTO = new ChatRoomDTO(chatRoomDTO.getChatRoomId(),chatRoomDTO.getMemberIdx(),0,0,null,null,null);
 		
 		System.out.println("create :" +findChatRoomDTO);
 		return findChatRoomDTO;
