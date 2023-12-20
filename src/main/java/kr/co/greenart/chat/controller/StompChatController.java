@@ -81,7 +81,21 @@ public class StompChatController {
 	@MessageMapping(value="/chat/alarm")
 	public void alarm(ChatRoomDTO chatRoomDTO) {
 		
-		template.convertAndSend("/sub/chat/alarm",chatRoomDTO);
+		int selected = chatRoomService.chatRoomFindSelected(chatRoomDTO);
+		if(selected == 0) {
+			int success = chatRoomService.chatRoomAddAlert(chatRoomDTO);
+			template.convertAndSend("/sub/chat/alarm",chatRoomDTO);
+		} else {
+			template.convertAndSend("/sub/chat/alarm",new ChatRoomDTO(-1,-1,-1,-1,null,null));		
+		}
+		
+	}
+	
+	@MessageMapping(value="/chat/delete_alarm")
+	public void deleteAlram(ChatRoomDTO chatRoomDTO) {
+		int success = chatRoomService.chatRoomRemoveAlert(chatRoomDTO);
+		
+		template.convertAndSend("/sub/chat/delete_alarm",chatRoomDTO);
 	}
 }
 

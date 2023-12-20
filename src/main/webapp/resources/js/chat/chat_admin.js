@@ -16,6 +16,21 @@ $(document).ready(
 
         stomp = Stomp.over(sockJs);
 
+        $.ajax({
+            url: "/chat/reset",
+            type: "post",
+            data: null,
+            async:false,
+            success: function (data) {
+                if(data === "success") {
+                    console.log("성공")
+                } else {
+                    console.log("실패");
+                }
+            },
+            
+        }) 
+
         // stomp 연결
         stomp.connect(
             {},
@@ -27,7 +42,7 @@ $(document).ready(
                         console.log(document.getElementById("inbox-chat"));
                         $("#inbox-chat").empty();
                         for (let i = 0; i < data.length; i++) {
-                            $("#inbox-chat").append(listMaker(data[i].chatRoomId, data[i].memberId, curRoomIdx));
+                            $("#inbox-chat").append(listMaker(data[i].chatRoomId, data[i].memberId, curRoomIdx,data[i].chatRoomAlertCount));
                             console.log(data[i]);
                         }
                     })
@@ -36,8 +51,12 @@ $(document).ready(
                 stomp.subscribe("/sub/chat/alarm",
                     function (chat) {
                         let data = JSON.parse(chat.body);
-                        console.log(data.chatRoomId);
-                        $("#chat-" + data.chatRoomId).addClass("alram");
+                        console.log(data);
+                        if(data.chatRoomId !== -1) {
+                            const alarmCount = document.getElementById(`chat_date_${data.chatRoomId}`)
+                            console.log(alarmCount);
+                            alarmCount.innerHTML = data.chatRoomAlertCount;
+                        }
                     })
 
 
@@ -45,7 +64,9 @@ $(document).ready(
                 stomp.subscribe("/sub/chat/delete_alarm",
                 function(chat) {
                     let data = JSON.parse(chat.body);
-                    // 채팅방 new 삭제 로직
+                    console.log("data : " + data);
+                    const alarmCount = document.getElementById(`chat_date_${data.chatRoomId}`)
+                    alarmCount.innerHTML = 0;
                 })
 
                 // 채팅창 send 보냄
@@ -55,7 +76,7 @@ $(document).ready(
 )
 
 // 채팅방 목록 태그 만들어주는거
-function listMaker(chatRoomId, memberId, curRoomIdx) {
+function listMaker(chatRoomId, memberId, curRoomIdx,chatRoomAlertCount) {
     console.log(chatRoomId, curRoomIdx);
     let str = `<div class='chat_list ${curRoomIdx === chatRoomId ? "active_chat" : ""}' id='chat-${chatRoomId}' onclick='changeRoom(${chatRoomId})'>
     <div class='chat_people'>
@@ -63,7 +84,7 @@ function listMaker(chatRoomId, memberId, curRoomIdx) {
     <img src='https://ptetutorials.com/images/user-profile.png' alt='sunil'>
     </div>
     <div class='chat_ib'>
-    <h5>${memberId} <span class='chat_date'>채팅 갯수</span></h5>
+    <h5>${memberId} <span class='chat_alarm' id='chat_date_${chatRoomId}'>${chatRoomAlertCount}</span></h5>
     <p></p></div>내용</div></div>`;
     return str;
 }
@@ -213,3 +234,4 @@ const msg_send_btn = document.querySelector(".msg_send_btn");
 
 // 메세지 전송버튼을 누르면 
 msg_send_btn.addEventListener("click", msgSendButtonEvent);
+

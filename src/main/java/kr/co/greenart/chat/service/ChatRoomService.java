@@ -36,5 +36,22 @@ public class ChatRoomService {
 	public int chatRoomSelectedRemove() {
 		return chatRoomDAO.chatRoomSelectedRemove(sql);
 	}
+
+
+	public int chatRoomAddAlert(ChatRoomDTO chatRoomDTO) {
+		return chatRoomDAO.chatRoomAddAlert(sql,chatRoomDTO);
+	}
+
+	public int chatRoomRemoveAlert(ChatRoomDTO chatRoomDTO) {
+		return chatRoomDAO.chatRoomRemoveAlert(sql,chatRoomDTO);
+	}
+
+	public int chatRoomFindSelected(ChatRoomDTO chatRoomDTO) {
+		return chatRoomDAO.chatRoomFindSelected(sql,chatRoomDTO);
+	}
+
+	public int chatRoomSelectedReset() {
+		return chatRoomDAO.chatRoomSelectedReset(sql);
+	}
 	
 }

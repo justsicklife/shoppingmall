@@ -83,4 +83,15 @@ public class ChatController {
 		return findChatRoomDTO;
 	}
 	
+	@PostMapping("/reset")
+	@ResponseBody
+	public String reset() {
+		int success = chatRoomService.chatRoomSelectedReset();
+		System.out.println("reset 성공 : " + success);
+		if(success == 0) {
+			return "success";
+		}else {
+			return "faild";
+		}
+	}
 }

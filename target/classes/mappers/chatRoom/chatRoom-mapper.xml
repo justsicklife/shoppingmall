@@ -47,4 +47,23 @@
 	<update id="chatRoomSelectedRemove">
 		update s_chat_room set cr_selected = 0 where cr_selected = 1 
 	</update>
+	
+	<update id="chatRoomAddAlert">
+		update s_chat_room set cr_alert_count = cr_alert_count + 1 where cr_id = #{chatRoomId}
+		<selectKey resultType="int" keyProperty="chatRoomAlertCount" order="AFTER">
+			select cr_alert_count from s_chat_room where cr_id = #{chatRoomId}
+		</selectKey>
+	</update>
+	
+	<update id="chatRoomRemoveAlert">
+		update s_chat_room set cr_alert_count = 0 where cr_id = #{chatRoomId}
+	</update>
+	
+	<select id="chatRoomFindSelected" resultType="int">
+		select count(*) from s_chat_room where cr_id = #{chatRoomId} and cr_selected = 1
+	</select>
+	
+	<update id="chatRoomSelectedReset">
+		update s_chat_room set cr_selected = 0
+	</update>
 </mapper>

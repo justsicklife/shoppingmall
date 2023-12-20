@@ -30,4 +30,20 @@ public class ChatRoomDAO {
 		return sql.update("s_chatRoom.chatRoomSelectedRemove");
 	}
 
+	public int chatRoomAddAlert(SqlSessionTemplate sql, ChatRoomDTO chatRoomDTO) {
+		return sql.update("s_chatRoom.chatRoomAddAlert",chatRoomDTO);
+	}
+
+	public int chatRoomRemoveAlert(SqlSessionTemplate sql, ChatRoomDTO chatRoomDTO) {
+		return sql.update("s_chatRoom.chatRoomRemoveAlert",chatRoomDTO);
+	}
+
+	public int chatRoomFindSelected(SqlSessionTemplate sql, ChatRoomDTO chatRoomDTO) {
+		return sql.selectOne("s_chatRoom.chatRoomFindSelected",chatRoomDTO);
+	}
+
+	public int chatRoomSelectedReset(SqlSessionTemplate sql) {
+		return sql.update("s_chatRoom.chatRoomSelectedReset");
+	}
+
 }

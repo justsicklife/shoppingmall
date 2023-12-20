@@ -225,3 +225,10 @@ img {
 	justify-content: center;
 	height: 100vh;
 }
+
+.chat_alarm{
+	background-color: red;
+	color: white;
+	border-radius: 50%;
+	padding: 5px 10px; 
+}
