@@ -22,4 +22,12 @@ public class ChatRoomDAO {
 		return sql.selectList("s_chatRoom.chatRoomFindAll");
 	}
 
+	public int chatRoomSelected(SqlSessionTemplate sql, int id) {
+		return sql.update("s_chatRoom.chatRoomSelected",id);
+	}
+
+	public int chatRoomSelectedRemove(SqlSessionTemplate sql) {
+		return sql.update("s_chatRoom.chatRoomSelectedRemove");
+	}
+
 }

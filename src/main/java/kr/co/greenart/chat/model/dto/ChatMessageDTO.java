@@ -15,7 +15,7 @@ import lombok.ToString;
 @ToString
 public class ChatMessageDTO {
 	private int chatMessageId;
-	private int memberId;
+	private int memberIdx;
 	private int chatRoomId;
 	private String chatMessageContent;
 	private String chatMessageDate;

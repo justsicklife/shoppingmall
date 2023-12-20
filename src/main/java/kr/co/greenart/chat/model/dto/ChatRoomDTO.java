@@ -15,7 +15,10 @@ import lombok.ToString;
 @ToString
 public class ChatRoomDTO {
 	private int chatRoomId;
-	private int memberId;
-	private String chatRoomTitle;
+	private int memberIdx;
 	private int chatRoomAlertCount;
+	private int chatRoomSelected;
+	
+	private String memberName;
+	private String memberId;
 }

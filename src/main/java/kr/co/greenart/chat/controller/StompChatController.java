@@ -52,8 +52,21 @@ public class StompChatController {
 		public void adminHistory(ChatRoomDTO chatRoomDTO) {
 			System.out.println("ChatRoomDTO : " + chatRoomDTO);
 			
+			// 기존에 선택된거 삭제
+			int removeSuccess = chatRoomService.chatRoomSelectedRemove();
+			
+			System.out.println("removewSuccess" + removeSuccess);
+			
+			// 여기서 selected 하면 될듯
+			// 여기서 업데이트 하면 됨 
+			int success = chatRoomService.chatRoomSelected(chatRoomDTO.getChatRoomId());
+			
+			System.out.println("success : " + success);
+			
 			List<ChatMessageDTO> chatMessageDTO = chatMessageService.ChatMessageFindById(chatRoomDTO.getChatRoomId());
-//			System.out.println("chatMessage : " + chatMessageDTO);
+			
+			// 메시지 내역 가져올때
+			
 			template.convertAndSend("/sub/admin/history/" + chatRoomDTO.getChatRoomId() ,chatMessageDTO);
 		}
 	
@@ -67,6 +80,7 @@ public class StompChatController {
 	
 	@MessageMapping(value="/chat/alarm")
 	public void alarm(ChatRoomDTO chatRoomDTO) {
+		
 		template.convertAndSend("/sub/chat/alarm",chatRoomDTO);
 	}
 }

@@ -2,29 +2,49 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-        
+
 <mapper namespace="s_chatRoom">
 	<!-- type 리턴한 결과를 매핑할 오브젝트 타입의 패키지 경로를 포함한 전체 클래스명이나 별칭 -->
 	<resultMap type="chatRoom" id="chatRoomResultMap">
-		<result column="cr_id" property="chatRoomId"/>
-		<result column="m_id" property="memberId"/>
-		<result column="cr_title" property="chatRoomTitle"/>
-		<result column="cr_alert_count" property="chatRoomAlertCount"/>
+		<result column="cr_id" property="chatRoomId" />
+		<result column="m_index" property="memberIdx" />
+		<result column="cr_alert_count" property="chatRoomAlertCount" />
+		<result column="cr_selected" property="chatRoomSelected" />
+		
+		<result column="m_name" property="memberName" />
+		<result column="m_id" property="memberId" />
 	</resultMap>
-	
-	<select id="findById" parameterType="int" resultMap="chatRoomResultMap">
-		select * from s_chat_room where m_id = #{id}
+
+	<select id="findById" parameterType="int"
+		resultMap="chatRoomResultMap">
+		select * from s_chat_room where m_index = #{id}
 	</select>
-	
-	<select id="chatRoomFindAll" parameterType="int" resultMap="chatRoomResultMap">
-		select * from s_chat_room
+
+	<select id="chatRoomFindAll" parameterType="int"
+		resultMap="chatRoomResultMap">
+		select c.cr_id,
+		c.m_index,
+		c.cr_alert_count,
+		m.m_name,
+		m.m_id
+		from
+		s_chat_room c inner join s_member m on c.m_index = m.m_index
 	</select>
-	
+
 	<insert id="chatRoomInsert" parameterType="chatRoom">
-		<selectKey resultType="int" keyProperty="chatRoomId" order="AFTER">
+		<selectKey resultType="int" keyProperty="chatRoomId"
+			order="AFTER">
 			SELECT s_chat_room_seq.CURRVAL as s_chat_room FROM DUAL
 		</selectKey>
-		insert into s_chat_room(cr_id,m_id,cr_title) VALUES(s_chat_room_seq.nextval,#{memberId},#{chatRoomTitle})
+		insert into s_chat_room(cr_id,m_index)
+		VALUES(s_chat_room_seq.nextval,#{memberIdx})
 	</insert>
 	
+	<update id="chatRoomSelected">
+		update s_chat_room set cr_selected = 1 where cr_id = #{id}
+	</update>
+	
+	<update id="chatRoomSelectedRemove">
+		update s_chat_room set cr_selected = 0 where cr_selected = 1 
+	</update>
 </mapper>

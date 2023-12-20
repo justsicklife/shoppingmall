@@ -28,5 +28,13 @@ public class ChatRoomService {
 	public List<ChatRoomDTO> chatRoomFindAll() {
 		return chatRoomDAO.chatRoomFindAll(sql);
 	}
+
+	public int chatRoomSelected(int id) {
+		return chatRoomDAO.chatRoomSelected(sql,id);
+	}
+
+	public int chatRoomSelectedRemove() {
+		return chatRoomDAO.chatRoomSelectedRemove(sql);
+	}
 	
 }
