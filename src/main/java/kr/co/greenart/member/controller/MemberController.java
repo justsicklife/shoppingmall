@@ -309,7 +309,7 @@ public class MemberController {
 			rttr.addAttribute("memberEmail", memberDto.getMemberEmail());
 			rttr.addAttribute("memberId", memberDto.getMemberId());
 			
-			// 회원 가입 ( insert 서비스 실행)
+			// 회원 가입 ( insert 서비스 실행(sendMail 서비스impl에 회원가입 dao 추가), 이메일 발송)
 //			int result = memberService.signupMember(memberDto);
 			memberService.sendMail(memberDto);
 			return "redirect:/member/registerAuth";
@@ -330,6 +330,7 @@ public class MemberController {
 	// 이메일 인증
 	@GetMapping("/emailConfirm")
 	public String emailConfirm(String memberEmail, String key, Model model) throws Exception {
+		
 		memberService.memberAuth(memberEmail, key);
 		model.addAttribute("memberEmail", memberEmail);
 		model.addAttribute("authKey", key);
