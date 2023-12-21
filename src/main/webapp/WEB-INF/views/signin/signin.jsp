@@ -94,7 +94,7 @@
             <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
                 <div class="card border-0 shadow rounded-3 my-5">
                     <div class="card-body p-4 p-sm-5">
-                        <h5 class="card-title text-center mb-5 fw-light fs-5">Sign In</h5>
+                        <h5 class="card-title text-center mb-5 fw-light fs-5">쇼핑몰 프로젝트</h5>
                         <form action="/member/login.do" method="post">
                             <div class="form-floating mb-3">
                                 <input type="id" class="form-control" id="floatingInput" name="memberId"
@@ -112,7 +112,7 @@
                                 <a href="/member/searchPw" class="link">비밀번호 찾기</a>
                             </div>
                             <div class="d-grid">
-                                <button class="btn btn-primary btn-login text-uppercase fw-bold" type="submit">Sign in</button>
+                                <button class="btn btn-primary btn-login text-uppercase fw-bold" type="submit">로그인</button>
                             </div>
                             <hr class="my-4">
                             <div class="sns_login_form">

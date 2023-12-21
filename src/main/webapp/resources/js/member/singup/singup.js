@@ -203,7 +203,7 @@ function join(event) {
             },
             success: function (memberChk) {
                 if (memberChk === "success") {
-                    alert("메일함을 확인 후 인증 버튼을 눌러주세요");
+                    // alert("메일함을 확인 후 인증 버튼을 눌러주세요");
 
                     // 폼 제출
                     document.getElementById("submitForm").submit();
