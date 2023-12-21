@@ -32,34 +32,6 @@
 						<div class="inbox_msg">
 							<div class="mesgs">
 								<div id="msgBox" class="msg_history">
-									<!-- <c:forEach var="chatMessage" items="${chatMessageList}">
-										<c:choose>
-											<c:when test="${chatMessage.memberId eq memberId }">
-												<div class="incoming_msg">
-													<div class="incoming_msg_img">
-														<img src="https://ptetutorials.com/images/user-profile.png"
-															alt="sunil">
-													</div>
-													<div class="received_msg">
-														<div class="received_withd_msg">
-															<p>${chatMessage.chatMessageContent}</p>
-															<span class="time_date"> 11:01 AM | June 9</span>
-														</div>
-													</div>
-												</div>
-
-											</c:when>
-											<c:otherwise>
-												<div class="outgoing_msg">
-													<div class="sent_msg">
-														<p>${chatMessage.chatMessageContent}</p>
-														<span class="time_date"> 11:01 AM | June 9</span>
-													</div>
-												</div>
-											</c:otherwise>
-										</c:choose>
-									</c:forEach> -->
-
 								</div>
 								<div class="type_msg">
 									<div class="input_msg_write">
@@ -74,7 +46,6 @@
 					</div>
 					
 					<button id="start-button">채팅 시작 버튼</button>
-					<input id="chat-title" required type="text" placeholder="채팅방 제목">
 				</div>
 		</body>
 		<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>

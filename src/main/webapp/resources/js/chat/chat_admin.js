@@ -16,6 +16,21 @@ $(document).ready(
 
         stomp = Stomp.over(sockJs);
 
+        $.ajax({
+            url: "/chat/reset",
+            type: "post",
+            data: null,
+            async:false,
+            success: function (data) {
+                if(data === "success") {
+                    console.log("성공")
+                } else {
+                    console.log("실패");
+                }
+            },
+            
+        }) 
+
         // stomp 연결
         stomp.connect(
             {},
@@ -24,21 +39,37 @@ $(document).ready(
                 stomp.subscribe("/sub/chat/list",
                     function (chat) {
                         let data = JSON.parse(chat.body);
-                        console.log(document.getElementById("inbox-chat"));
+                        console.log(data);
                         $("#inbox-chat").empty();
                         for (let i = 0; i < data.length; i++) {
-                            $("#inbox-chat").append(listMaker(data[i].chatRoomId, data[i].memberId, data[i].chatRoomTitle,curRoomIdx));
+                            $("#inbox-chat").append(listMaker(data[i].chatRoomId, data[i].memberId, curRoomIdx,data[i].chatRoomAlertCount,data[i].chatRoomMessage));
                             console.log(data[i]);
                         }
                     })
 
-                // 알람
+                // 알람 추가 기능
                 stomp.subscribe("/sub/chat/alarm",
                     function (chat) {
                         let data = JSON.parse(chat.body);
-                        console.log(data.chatRoomId);
-                        $("#chat-"+data.chatRoomId).addClass("alram");
+                        console.log(data);
+                        if(data.chatRoomId !== -1) {
+                            const alarmCount = document.getElementById(`chat_date_${data.chatRoomId}`)
+                            const chatRoomMessage = document.getElementById("chat_message");
+                            alarmCount.innerHTML = data.chatRoomAlertCount;
+                            chatRoomMessage.innerHTML = data.chatRoomMessage;
+
+                        }
                     })
+
+
+                // 알람 삭제 기능
+                stomp.subscribe("/sub/chat/delete_alarm",
+                function(chat) {
+                    let data = JSON.parse(chat.body);
+                    console.log("data : " + data);
+                    const alarmCount = document.getElementById(`chat_date_${data.chatRoomId}`)
+                    alarmCount.innerHTML = 0;
+                })
 
                 // 채팅창 send 보냄
                 stomp.send("/pub/chat/list")
@@ -47,23 +78,32 @@ $(document).ready(
 )
 
 // 채팅방 목록 태그 만들어주는거
-function listMaker(chatRoomId, memberId, chatRoomTitle,curRoomIdx) {
-    console.log(chatRoomId, curRoomIdx);
+function listMaker(chatRoomId, memberId, curRoomIdx,chatRoomAlertCount,chatRoomMessage) {
     let str = `<div class='chat_list ${curRoomIdx === chatRoomId ? "active_chat" : ""}' id='chat-${chatRoomId}' onclick='changeRoom(${chatRoomId})'>
     <div class='chat_people'>
     <div class='chat_img'>
     <img src='https://ptetutorials.com/images/user-profile.png' alt='sunil'>
     </div>
     <div class='chat_ib'>
-    <h5>${chatRoomId} <span class='chat_date'>${memberId}</span></h5>
-    <p>${chatRoomTitle}</p></div></div></div>`;
+    <h5>${memberId}</h5>
+    <div>
+    <div class='d-flex'>
+    <div class='flex-grow-1' id='chat_message'>${chatRoomMessage}</div>
+    <span class='chat_alarm' id='chat_date_${chatRoomId}'>${chatRoomAlertCount}</span>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>`;
     return str;
 }
 
 // 메세지 태그 만들어주는거
-function msgMaker(msg, userIdx, chatMessageDate,memberId) {
+function msgMaker(msg, userIdx, chatMessageDate, memberIdx) {
     let str = "";
-    if (userIdx != memberId) {
+    console.log(userIdx,memberIdx);
+
+    if (userIdx != memberIdx) {
         str += "<div class='incoming_msg'>";
         str += "<div class='incoming_msg_img'>";
         str += "<img width='21px' height='21px' src='https://ptetutorials.com/images/user-profile.png' alt='sunil'>"
@@ -95,6 +135,30 @@ function msgMaker(msg, userIdx, chatMessageDate,memberId) {
 
 }
 
+function msgSendButtonEvent() {
+    const write_msg = document.querySelector(".write_msg");
+    if (write_msg === "")
+        return
+    const msg = write_msg.value;
+
+    write_msg.value = "";
+
+    let nowDate = `${new Date().getFullYear()}:${new Date().getMonth()}:${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`;
+
+
+    // 메세지를 구독한 분에게 전달해준다 JSON 형태로
+    stomp.send(
+        "/pub/chat/message",
+        {},
+        JSON.stringify({
+            chatRoomId: curRoomIdx,
+            memberIdx: userIdx,
+            chatMessageContent: msg,
+            chatMessageDate: nowDate,
+        })
+    )
+}
+
 // 방변겅시 나오는 이벤트
 function changeRoom(roomIdx) {
     // 룸번호가 없는게 아니고 룸이 같다면
@@ -110,10 +174,15 @@ function changeRoom(roomIdx) {
     $("#chat-" + roomIdx).addClass("active_chat");
     // 현재 선택된 방에 class 넣어주는거
     $("#chat-" + curRoomIdx).removeClass("active_chat");
-
-    $("#chat-" + curRoomIdx).removeClass("alram");
-
+    
     curRoomIdx = roomIdx;
+
+    stomp.send("/pub/chat/delete_alarm",
+    {},
+        JSON.stringify({
+            chatRoomId:curRoomIdx
+        })
+    )
 
     // subscribe 주소
     const topicRoom = "/sub/chat/room/" + curRoomIdx;
@@ -125,8 +194,9 @@ function changeRoom(roomIdx) {
             topicRoom,
             function (chat) {
                 let data = JSON.parse(chat.body);
-                const tag = msgMaker(data.chatMessageContent, userIdx,data.chatMessageDate, data.memberId)
-                
+                console.log(data);
+                const tag = msgMaker(data.chatMessageContent, userIdx, data.chatMessageDate, data.memberIdx)
+
                 $("#msgBox").append(tag);
                 $("#msgBox").scrollTop($("#msgBox")[0].scrollHeight);
             }
@@ -144,7 +214,7 @@ function changeRoom(roomIdx) {
             function (chat) {
                 let data = JSON.parse(chat.body);
                 for (let i = 0; i < data.length; i++) {
-                    const tag = msgMaker(data[i].chatMessageContent, userIdx, data[i].chatMessageDate,data[i].memberId);
+                    const tag = msgMaker(data[i].chatMessageContent, userIdx, data[i].chatMessageDate, data[i].memberIdx);
                     $("#msgBox").append(tag);
                 }
                 // 스크롤 맨아래로 
@@ -162,7 +232,7 @@ function changeRoom(roomIdx) {
         {},
         JSON.stringify({
             chatRoomId: curRoomIdx,
-            memberId: userIdx
+            memberIdx: userIdx
         })
     )
 }
@@ -170,26 +240,5 @@ function changeRoom(roomIdx) {
 const msg_send_btn = document.querySelector(".msg_send_btn");
 
 // 메세지 전송버튼을 누르면 
-msg_send_btn.addEventListener("click", () => {
-    const write_msg = document.querySelector(".write_msg");
-    if (write_msg === "")
-        return
-    const msg = write_msg.value;
+msg_send_btn.addEventListener("click", msgSendButtonEvent);
 
-    write_msg.value = "";
-
-    let nowDate = `${new Date().getFullYear()}:${new Date().getMonth()}:${new Date().getHours()}:${new Date().getMinutes()}`;
-
-
-    // 메세지를 구독한 분에게 전달해준다 JSON 형태로
-    stomp.send(
-        "/pub/chat/message",
-        {},
-        JSON.stringify({
-            chatRoomId: curRoomIdx,
-            memberId: userIdx,
-            chatMessageContent: msg,
-            chatMessageDate: nowDate,
-        })
-    )
-})

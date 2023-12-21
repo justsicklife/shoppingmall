@@ -7,18 +7,19 @@
 	<!-- type 리턴한 결과를 매핑할 오브젝트 타입의 패키지 경로를 포함한 전체 클래스명이나 별칭 -->
 	<resultMap type="chatMessage" id="chatRoomResultMap">
 		<result column="cm_id" property="chatMessageId"/>
-		<result column="m_id" property="memberId"/>
+		<result column="m_idx" property="memberIdx"/>
 		<result column="cr_id" property="chatRoomId"></result>
 		<result column="cm_content" property="chatMessageContent"/>
 		<result column="cm_date" property="chatMessageDate"/>
 	</resultMap>
 	
 	<select id="ChatMessageFindById" parameterType="int" resultMap="chatRoomResultMap">
-		select * from s_chat_message where cr_id = #{chatRoomId} order by cm_date asc
+		select * from s_chat_message where cr_id = #{chatRoomId} order by cm_date
 	</select>
 	
 	<insert id="ChatMessageInsert" parameterType="chatMessage">
-		insert into s_chat_message(cm_id,m_id,cr_id,cm_content,cm_date) values(s_chat_message_seq.nextval,#{memberId}, #{chatRoomId},#{chatMessageContent},#{chatMessageDate})
+		insert into s_chat_message(cm_id,m_idx,cr_id,cm_content,cm_date) values(s_chat_message_seq.nextval,#{memberIdx}, #{chatRoomId},#{chatMessageContent},#{chatMessageDate})
 	</insert>
+	
 	
 </mapper>
