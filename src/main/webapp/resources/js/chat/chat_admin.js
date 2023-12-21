@@ -54,7 +54,7 @@ $(document).ready(
                         console.log(data);
                         if(data.chatRoomId !== -1) {
                             const alarmCount = document.getElementById(`chat_date_${data.chatRoomId}`)
-                            const chatRoomMessage = document.getElementById("chat_message");
+                            const chatRoomMessage = document.getElementById("chat_message_"+data.chatRoomId);
                             alarmCount.innerHTML = data.chatRoomAlertCount;
                             chatRoomMessage.innerHTML = data.chatRoomMessage;
 
@@ -88,7 +88,7 @@ function listMaker(chatRoomId, memberId, curRoomIdx,chatRoomAlertCount,chatRoomM
     <h5>${memberId}</h5>
     <div>
     <div class='d-flex'>
-    <div class='flex-grow-1' id='chat_message'>${chatRoomMessage}</div>
+    <div class='flex-grow-1' id='chat_message_${chatRoomId}'>${chatRoomMessage}</div>
     <span class='chat_alarm' id='chat_date_${chatRoomId}'>${chatRoomAlertCount}</span>
     </div>
     </div>
