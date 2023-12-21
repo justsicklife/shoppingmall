@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import kr.co.greenart.chat.model.dao.ChatMessageDAO;
 import kr.co.greenart.chat.model.dto.ChatMessageDTO;
+import kr.co.greenart.chat.model.dto.ChatRoomDTO;
 import lombok.RequiredArgsConstructor;
 
 @Service
