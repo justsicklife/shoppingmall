@@ -10,11 +10,23 @@
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
         crossorigin="anonymous">
 </head>
+<style>
 
+.find_pw_link:hover,.find_pw_link:visited,.find_pw_link:active{
+    color: #0d6efd;
+
+}
+.find_pw_link {
+    color: #0d6efd;
+    text-decoration: none;
+}
+</style>
 <body>
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
+	<%@ include file="/WEB-INF/views/common/navbar.jsp"%>
+
+    <div class="container">
+        <div class="row justify-content-center vh-100 align-items-center">
+            <div class="col-md-5">
                 <div class="card">
                     <div class="card-header">
                         <h3 class="text-center">비밀번호 찾기</h3>
@@ -34,13 +46,15 @@
                             </div>
                         </form>
                         <div class="mt-3 text-center">
-                            <a href="/member/loginPage">로그인으로 돌아가기</a>
+                            <a class="find_pw_link" href="/member/loginPage">로그인으로 돌아가기</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
+    
 </body>
 
 </html>

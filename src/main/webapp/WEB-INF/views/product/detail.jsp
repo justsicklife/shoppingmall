@@ -51,6 +51,12 @@
 <!-- chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&display=swap" rel="stylesheet">	
+
+
 </head>
 
 <body>
@@ -81,11 +87,11 @@
 					<h5 class="pb-2 division">${product.product_content }</h5>
 
 					<div class="fs-5 pb-2 mb-3 division">
-						<span>가격 : </span> <span>${product.product_price}</span>
+						<span>가격 : </span> <span>${product.product_price} 원</span>
 					</div>
 
 					<div class="mb-1 ">
-						<select name="" id="color">
+						<select class="w-100" id="color">
 							<c:forTokens var="color" items="${ product.product_color_group}"
 								delims=",">
 								<option value="${color}">${color}</option>
@@ -93,7 +99,7 @@
 						</select>
 					</div>
 					<div class="mb-3 division pb-3">
-						<select name="" id="size">						
+						<select class="w-100" id="size">						
 						<c:forTokens var="size" items="${ product.product_size_group}"
 							delims=",">
 							<option value="${size}">${size }</option>
@@ -102,10 +108,10 @@
 					</div>
 
 					<div class="mb-3 button_group">
-						<button class="btn btn-outline-dark flex-shrink-0" type="button">찜하기</button>
-						<button class="btn btn-outline-dark flex-shrink-0" type="button">장바구니</button>
-						<button class="btn btn-outline-dark flex-shrink-0" type="button">
-							<i class="bi-cart-fill me-1"></i> Add to cart
+						<button class="btn sale col-6 py-2" type="button">구매</button>
+						<button class="btn wish col-3 py-2" type="button">찜</button>
+						<button class="btn cart col-3 py-2" type="button">
+							<i class="bi-cart-fill me-1"></i> 장바구니
 						</button>
 					</div>
 				</div>
@@ -211,10 +217,10 @@
 			<div class="col-md-12">
 				<c:if test="${not empty reviewCurUser}">
 					<div
-						class="headings d-flex justify-content-between align-items-center mb-3">
+						class="headings d-flex justify-content-between align-items-center mb-1">
 						<h5>내가 작성한 댓글</h5>
 					</div>
-					<div class="card p-3">
+					<div class="card p-1">
 						<div class="d-flex justify-content-between align-items-center">
 							<div class="user d-flex flex-row align-items-center">
 								<input name="review_score" id="input-id" type="text"
@@ -222,40 +228,42 @@
 									value="${reviewCurUser.review_score }"
 									data-show-caption="false" data-show-clear="false">
 							</div>
-							<small> ${reviewCurUser.review_open_date} </small>
+							<small class="review_date"> ${reviewCurUser.review_open_date} </small>
 						</div>
-						<div class="mt-2 px-4">${reviewCurUser.review_content }</div>
+						<div class=" review_content">${reviewCurUser.review_content }</div>
 						<div class="d-flex justify-content-end">
 							<a class="d-block"
 								href="/review/update?review_id=${reviewCurUser.review_id}">
-								<button class="btn btn-primary">수정</button>
+								<button class="btn edit">수정</button>
 							</a>
 							<form action="/review/delete" method="post">
 								<input type="hidden" name="review_id"
 									value="${reviewCurUser.review_id }" /> <input type="hidden"
 									name="product_id" value="${reviewCurUser.product_id }" />
-								<button class="btn btn-warning">삭제</button>
+								<button class="btn delete">삭제</button>
 							</form>
 						</div>
 					</div>
 				</c:if>
 
+				<hr>
+
 				<div
-					class="headings d-flex justify-content-between align-items-center mb-3">
-					<h5>작성된 리뷰 ${reviewListCount }</h5>
+					class="headings d-flex justify-content-between align-items-center mb-1">
+					<h5>작성된 리뷰 ( ${reviewListCount} 개 )</h5>
 				</div>
 				<c:forEach var="review" items="${reviewList}">
-					<div class="card p-3 mb-3">
+					<div class="card p-1">
 						<div class="d-flex justify-content-between align-items-center">
 							<div class="user d-flex flex-row align-items-center">
 								<input name="review_score" id="input-id" type="text"
 									class="rating" readonly data-size="sm"
-									value="${review.review_score }" data-show-caption="false"
-									data-show-clear="false">
+									value="${reviewCurUser.review_score }"
+									data-show-caption="false" data-show-clear="false">
 							</div>
-							<small> ${review.review_open_date} </small>
+							<small class="review_date"> ${reviewCurUser.review_open_date} </small>
 						</div>
-						<div class="mt-2 px-4">${review.review_content }</div>
+						<div class=" review_content">${reviewCurUser.review_content }</div>
 					</div>
 				</c:forEach>
 
@@ -264,13 +272,15 @@
 				<c:choose>
 					<c:when test="${reviewPi.currentPage eq 1 }">
 						<li class="page-item"><a class="page-link" href="#"
-							aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
+							aria-label="Previous"> <i
+							class="fa-solid fa-angles-left" style="color: gray;"></i>
 						</a></li>
 					</c:when>
 					<c:otherwise>
 						<li class="page-item"><a class="page-link"
 							href="detail?cpage=${reviewPi.currentPage-1 }&product_id=${product.product_id}"
-							aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
+							aria-label="Previous"> <i
+							class="fa-solid fa-angles-left" style="color: gray;"></i>
 						</a></li>
 					</c:otherwise>
 				</c:choose>
@@ -285,13 +295,15 @@
 				<c:choose>
 					<c:when test="${reviewPi.currentPage eq reviewPi.maxPage }">
 						<li class="page-item"><a class="page-link" href="#"
-							aria-label="Previous"> <span aria-hidden="true">&raquo;</span>
+							aria-label="Previous"> <i
+							class="fa-solid fa-angles-right" style="color: gray;"></i>
 						</a></li>
 					</c:when>
 					<c:otherwise>
 						<li class="page-item"><a class="page-link"
 							href="detail?cpage=${reviewPi.currentPage+1 }&product_id=${product.product_id}"
-							aria-label="Previous"> <span aria-hidden="true">&raquo;</span>
+							aria-label="Previous"> <i
+							class="fa-solid fa-angles-right" style="color: gray;"></i>
 						</a></li>
 					</c:otherwise>
 				</c:choose>
@@ -426,10 +438,10 @@
 							aria-label="Previous"> <span aria-hidden="true"><i
 									class="fa-solid fa-angles-left" style="color: gray;"></i></span>
 						</a></li>
-						<li class="page-item"><a class="page-link" href="#"
+						<!-- <li class="page-item"><a class="page-link" href="#"
 							aria-label="Previous"> <span aria-hidden="true"><i
 									class="fa-solid fa-angle-left" style="color: gray;"></i></span>
-						</a></li>
+						</a></li> -->
 					</c:when>
 					<c:otherwise>
 						<li class="page-item">
@@ -451,7 +463,7 @@
 				<c:forEach var="page" begin="${inquiryPi.startPage}"
 					end="${inquiryPi.endPage}">
 					<li class="page-item"><a style="color: gray;"
-						class="page-link ${inquiryPi.currentPage == page ? 'text-danger' : '' }"
+						class="page-link"
 						href="/product/detail?cpage=${reviewPi.currentPage }&product_id=${product.product_id}&ipage=${page}"
 						>${page}</a></li>
 				</c:forEach>
@@ -459,10 +471,10 @@
 
 				<c:choose>
 					<c:when test="${inquiryPi.currentPage eq inquiryPi.maxPage}">
-						<li class="page-item"><a class="page-link" href="#"
+						<!-- <li class="page-item"><a class="page-link" href="#"
 							aria-label="Next"> <span aria-hidden="true"><i
 									class="fa-solid fa-angle-right" style="color: gray;"></i></span>
-						</a></li>
+						</a></li> -->
 						<li class="page-item"><a class="page-link" href="#"
 							aria-label="Next"> <span aria-hidden="true"><i
 									class="fa-solid fa-angles-right" style="color: gray;"></i></span>
@@ -495,7 +507,8 @@
 	</section>
 
 	<%@ include file="/WEB-INF/views/common/chat-button.jsp"%>
-
+	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
+	
 
 </body>
 

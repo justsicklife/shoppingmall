@@ -22,9 +22,8 @@
 		</head>
 
 		<body>
-
-			<%@ include file="/WEB-INF/views/common/navbar.jsp" %>
-
+			<%@ include file="/WEB-INF/views/common/navbar.jsp"%>
+		
 				<input hidden value="${memberId}" id="memberId">
 				<div class="container message-box">
 					<h3 class=" text-center">Messaging</h3>
@@ -47,6 +46,8 @@
 					
 					<button id="start-button">채팅 시작 버튼</button>
 				</div>
+					<%@ include file="/WEB-INF/views/common/footer.jsp"%>
+				
 		</body>
 		<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>

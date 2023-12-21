@@ -237,6 +237,7 @@
    </main>
 
    <%@ include file="/WEB-INF/views/common/chat-button.jsp"%>
+	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
 
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"

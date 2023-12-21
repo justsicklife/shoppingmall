@@ -7,6 +7,8 @@
 <title>Insert title here</title>
 </head>
 <body>
+	<%@ include file="/WEB-INF/views/common/navbar.jsp"%>
+
 	<script type="text/javascript">
 		var memberEmail = '${memberEmail}';
 
@@ -14,5 +16,7 @@
 
 		self.location = "/member/loginPage";
 	</script>
+		<%@ include file="/WEB-INF/views/common/footer.jsp"%>
+	
 </body>
 </html>

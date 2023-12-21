@@ -54,6 +54,9 @@
 </head>
 
 <body>
+
+
+
 	<main class="container py-5" style="min-height: 730px;">
 		<!-- 작성 -->
 		<h3>문의 수정</h3>

@@ -56,8 +56,6 @@
 <body>
 
 
-	<%@ include file="/WEB-INF/views/common/navbar.jsp"%>
-
 
 	<!-- Product section-->
 	<section class="py-5">

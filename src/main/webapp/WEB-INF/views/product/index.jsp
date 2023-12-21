@@ -315,6 +315,8 @@ a, a:hover {
 	</section>
 
 	<%@ include file="/WEB-INF/views/common/chat-button.jsp"%>
+	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
+
 
 </body>
 <script

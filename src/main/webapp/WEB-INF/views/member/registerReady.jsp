@@ -41,6 +41,8 @@
     </style>
 </head>
 <body>
+	<%@ include file="/WEB-INF/views/common/navbar.jsp"%>
+
 <!-- <body style="text-align: center; padding: 50px;"> -->
 
     <p>발송된 이메일로 인증을 하셔야 로그인이 가능합니다.</p>
@@ -48,6 +50,8 @@
 
     <a href="/member/loginPage"><button type="button">로그인 페이지로 돌아가기</button></a>
     <a href="/product/index"><button type="button">메인 페이지로 돌아가기</button></a>
-
+	
+		<%@ include file="/WEB-INF/views/common/footer.jsp"%>
+	
 </body>
 </html>
