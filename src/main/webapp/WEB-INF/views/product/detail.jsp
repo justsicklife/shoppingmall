@@ -55,7 +55,9 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&display=swap" rel="stylesheet">	
+<link
+	href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&display=swap"
+	rel="stylesheet">
 
 
 </head>
@@ -100,11 +102,11 @@
 						</select>
 					</div>
 					<div class="mb-3 division pb-3">
-						<select class="w-100" id="size">						
-						<c:forTokens var="size" items="${ product.product_size_group}"
-							delims=",">
-							<option value="${size}">${size }</option>
-						</c:forTokens>
+						<select class="w-100" id="size">
+							<c:forTokens var="size" items="${ product.product_size_group}"
+								delims=",">
+								<option value="${size}">${size }</option>
+							</c:forTokens>
 						</select>
 					</div>
 
@@ -229,7 +231,8 @@
 									value="${reviewCurUser.review_score }"
 									data-show-caption="false" data-show-clear="false">
 							</div>
-							<small class="review_date"> ${reviewCurUser.review_open_date} </small>
+							<small class="review_date">
+								${reviewCurUser.review_open_date} </small>
 						</div>
 						<div class=" review_content">${reviewCurUser.review_content }</div>
 						<div class="d-flex justify-content-end">
@@ -254,17 +257,17 @@
 					<h5>작성된 리뷰 ( ${reviewListCount} 개 )</h5>
 				</div>
 				<c:forEach var="review" items="${reviewList}">
-					<div class="card p-1">
+					<div class="card py-1 my-3">
 						<div class="d-flex justify-content-between align-items-center">
 							<div class="user d-flex flex-row align-items-center">
 								<input name="review_score" id="input-id" type="text"
 									class="rating" readonly data-size="sm"
-									value="${reviewCurUser.review_score }"
-									data-show-caption="false" data-show-clear="false">
+									value="${review.review_score }" data-show-caption="false"
+									data-show-clear="false">
 							</div>
-							<small class="review_date"> ${reviewCurUser.review_open_date} </small>
+							<small class="review_date"> ${review.review_open_date} </small>
 						</div>
-						<div class=" review_content">${reviewCurUser.review_content }</div>
+						<div class=" review_content">${review.review_content }</div>
 					</div>
 				</c:forEach>
 
@@ -272,40 +275,68 @@
 			<ul>
 				<c:choose>
 					<c:when test="${reviewPi.currentPage eq 1 }">
-						<li class="page-item"><a class="page-link" href="#"
-							aria-label="Previous"> <i
-							class="fa-solid fa-angles-left" style="color: gray;"></i>
+						<li class="page-item"><a class="page-link" href="javascript:"
+							aria-label="Previous"> <span aria-hidden="true"><i
+									class="fa-solid fa-angles-left" style="color: gray;"></i></span>
+						</a></li>
+						<li class="page-item"><a class="page-link" href="javascript:"
+							aria-label="Previous"> <span aria-hidden="true"><i
+									class="fa-solid fa-angle-left" style="color: gray;"></i></span>
 						</a></li>
 					</c:when>
 					<c:otherwise>
 						<li class="page-item"><a class="page-link"
-							href="detail?cpage=${reviewPi.currentPage-1 }&product_id=${product.product_id}&ipage=${inquiryPi.currentPage}"
-							aria-label="Previous"> <i
-							class="fa-solid fa-angles-left" style="color: gray;"></i>
+							href="detail?rpage=${ 1}&product_id=${product.product_id}&ipage=${inquiryPi.currentPage}"
+							aria-label="Previous"> <i class="fa-solid fa-angles-left"
+								style="color: gray;"></i>
+						</a></li>
+						<li class="page-item"><a class="page-link" 
+						href="detail?rpage=${reviewPi.currentPage-1 }&product_id=${product.product_id}&ipage=${inquiryPi.currentPage}"
+							aria-label="Previous"> <span aria-hidden="true"><i
+									class="fa-solid fa-angle-left" style="color: gray;"></i></span>
 						</a></li>
 					</c:otherwise>
 				</c:choose>
-
 				<c:forEach var="p" begin="${reviewPi.startPage}"
 					end="${reviewPi.endPage}">
-					<li class="page-item"><a class="page-link"
-						href="detail?cpage=${p }&product_id=${product.product_id}">${ p}</a>
-					</li>
+					<c:choose>
+						<c:when test="${p eq reviewPi.currentPage}">
+							<li class="page-item"><a class="active-page page-link"
+								href="detail?rpage=${p }&product_id=${product.product_id}&ipage=${inquiryPi.currentPage}">${ p}</a>
+							</li>
+						</c:when>
+						<c:otherwise>
+							<li class="page-item"><a class="page-link"
+								href="detail?rpage=${p }&product_id=${product.product_id}&ipage=${inquiryPi.currentPage}">${ p}</a>
+							</li>
+						</c:otherwise>
+					</c:choose>
 				</c:forEach>
 
 				<c:choose>
 					<c:when test="${reviewPi.currentPage eq reviewPi.maxPage }">
-						<li class="page-item"><a class="page-link" href="#"
-							aria-label="Previous"> <i
-							class="fa-solid fa-angles-right" style="color: gray;"></i>
+						<li class="page-item"><a class="page-link" href="javascript:"
+							aria-label="Next"> <span aria-hidden="true"><i
+									class="fa-solid fa-angle-right" style="color: gray;"></i></span>
+						</a></li>
+						<li class="page-item"><a class="page-link" href="javascript:"
+							aria-label="Next"> <span aria-hidden="true"><i
+									class="fa-solid fa-angles-right" style="color: gray;"></i></span>
 						</a></li>
 					</c:when>
 					<c:otherwise>
 						<li class="page-item"><a class="page-link"
-							href="detail?cpage=${reviewPi.currentPage+1 }&product_id=${product.product_id}&ipage=${inquiryPi.currentPage}"
-							aria-label="Previous"> <i
-							class="fa-solid fa-angles-right" style="color: gray;"></i>
+							href="/product/detail?rpage=${reviewPi.currentPage + 1}&product_id=${product.product_id}&ipage=${inquiryPi.currentPage}"
+							aria-label="Next"> <span aria-hidden="true"><i
+									class="fa-solid fa-angle-right" style="color: gray;"></i></span>
 						</a></li>
+						<li class="page-item">
+							<!-- 10, 20, 30, 40, .... --> <a class="page-link"
+							href="/product/detail?rpage=${reviewPi.maxPage }&product_id=${product.product_id}&ipage=${inquiryPi.currentPage}"
+							aria-label="Next"> <span aria-hidden="true"><i
+									class="fa-solid fa-angles-right" style="color: gray;"></i></span>
+						</a>
+						</li>
 					</c:otherwise>
 				</c:choose>
 			</ul>
@@ -372,7 +403,7 @@
 											<div class="hidden-content">
 												<p style="font-weight: bolder; font-size: 1.2em;">
 													${item.boardTitle}</p>
-												${item.boardContent}												
+												${item.boardContent}
 												<c:if test="${item.boardMemberId eq memberId}">
 													<div style="text-align: right; margin-top: 10px;">
 														<button
@@ -426,7 +457,7 @@
 					</c:choose>
 				</tbody>
 			</table>
-	
+
 			<c:if test="${memberId ne 'admin' and not empty memberId}">
 				<button class="qa-button" onclick="openWrite('${product_id}')">문의
 					하기</button>
@@ -445,18 +476,18 @@
 							aria-label="Previous"> <span aria-hidden="true"><i
 									class="fa-solid fa-angle-left" style="color: gray;"></i></span>
 						</a></li>
-						
+
 					</c:when>
 					<c:otherwise>
 						<li class="page-item">
 							<!-- 1, 11, 21, 31, 41, .......... --> <a class="page-link"
-							href="/product/detail?cpage=${reviewPi.currentPage }&product_id=${product.product_id}&ipage=${inquiryPi.startPage -1}"
+							href="/product/detail?rpage=${reviewPi.currentPage }&product_id=${product.product_id}&ipage=${inquiryPi.startPage -1}"
 							aria-label="Previous"> <span aria-hidden="true"><i
 									class="fa-solid fa-angles-left" style="color: gray;"></i></span>
 						</a>
 						</li>
 						<li class="page-item"><a class="page-link"
-							href="detail?cpage=${reviewPi.currentPage }&product_id=${product.product_id}&ipage=${ inquiryPi.currentPage -1 }"
+							href="detail?rpage=${reviewPi.currentPage }&product_id=${product.product_id}&ipage=${ inquiryPi.currentPage -1 }"
 							aria-label="Previous"> <span aria-hidden="true"><i
 									class="fa-solid fa-angle-left" style="color: gray;"></i></span>
 						</a></li>
@@ -466,41 +497,49 @@
 
 				<c:forEach var="page" begin="${inquiryPi.startPage}"
 					end="${inquiryPi.endPage}">
-					<li class="page-item"><a style="color: gray;"
-						class="page-link"
-						href="/product/detail?cpage=${reviewPi.currentPage }&product_id=${product.product_id}&ipage=${page}"
-						>${page}</a></li>
+					<c:choose>
+						<c:when test="${inquiryPi.currentPage eq page }">
+							<li class="page-item"><a style="color: gray;"
+								class="page-link active-page"
+								href="/product/detail?rpage=${reviewPi.currentPage }&product_id=${product.product_id}&ipage=${page}">${page}</a></li>
+						</c:when>
+						<c:otherwise>
+							<li class="page-item"><a style="color: gray;"
+								class="page-link"
+								href="/product/detail?rpage=${reviewPi.currentPage }&product_id=${product.product_id}&ipage=${page}">${page}</a></li>
+						</c:otherwise>
+					</c:choose>
 				</c:forEach>
 
 
 				<c:choose>
 					<c:when test="${inquiryPi.currentPage eq inquiryPi.maxPage}">
-						<li class="page-item"><a class="page-link" href="#"
+						<li class="page-item"><a class="page-link" href="javascript:"
 							aria-label="Next"> <span aria-hidden="true"><i
 									class="fa-solid fa-angle-right" style="color: gray;"></i></span>
 						</a></li>
-						<li class="page-item"><a class="page-link" href="#"
+						<li class="page-item"><a class="page-link" href="javascript:"
 							aria-label="Next"> <span aria-hidden="true"><i
 									class="fa-solid fa-angles-right" style="color: gray;"></i></span>
 						</a></li>
 					</c:when>
 					<c:when test="${inquiryPi.endPage eq inquiryPi.maxPage}">
 						<li class="page-item"><a class="page-link"
-							href="/product/detail?cpage=${reviewPi.currentPage }&product_id=${product.product_id}&ipage=${inquiryPi.maxPage}" aria-label="Next">
-								<span aria-hidden="true"><i
+							href="/product/detail?rpage=${reviewPi.currentPage }&product_id=${product.product_id}&ipage=${inquiryPi.maxPage}"
+							aria-label="Next"> <span aria-hidden="true"><i
 									class="fa-solid fa-angles-right" style="color: gray;"></i></span>
 						</a></li>
 					</c:when>
 					<c:otherwise>
 						<li class="page-item"><a class="page-link"
-							href="/product/detail?cpage=${reviewPi.currentPage }&product_id=${product.product_id}&ipage=${inquiryPi.currentPage + 1}"
+							href="/product/detail?rpage=${reviewPi.currentPage }&product_id=${product.product_id}&ipage=${inquiryPi.currentPage + 1}"
 							aria-label="Next"> <span aria-hidden="true"><i
 									class="fa-solid fa-angle-right" style="color: gray;"></i></span>
 						</a></li>
 						<li class="page-item">
 							<!-- 10, 20, 30, 40, .... --> <a class="page-link"
-							href="/product/detail?cpage=${reviewPi.currentPage }&product_id=${product.product_id}&ipage=${inquiryPi.endPage + 1}" aria-label="Next">
-								<span aria-hidden="true"><i
+							href="/product/detail?rpage=${reviewPi.currentPage }&product_id=${product.product_id}&ipage=${inquiryPi.endPage + 1}"
+							aria-label="Next"> <span aria-hidden="true"><i
 									class="fa-solid fa-angles-right" style="color: gray;"></i></span>
 						</a>
 						</li>
@@ -512,7 +551,7 @@
 
 	<%@ include file="/WEB-INF/views/common/chat-button.jsp"%>
 	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
-	
+
 
 </body>
 

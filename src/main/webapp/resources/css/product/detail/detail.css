@@ -305,3 +305,6 @@ li {
 .page-link:hover,.page-link:visited,.page-link:active,.page-link {
 	color: gray !important;
 }
+.active-page {
+	background-color: rgb(243, 243, 243) !important;
+} 

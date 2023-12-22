@@ -182,7 +182,7 @@ public class ProductController {
 		int reviewListCount = reviewService.selectListCount(id);
 
 		// 페이지 제한 수
-		int reviewPageLimit = 10;
+		int reviewPageLimit = 5;
 		// 리뷰 제한수
 		int reviewLimit = 5;
 
