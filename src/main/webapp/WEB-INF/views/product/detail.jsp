@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -278,7 +279,7 @@
 					</c:when>
 					<c:otherwise>
 						<li class="page-item"><a class="page-link"
-							href="detail?cpage=${reviewPi.currentPage-1 }&product_id=${product.product_id}"
+							href="detail?cpage=${reviewPi.currentPage-1 }&product_id=${product.product_id}&ipage=${inquiryPi.currentPage}"
 							aria-label="Previous"> <i
 							class="fa-solid fa-angles-left" style="color: gray;"></i>
 						</a></li>
@@ -301,7 +302,7 @@
 					</c:when>
 					<c:otherwise>
 						<li class="page-item"><a class="page-link"
-							href="detail?cpage=${reviewPi.currentPage+1 }&product_id=${product.product_id}"
+							href="detail?cpage=${reviewPi.currentPage+1 }&product_id=${product.product_id}&ipage=${inquiryPi.currentPage}"
 							aria-label="Previous"> <i
 							class="fa-solid fa-angles-right" style="color: gray;"></i>
 						</a></li>
@@ -339,10 +340,10 @@
 							<c:forEach var="item" items="${boardList}">
 								<c:if test="${item.boardAnswerNum == 0}">
 									<tr id="question-${item.boardQuestionNum}"
-										onclick="toggleRow('${item.boardQuestionNum}','${item.boardSecret}', '${item.boardMemberId}', '${memberName}')">
+										onclick="toggleRow('${item.boardQuestionNum}','${item.boardSecret}', '${item.boardMemberId}', '${memberId}')">
 										<input type="hidden" name="memberId" value="${memberName}">
 										<td class="td-num" style="width: 5%; text-align: center;">
-											${item.boardQuestionNum}</td>
+											${boardRow}</td>
 										<td class="td-AnswerNum"
 											style="width: 10%; text-align: center;"><c:choose>
 												<c:when test="${item.boardAnswer_Y == 1}">
@@ -371,8 +372,8 @@
 											<div class="hidden-content">
 												<p style="font-weight: bolder; font-size: 1.2em;">
 													${item.boardTitle}</p>
-												${item.boardContent}
-												<c:if test="${item.boardMemberId eq memberName}">
+												${item.boardContent}												
+												<c:if test="${item.boardMemberId eq memberId}">
 													<div style="text-align: right; margin-top: 10px;">
 														<button
 															onclick="deleteInquiry('${item.boardQuestionNum}','${product.product_id }')">삭제</button>
@@ -383,16 +384,17 @@
 													</div>
 												</c:if>
 												<c:if
-													test="${memberName eq 'admin' and item.boardAnswer_Y == 0}">
+													test="${memberId eq 'admin' and item.boardAnswer_Y == 0}">
 													<div style="text-align: right; margin-top: 10px;">
 														<button class="as-button"
-															onclick="openAnswer('${item.boardQuestionNum}', '${memberName}','${ product.product_id}')">답변</button>
+															onclick="openAnswer('${item.boardQuestionNum}','${ memberId}','${ product.product_id}')">답변</button>
 													</div>
 												</c:if>
 											</div>
 										</td>
 									</tr>
 								</c:if>
+								<c:set var="boardRow" value="${boardRow-1}" />
 								<c:forEach var="answerItem" items="${answerList}">
 									<c:if
 										test="${item.boardQuestionNum == answerItem.boardQuestionNum && answerItem.boardAnswerNum == 1}">
@@ -409,10 +411,10 @@
 											<td colspan="1">
 												<div style="text-align: center;">
 													${answerItem.boardIndate}</div> <c:if
-													test="${memberName eq 'admin'}">
+													test="${memberId eq 'admin'}">
 													<div style="text-align: right; margin-top: 10px;">
 														<button
-															onclick="openAnswerEdit('${item.boardQuestionNum}', '${memberName}','${ product.product_id}')">수정</button>
+															onclick="openAnswerEdit('${item.boardQuestionNum}', '${memberId}','${ product.product_id}')">수정</button>
 													</div>
 												</c:if>
 											</td>
@@ -424,7 +426,8 @@
 					</c:choose>
 				</tbody>
 			</table>
-			<c:if test="${memberName ne 'admin' and not empty memberName}">
+	
+			<c:if test="${memberId ne 'admin' and not empty memberId}">
 				<button class="qa-button" onclick="openWrite('${product_id}')">문의
 					하기</button>
 			</c:if>
@@ -434,25 +437,26 @@
 			<ul class="pagination justify-content-center">
 				<c:choose>
 					<c:when test="${ inquiryPi.currentPage eq 1 }">
-						<li class="page-item"><a class="page-link" href="#"
+						<li class="page-item"><a class="page-link" href="javascript:"
 							aria-label="Previous"> <span aria-hidden="true"><i
 									class="fa-solid fa-angles-left" style="color: gray;"></i></span>
 						</a></li>
-						<!-- <li class="page-item"><a class="page-link" href="#"
+						<li class="page-item"><a class="page-link" href="javascript:"
 							aria-label="Previous"> <span aria-hidden="true"><i
 									class="fa-solid fa-angle-left" style="color: gray;"></i></span>
-						</a></li> -->
+						</a></li>
+						
 					</c:when>
 					<c:otherwise>
 						<li class="page-item">
 							<!-- 1, 11, 21, 31, 41, .......... --> <a class="page-link"
-							href="/product/detail?cpage=${reviewPi.currentPage }&product_id=${product.product_id}&ipage=${1}"
+							href="/product/detail?cpage=${reviewPi.currentPage }&product_id=${product.product_id}&ipage=${inquiryPi.startPage -1}"
 							aria-label="Previous"> <span aria-hidden="true"><i
 									class="fa-solid fa-angles-left" style="color: gray;"></i></span>
 						</a>
 						</li>
 						<li class="page-item"><a class="page-link"
-							href="detail?cpage=${reviewPi.currentPage }&product_id=${product.product_id}&ipage=${inquiryPi.currentPage - 1}"
+							href="detail?cpage=${reviewPi.currentPage }&product_id=${product.product_id}&ipage=${ inquiryPi.currentPage -1 }"
 							aria-label="Previous"> <span aria-hidden="true"><i
 									class="fa-solid fa-angle-left" style="color: gray;"></i></span>
 						</a></li>
@@ -471,10 +475,10 @@
 
 				<c:choose>
 					<c:when test="${inquiryPi.currentPage eq inquiryPi.maxPage}">
-						<!-- <li class="page-item"><a class="page-link" href="#"
+						<li class="page-item"><a class="page-link" href="#"
 							aria-label="Next"> <span aria-hidden="true"><i
 									class="fa-solid fa-angle-right" style="color: gray;"></i></span>
-						</a></li> -->
+						</a></li>
 						<li class="page-item"><a class="page-link" href="#"
 							aria-label="Next"> <span aria-hidden="true"><i
 									class="fa-solid fa-angles-right" style="color: gray;"></i></span>
@@ -482,7 +486,7 @@
 					</c:when>
 					<c:when test="${inquiryPi.endPage eq inquiryPi.maxPage}">
 						<li class="page-item"><a class="page-link"
-							href="/product/detail?cpage=${reviewPi.currentPage }&product_id=${product.product_id}&ipage=${inquiryPi.maxPage + 1}" aria-label="Next">
+							href="/product/detail?cpage=${reviewPi.currentPage }&product_id=${product.product_id}&ipage=${inquiryPi.maxPage}" aria-label="Next">
 								<span aria-hidden="true"><i
 									class="fa-solid fa-angles-right" style="color: gray;"></i></span>
 						</a></li>
@@ -495,7 +499,7 @@
 						</a></li>
 						<li class="page-item">
 							<!-- 10, 20, 30, 40, .... --> <a class="page-link"
-							href="/product/detail?cpage=${reviewPi.currentPage }&product_id=${product.product_id}&ipage=${inquiryPi.maxPage}" aria-label="Next">
+							href="/product/detail?cpage=${reviewPi.currentPage }&product_id=${product.product_id}&ipage=${inquiryPi.endPage + 1}" aria-label="Next">
 								<span aria-hidden="true"><i
 									class="fa-solid fa-angles-right" style="color: gray;"></i></span>
 						</a>

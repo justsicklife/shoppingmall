@@ -147,9 +147,9 @@ public class ProductController {
 		// 전체 게시글 구하기
 		int listCount = boardservice.selectListCount(id);
 		// 보여질 페이지 수
-		int pageLimit = 10;
+		int pageLimit = 5;
 		// 한 페이지에 들어갈 게시글 수
-		int boardLimit = 8;
+		int boardLimit = 4;
 		// 글의 번호를 뒤에서부터 보여주기 = 전체 게시글 수 - (현재페이지 -1 ) * 한 페이지에 보여줄 게시글 수
 		int row = listCount - (inquryCurrentPage - 1) * boardLimit;
 

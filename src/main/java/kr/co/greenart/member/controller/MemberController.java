@@ -170,6 +170,9 @@ public class MemberController {
 			session.setAttribute("memberName", loginUser.getMemberName());
 			session.setAttribute("memberEmail", loginUser.getMemberEmail());
 			
+			System.out.println("id : " +loginUser.getMemberId());
+			System.out.println("name : " + loginUser.getMemberEmail());
+			
 			return "redirect:/product/index";
 		} else if (Objects.isNull(loginUser)
 				|| !bcryptPasswordEncoder.matches(memberDto.getMemberPassword(), loginUser.getMemberPassword())) {
