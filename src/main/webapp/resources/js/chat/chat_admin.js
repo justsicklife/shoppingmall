@@ -57,7 +57,7 @@ $(document).ready(
                             const chatRoomMessage = document.getElementById("chat_message_"+data.chatRoomId);
                             alarmCount.innerHTML = data.chatRoomAlertCount;
                             chatRoomMessage.innerHTML = data.chatRoomMessage;
-
+                            alarmCount.classList.add("chat_alarm");
                         }
                     })
 
@@ -68,7 +68,8 @@ $(document).ready(
                     let data = JSON.parse(chat.body);
                     console.log("data : " + data);
                     const alarmCount = document.getElementById(`chat_date_${data.chatRoomId}`)
-                    alarmCount.innerHTML = 0;
+                    alarmCount.innerHTML = "";
+                    alarmCount.classList.remove("chat_alarm");
                 })
 
                 // 채팅창 send 보냄
@@ -79,6 +80,7 @@ $(document).ready(
 
 // 채팅방 목록 태그 만들어주는거
 function listMaker(chatRoomId, memberId, curRoomIdx,chatRoomAlertCount,chatRoomMessage) {
+    console.log(chatRoomAlertCount);
     let str = `<div class='chat_list ${curRoomIdx === chatRoomId ? "active_chat" : ""}' id='chat-${chatRoomId}' onclick='changeRoom(${chatRoomId})'>
     <div class='chat_people'>
     <div class='chat_img'>
@@ -88,9 +90,9 @@ function listMaker(chatRoomId, memberId, curRoomIdx,chatRoomAlertCount,chatRoomM
     <h5>${memberId}</h5>
     <div>
     <div class='d-flex'>
-    <div class='flex-grow-1' id='chat_message_${chatRoomId}'>${chatRoomMessage}</div>
-    <span class='chat_alarm' id='chat_date_${chatRoomId}'>${chatRoomAlertCount}</span>
-    </div>
+    <div class='flex-grow-1' id='chat_message_${chatRoomId}'>${chatRoomMessage}</div>`
+    str += chatRoomAlertCount == 0 ? `<span id='chat_date_${chatRoomId}'></span>` : `<span class='chat_alarm' id='chat_date_${chatRoomId}'>${chatRoomAlertCount}</span>`
+    str += `</div>
     </div>
     </div>
     </div>

@@ -308,3 +308,18 @@ li {
 .active-page {
 	background-color: rgb(243, 243, 243) !important;
 } 
+.review-conetent-box{
+	display: flex;
+	justify-content: space-between;
+	
+}
+.review_member_id{
+	font-size: 1.2rem;
+	font-weight: bold;
+}
+.product_content{
+	color: rgba(113, 113, 113, 1);
+}
+.product_price{
+	font-weight: bold;
+}

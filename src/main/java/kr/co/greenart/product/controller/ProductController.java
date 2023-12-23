@@ -125,7 +125,8 @@ public class ProductController {
 
 		// 평균 구하는거
 		if(sumScore != 0) {
-			sumScore /= countScore.getSum();			
+			sumScore /= countScore.getSum();	
+			sumScore = Math.round(sumScore);
 		} else {
 			sumScore = 0;
 		}

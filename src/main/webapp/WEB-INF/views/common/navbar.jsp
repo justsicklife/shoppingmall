@@ -108,6 +108,7 @@
 }
 .navbar-brand{
 	font-weight: bold;
+	font-size: 1.5rem !important;
 }
 .margin-left-2{
 	margin-left: 10px;
@@ -128,7 +129,12 @@
 .navbar_box {
 	background-color: #4141410d;
 }
-
+.create-product{
+	font-weight: bold;
+}
+.category-button,.community-button{
+	font-weight: bold;
+}
 </style>
 </head>
 <body>
@@ -160,7 +166,7 @@
 								<li class="nav-item"><a class="nav-link-left" href="#"
 									tabindex="-1" aria-disabled="true">액세서리</a></li>
 								<c:if test="${sessionScope.memberId eq 'admin' }">
-								<li class="nav-item"><a class="nav-link-left" href="/product/create"
+								<li class="nav-item"><a class="nav-link-left create-product" href="/product/create"
 									tabindex="-1" aria-disabled="true">상품 추가</a></li>
 								</c:if>
 							</ul>

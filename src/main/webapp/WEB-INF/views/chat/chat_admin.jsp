@@ -22,6 +22,11 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
 	integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
 	crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&display=swap" rel="stylesheet">
+
 </head>
 
 <link rel="stylesheet" href="/resources/css/chat/chat_admin.css">
@@ -31,13 +36,13 @@
 	<%@ include file="/WEB-INF/views/common/navbar.jsp"%>
 	<input hidden value="${memberId}" id="memberId">
 	<div class="container message-box">
-		<h3 class=" text-center">admin</h3>
+		<h3 class=" text-center">관리자 채팅</h3>
 		<div class="messaging">
 			<div class="inbox_msg">
 				<div class="inbox_people">
 					<div class="headind_srch">
 						<div class="recent_heading">
-							<h4>Recent</h4>
+							<h4>문의 목록</h4>
 						</div>
 					</div>
 					<div class="inbox_chat" id="inbox-chat"></div>
@@ -46,7 +51,7 @@
 					<div class="msg_history" id="msgBox"></div>
 					<div class="type_msg">
 						<div class="input_msg_write">
-							<input type="text" class="write_msg" placeholder="Type a message" />
+							<input type="text" class="write_msg" placeholder="메시지를 입력해주세요" />
 							<button class="msg_send_btn" type="button">
 								<i class="fa fa-paper-plane-o" aria-hidden="true"></i>
 							</button>

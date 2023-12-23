@@ -9,7 +9,7 @@ function openAnswer(boardQuestionNum, memberId ,productId) {
     console.log('memberId:', memberId);
     console.log(productId);
     // 새 창 열기
-    const newWindow =  window.open(`/board/answerForm.do?boardQuestionNum=${boardQuestionNum}&MemberId=${memberId}&boardProductNum=${productId}`, "_blank", "width=600, height=600");
+    const newWindow =  window.open(`/board/answerForm.do?boardQuestionNum=${boardQuestionNum}&MemberId=${memberId}&boardProductNum=${productId}`, "_blank", "width=800, height=600");
 
     // 새 창이 로드되었을 때의 이벤트 리스너 등록
     newWindow.onload = function () {
@@ -22,7 +22,7 @@ function openAnswer(boardQuestionNum, memberId ,productId) {
 // 유저 문의 수정 클릭
 function openEdit(boardQuestionNum) {
     // 새 창 열기
-    const newWindow = window.open(`/board/inquiryEdit.do?boardQuestionNum=${boardQuestionNum}`, "_blank", "width=600, height=800");
+    const newWindow = window.open(`/board/inquiryEdit.do?boardQuestionNum=${boardQuestionNum}`, "_blank", "width=800, height=900");
 
     // 새 창이 로드되었을 때의 이벤트 리스너 등록
     newWindow.onload = function () {
@@ -35,7 +35,7 @@ function openEdit(boardQuestionNum) {
 function openAnswerEdit(boardQuestionNum, memberId,productId){
     console.log('productId : ' + productId);
     // 새 창 열기
-    const newWindow =  window.open(`/board/answerEditForm.do?boardQuestionNum=${boardQuestionNum}&MemberId=${memberId}&boardProductNum=${productId}`, "_blank", "width=600, height=600");
+    const newWindow =  window.open(`/board/answerEditForm.do?boardQuestionNum=${boardQuestionNum}&MemberId=${memberId}&boardProductNum=${productId}`, "_blank", "width=800, height=600");
 
     // 새 창이 로드되었을 때의 이벤트 리스너 등록
     newWindow.onload = function () {

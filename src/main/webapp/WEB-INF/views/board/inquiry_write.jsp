@@ -51,6 +51,12 @@
 <!-- chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+<style> 
+	.secret{
+		margin-right: 10px; 
+	}
+</style>
+
 </head>
 
 <body>
@@ -71,8 +77,8 @@
 						<option value="재입고">재입고</option>
 					</select>
 				</div>	
-				<div class="col-3 mb-3">
-					<label for="secret">비밀글</label>
+				<div class="col-3 mb-3 d-flex align-items-center">
+					<label for="secret" class="secret">비밀글</label>
 					<input type="checkbox" name="boardSecret" id="secretChk" value="1">
 				</div>
 				<P>클레임(교환/환불/취소)관련 문의는 마이페이지 > 1:1 문의에서 문의 바랍니다.</P>
@@ -87,9 +93,9 @@
 			</div>
 			<div class="row">
 				<div class="col text-center">
+					<button type="button" class="btn btn-outline-warning" onclick="submitForm()">작성</button>
 					<button type="button" class="btn btn-outline-secondary"
 						onclick="window.opener.location.reload(); window.close();">취소</button>
-					<button type="button" class="btn btn-outline-warning" onclick="submitForm()">작성</button>
 				</div>
 			</div>
 		</form>
