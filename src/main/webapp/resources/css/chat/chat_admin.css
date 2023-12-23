@@ -1,3 +1,7 @@
+*{
+	font-family: 'IBM Plex Sans KR', sans-serif;
+}
+
 .alram {
 	background: red;
 }
@@ -31,7 +35,6 @@ img {
 
 .recent_heading {
 	float: left;
-	width: 40%;
 }
 
 .srch_bar {

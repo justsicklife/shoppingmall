@@ -12,18 +12,18 @@
 	  -->
 	<resultMap type="Review" id="reviewResultMap">
 		<result column="r_id" property="review_id"/>
-		<result column="m_id" property="member_id"/>
+		<result column="m_idxx" property="member_idx"/>
 		<result column="p_id" property="product_id"/>
 		<result column="r_score" property="review_score"/>
 		<result column="r_open_date" property="review_open_date"/>
 		<result column="r_content" property="review_content"/>
 		<result column="r_like" property="review_like"/>
 		<result column="r_unlike" property="review_unlike"/>
-		
+		<result column="m_id" property="member_id"/>
 	</resultMap>
 	
 	<insert id="insertReview" parameterType="Review">
-		insert into s_review(r_id,m_id,p_id,r_score,r_content) values(review_id_seq.nextval,#{member_id},#{product_id},#{review_score},#{review_content})
+		insert into s_review(r_id,m_idx,p_id,r_score,r_content,m_id) values(review_id_seq.nextval,#{member_idx},#{product_id},#{review_score},#{review_content},#{member_id})
 	</insert>
 	
 	<select id="reviewFindByProductId" parameterType="int" resultMap="reviewResultMap">
@@ -31,7 +31,7 @@
 	</select>
 	
 	<select id="findReviewByMemberAndProduct" parameterType="java.util.HashMap" resultMap="reviewResultMap">
-		SELECT * FROM s_review where p_id = #{product_id} AND m_id = #{member_id}
+		SELECT * FROM s_review where p_id = #{product_id} AND m_idx = #{member_id}
 	</select>
 	
 	<select id="reviewFindByReviewId" parameterType="int" resultMap="reviewResultMap">

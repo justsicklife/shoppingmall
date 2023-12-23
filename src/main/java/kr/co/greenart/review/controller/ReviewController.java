@@ -28,8 +28,19 @@ public class ReviewController {
 			HttpSession session
 			) {
 		
+		
+		Object obj =  session.getAttribute("memberId");
+		
+		String memberId= null;
+		
+		if(obj != null && obj instanceof String) {
+			memberId = (String) obj;
+		}
+		
+		
 		model.addAttribute("product_id",product_id);
-		model.addAttribute("member_id",member_id);
+		model.addAttribute("member_idx",member_id);
+		model.addAttribute("member_id",memberId);
 		
 		return "/review/create";
 	}

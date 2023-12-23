@@ -140,12 +140,9 @@ a, a:hover {
 }
 
 .section-products .single-product .part-2 .product-title {
-	font-size: 1rem;
-}
-
-.section-products .single-product .part-2 h4 {
-	display: inline-block;
-	font-size: 1rem;
+	font-size: 1.7rem;
+	font-weight: bold;
+	text-align: center;
 }
 
 .section-products .single-product .part-2 .product-old-price {
@@ -164,6 +161,18 @@ a, a:hover {
 	height: 1px;
 	background-color: #444444;
 	transform: translateY(-50%);
+}
+.product_box,.product_box:hover,.product_box:visited{
+	text-decoration: none;
+	color: black;
+}
+.product-price{
+	text-align: center;
+	font-size: 1rem;
+}
+.product_explain{
+	text-align: center;
+	color: rgba(113, 113, 113, 1);
 }
 </style>
 
@@ -213,13 +222,14 @@ a, a:hover {
 				<c:forEach var="item" items="${outer}">
 					<div class="col-md-6 col-lg-4 col-xl-3">
 						<div id="product-1" class="single-product">
-							<a href="/product/detail?product_id=${item.product_id }">
+							<a class="product_box" href="/product/detail?product_id=${item.product_id }">
 								<div class="part-1">
 									<img class="w-100 h-100" src="${item.product_image }" />
 								</div>
 								<div class="part-2">
-									<h3 class="product-title">${item.product_name }</h3>
-									<h4 class="product-price">${item.product_price }</h4>
+									<h2 class="product-title">${item.product_name }</h2>
+									<h5 class="product_explain">${item.product_content}</h5>
+									<h4 class="product-price">가격 : ${item.product_price } 원</h4>
 								</div>
 							</a>
 						</div>
@@ -242,13 +252,15 @@ a, a:hover {
 				<c:forEach var="item" items="${top}">
 					<div class="col-md-6 col-lg-4 col-xl-3">
 						<div id="product-1" class="single-product">
-							<a href="/product/detail?product_id=${item.product_id }">
+							<a class="product_box" href="/product/detail?product_id=${item.product_id }">
 								<div class="part-1">
 									<img class="w-100 h-100" src="${item.product_image }" />
 								</div>
 								<div class="part-2">
 									<h3 class="product-title">${item.product_name }</h3>
-									<h4 class="product-price">${item.product_price }</h4>
+									<h5 class="product_explain">${item.product_content}</h5>
+
+									<h4 class="product-price">가격 : ${item.product_price } 원</h4>
 								</div>
 							</a>
 						</div>
@@ -270,13 +282,15 @@ a, a:hover {
 				<c:forEach var="item" items="${bottom}">
 					<div class="col-md-6 col-lg-4 col-xl-3">
 						<div id="product-1" class="single-product">
-							<a href="/product/detail?product_id=${item.product_id }">
+							<a class="product_box" href="/product/detail?product_id=${item.product_id }">
 								<div class="part-1">
 									<img class="w-100 h-100" src="${item.product_image }" />
 								</div>
 								<div class="part-2">
 									<h3 class="product-title">${item.product_name }</h3>
-									<h4 class="product-price">${item.product_price }</h4>
+									<h5 class="product_explain">${item.product_content}</h5>
+
+									<h4 class="product-price">가격 : ${item.product_price } 원</h4>
 								</div>
 							</a>
 						</div>
@@ -298,13 +312,15 @@ a, a:hover {
 				<c:forEach var="item" items="${shoes}">
 					<div class="col-md-6 col-lg-4 col-xl-3">
 						<div id="product-1" class="single-product">
-							<a href="/product/detail?product_id=${item.product_id }">
+							<a class="product_box" href="/product/detail?product_id=${item.product_id }">
 								<div class="part-1">
 									<img class="w-100 h-100" src="${item.product_image }" />
 								</div>
 								<div class="part-2">
 									<h3 class="product-title">${item.product_name }</h3>
-									<h4 class="product-price">${item.product_price }</h4>
+									<h5 class="product_explain">${item.product_content}</h5>
+
+									<h4 class="product-price">가격 : ${item.product_price } 원</h4>
 								</div>
 							</a>
 						</div>
@@ -315,6 +331,8 @@ a, a:hover {
 	</section>
 
 	<%@ include file="/WEB-INF/views/common/chat-button.jsp"%>
+	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
+
 
 </body>
 <script

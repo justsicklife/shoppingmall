@@ -125,7 +125,8 @@ public class ProductController {
 
 		// 평균 구하는거
 		if(sumScore != 0) {
-			sumScore /= countScore.getSum();			
+			sumScore /= countScore.getSum();	
+			sumScore = Math.round(sumScore);
 		} else {
 			sumScore = 0;
 		}
@@ -147,9 +148,9 @@ public class ProductController {
 		// 전체 게시글 구하기
 		int listCount = boardservice.selectListCount(id);
 		// 보여질 페이지 수
-		int pageLimit = 10;
+		int pageLimit = 5;
 		// 한 페이지에 들어갈 게시글 수
-		int boardLimit = 8;
+		int boardLimit = 4;
 		// 글의 번호를 뒤에서부터 보여주기 = 전체 게시글 수 - (현재페이지 -1 ) * 한 페이지에 보여줄 게시글 수
 		int row = listCount - (inquryCurrentPage - 1) * boardLimit;
 
@@ -182,7 +183,7 @@ public class ProductController {
 		int reviewListCount = reviewService.selectListCount(id);
 
 		// 페이지 제한 수
-		int reviewPageLimit = 10;
+		int reviewPageLimit = 5;
 		// 리뷰 제한수
 		int reviewLimit = 5;
 

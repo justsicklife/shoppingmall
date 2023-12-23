@@ -161,6 +161,9 @@
 </head>
 
 <body>
+	<%@ include file="/WEB-INF/views/common/navbar.jsp"%>
+
+
 	<form action="/member/signup.do" method="post" id="submitForm" class="needs-validation">
 		<div class="container container-table">
 			<div class="d-flex justify-content-end">
@@ -254,7 +257,7 @@
 			</table>
 		</div>
 
-		<div class="container mt-5">
+		<div class="container mt-5 py-5">
 			<div class="check-box">
 				<div class="top-check-box">
 					<p>
@@ -308,6 +311,8 @@
 			</div>
 		</div>
 	</form>
+	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
+
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
 	integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"

@@ -91,7 +91,7 @@ public class BoardController {
 
 		System.out.println(boardDto);
 
-		String memberId = (String) session.getAttribute("memberName");
+		String memberId = (String) session.getAttribute("memberId");
 		int memberIdx = (Integer)session.getAttribute("memberIdx");
 
 //		boardDto.setBoardProductNum(productNum);
@@ -118,7 +118,7 @@ public class BoardController {
 	public String answerForm(BoardDto boardDto, HttpSession session, Model model) {
 		try {
 
-			String memberId = (String) session.getAttribute("memberName");
+			String memberId = (String) session.getAttribute("memberId");
 
 			System.out.println("boardDTO : " + boardDto);
 

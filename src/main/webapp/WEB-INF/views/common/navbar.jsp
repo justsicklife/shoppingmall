@@ -22,6 +22,11 @@
 	integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
 	crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&display=swap" rel="stylesheet">
+
 <style>
 .nav-link-left, .nav-link-right {
 	color: black;
@@ -31,6 +36,13 @@
 
 .nav-item {
 	padding: 10px;
+		
+	font-family: 'IBM Plex Sans KR', sans-serif;
+}
+
+
+.nav-link-right {
+	font-family: 'IBM Plex Sans KR', sans-serif;
 }
 
 .category-button, .community-button {
@@ -96,14 +108,37 @@
 }
 .navbar-brand{
 	font-weight: bold;
+	font-size: 1.5rem !important;
 }
 .margin-left-2{
 	margin-left: 10px;
 }
+.navbar a:visited {
+	color:black;
+}
+.navbar a:hover {
+	color:black;
+}
+.navbar a:active {
+	color:black;
+}
+.navbar a {
+	text-decoration: none;
+}
+
+.navbar_box {
+	background-color: #4141410d;
+}
+.create-product{
+	font-weight: bold;
+}
+.category-button,.community-button{
+	font-weight: bold;
+}
 </style>
 </head>
 <body>
-	<nav class="navbar fixed-top">
+	<nav class="navbar_box navbar fixed-top">
 		<div class="container-fluid">
 			<div>
 				<nav class="navbar navbar-expand-lg navbar-light ">
@@ -131,7 +166,7 @@
 								<li class="nav-item"><a class="nav-link-left" href="#"
 									tabindex="-1" aria-disabled="true">액세서리</a></li>
 								<c:if test="${sessionScope.memberId eq 'admin' }">
-								<li class="nav-item"><a class="nav-link-left" href="/product/create"
+								<li class="nav-item"><a class="nav-link-left create-product" href="/product/create"
 									tabindex="-1" aria-disabled="true">상품 추가</a></li>
 								</c:if>
 							</ul>
@@ -166,8 +201,8 @@
 				<button class="navbar-toggler" type="button"
 					data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
 					aria-controls="offcanvasNavbar">
-					<span class="navbar-toggler-icon d-flex align-items-center"> <svg
-							xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+					<span class="navbar-toggler-icon d-flex align-items-center"> <svg 
+							xmlns="http://www.w3.org/2000/svg" width="30" height="30"
 							fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
                             <path fill-rule="evenodd"
 								d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z" />
@@ -197,27 +232,27 @@
 					<div class="row pt-5">
 						<ul class="col-6 list-unstyled d-flex flex-column"
 							id="category_display">
-							<li class="mt-2"><a class="sidebar-link" href="#"> 상품 </a></li>
-							<li class="mt-2"><a class="sidebar-link" href="#">
+							<li class="nav-item mt-2"><a class="sidebar-link" href="#"> 상품 </a></li>
+							<li class="nav-item mt-2"><a class="sidebar-link" href="#">
 									아우터 </a></li>
-							<li class="mt-2"><a class="sidebar-link" href="#"> 상의 </a>
+							<li class="nav-item mt-2"><a class="sidebar-link" href="#"> 상의 </a>
 							</li>
-							<li class="mt-2"><a class="sidebar-link" href="#">
+							<li class="nav-item mt-2"><a class="sidebar-link" href="#">
 									하의 </a></li>
-							<li class="mt-2"><a class="sidebar-link" href="#"> 신발
+							<li class="nav-item mt-2"><a class="sidebar-link" href="#"> 신발
 							</a></li>
-							<li class="mt-2"><a class="sidebar-link" href="#"> 액세서리 </a>
+							<li class="nav-item mt-2"><a class="sidebar-link" href="#"> 액세서리 </a>
 							</li>
 						</ul>
 						<ul class="col-6 list-unstyled d-none d-flex flex-column"
 							id="community_display">
-							<li class="mt-2"><a class="sidebar-link" href="#">
+							<li class="nav-item mt-2"><a class="sidebar-link" href="#">
 									공지사항 </a></li>
-							<li class="mt-2"><a class="sidebar-link" href="#"> Q&A </a>
+							<li class="nav-item mt-2"><a class="sidebar-link" href="#"> Q&A </a>
 							</li>
-							<li class="mt-2"><a class="sidebar-link" href="#">
+							<li class="nav-item mt-2"><a class="sidebar-link" href="#">
 									리뷰 </a></li>
-							<li class="mt-2"><c:choose>
+							<li class="nav-item mt-2"><c:choose>
 									<c:when test="${ sessionScope.memberId == 'admin'}">
 										<a href="/chat/admin" class="sidebar-link" href="#"> 관리자 채팅
 										

@@ -54,6 +54,7 @@
 </head>
 
 <body>
+
 	<main class="container py-5" style="min-height: 730px;">
 		<!-- 작성 -->
 		<h3>문의 답변</h3>
@@ -73,9 +74,9 @@
 					</div>
 					<div class="row">
 						<div class="col text-center">
+							<button type="button" class="btn btn-outline-warning" onclick="submitForm(event)">작성</button>
 							<button type="button" class="btn btn-outline-secondary"
 								onclick="window.opener.location.reload(); window.close();">취소</button>
-							<button type="button" class="btn btn-outline-warning" onclick="submitForm(event)">작성</button>
 						</div>
 					</div>
 				</c:when>

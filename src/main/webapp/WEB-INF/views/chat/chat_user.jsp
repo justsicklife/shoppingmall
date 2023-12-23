@@ -19,15 +19,18 @@
 				crossorigin="anonymous" referrerpolicy="no-referrer" />
 			<link href="/resources/css/chat/chat_user.css" rel="stylesheet" />
 
+			<link rel="preconnect" href="https://fonts.googleapis.com">
+			<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+			<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&display=swap" rel="stylesheet">
+
 		</head>
 
 		<body>
-
-			<%@ include file="/WEB-INF/views/common/navbar.jsp" %>
-
+			<%@ include file="/WEB-INF/views/common/navbar.jsp"%>
+		
 				<input hidden value="${memberId}" id="memberId">
 				<div class="container message-box">
-					<h3 class=" text-center">Messaging</h3>
+					<h3 class=" text-center">1 : 1 문의</h3> 
 					<div class="messaging">
 						<div class="inbox_msg">
 							<div class="mesgs">
@@ -35,7 +38,7 @@
 								</div>
 								<div class="type_msg">
 									<div class="input_msg_write">
-										<input readonly type="text" id="input-msg" class="write_msg" placeholder="Type a message" />
+										<input readonly type="text" id="input-msg" class="write_msg" placeholder="메시지를 입력하세요" />
 										<button class="msg_send_btn" type="button">
 											<i class="fa fa-paper-plane-o" aria-hidden="true"></i>
 										</button>
@@ -45,8 +48,10 @@
 						</div>
 					</div>
 					
-					<button id="start-button">채팅 시작 버튼</button>
+					<button class="btn chat_button" id="start-button">1 : 1 문의하기</button>
 				</div>
+					<%@ include file="/WEB-INF/views/common/footer.jsp"%>
+				
 		</body>
 		<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
