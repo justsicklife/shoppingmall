@@ -1,12 +1,17 @@
 package kr.co.greenart.product.controller;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.IntSummaryStatistics;
 import java.util.List;
@@ -22,6 +27,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -219,59 +225,65 @@ public class ProductController {
 	@PostMapping("/create")
 	public String postCreatePage(ProductDTO product,
 			@RequestParam(name = "images", defaultValue = "", required = false) MultipartFile[] upload,
-			HttpServletRequest request, Model model, HttpSession session) {
+			HttpServletRequest request, Model model, HttpSession session) throws IOException {
 
 		List<String> filePathList = new ArrayList<>();
 
 		System.out.println(upload.length);
 		System.out.println(upload);
 
-		if (upload.length != 0) {
-			Stream<MultipartFile> arrayUpload = Arrays.stream(upload);
-			arrayUpload.forEach(file -> {
-				// 원본 파일명
-				String originalName = file.getOriginalFilename();
+		for(int i = 0 ; i < upload.length;i++) {
+			MultipartFile imgfile = upload[i];
+			
+			System.out.println(imgfile);
+			
+			Calendar cal = Calendar.getInstance();
 
-				if (file.getOriginalFilename().equals("")) {
-					return;
+			String fileName = imgfile.getOriginalFilename();
+
+			String fileType = fileName.substring(fileName.lastIndexOf("."), fileName.length());
+
+			String replaceName = cal.getTimeInMillis() + fileType;
+
+			String path = request.getSession().getServletContext().getRealPath("/") + File.separator + "resources/upload"; // 파일이
+		
+			System.out.println("img : " +imgfile);
+			System.out.println("path : " + path);
+			System.out.println("replaceName : " + replaceName);
+			
+			String originalFileName = imgfile.getOriginalFilename();
+			String contentType = imgfile.getContentType();
+			long fileSize = imgfile.getSize();
+			
+			InputStream is = null;
+			OutputStream out = null;
+			
+			try {
+				if(fileSize > 0) {
+					is = imgfile.getInputStream();
+					
+					File realUploadDir = new File(path);
+					
+					if(!realUploadDir.exists()) {
+						realUploadDir.mkdir();
+					}
+					out = new FileOutputStream(path + "/" +replaceName);
+					FileCopyUtils.copy(is, out);
+					filePathList.add("/resources/upload/" +replaceName);
+ 				} else {
+ 					new IOException("잘못된 파일을 업로드 하셨습니다.");
+ 				}
+			} catch(IOException e) {
+				e.printStackTrace();
+				new IOException("파일 업로드에 실패하였습니다.");
+			} finally {
+				if(out != null) {
+					out.close();
+				} 
+				if(is != null) {
+					is.close();
 				}
-
-				// 확장자 구하기
-				String extension = originalName.substring(originalName.lastIndexOf("."));
-
-				// 현재 년-월-일-시-분-초
-				LocalDateTime now = LocalDateTime.now();
-
-				// 년월시분초 형식을 데이터 가공
-				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyMMddHHmmss");
-				String output = now.format(formatter);
-
-				// 랜덤 문자열 생성
-				int length = 8; // 생성할 문자열의 길이
-				String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!@#$%^&";
-
-				Random random = new Random();
-				String randomString = random.ints(length, 0, characters.length()).mapToObj(characters::charAt)
-						.map(Object::toString).collect(Collectors.joining());
-
-				String fileName = (output + "_" + randomString + extension);
-				String filePathName = request.getSession().getServletContext().getRealPath("/") + "resources\\upload\\"
-						+ fileName;
-
-				System.out.println(filePathName);
-
-				filePathList.add("/resources/upload/" + fileName);
-				Path filePath = Paths.get(filePathName);
-
-				try {
-					file.transferTo(filePath);
-				} catch (IllegalStateException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-
-			});
+			}
 		}
 
 		if (filePathList.size() != 0) {

@@ -260,7 +260,7 @@
 										<div>
 											<span>작성자 : </span>
 											<span class="review_member_id">
-												${reviewCurUser.member_id }
+												${review.member_id }
 											</span>
 										</div>
 									</div>
