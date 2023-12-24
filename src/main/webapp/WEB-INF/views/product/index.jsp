@@ -174,6 +174,9 @@ a, a:hover {
 	text-align: center;
 	color: rgba(113, 113, 113, 1);
 }
+.slide_box{
+	margin-top: 60px;
+}
 </style>
 
 </head>
@@ -181,7 +184,7 @@ a, a:hover {
 <body>
 	<%@ include file="/WEB-INF/views/common/navbar.jsp"%>
 
-	<div id="carouselExampleFade" class="carousel slide carousel-fade"
+	<div id="carouselExampleFade" class="slide_box carousel slide carousel-fade"
 		data-bs-ride="carousel">
 		<div class="carousel-inner">
 			<div class="carousel-item active">
