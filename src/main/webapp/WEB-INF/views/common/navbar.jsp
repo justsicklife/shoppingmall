@@ -139,13 +139,20 @@
 .container-fluid{
 	height: 40px !important;
 }
+.nav_padding{
+	padding:0px !important;
+}
+.exit_button{
+	margin-top: 0px !important;
+	margin-right: 15px !important;
+}
 </style>
 </head>
 <body>
 	<nav class="navbar_box navbar fixed-top">
 		<div class="container-fluid">
 			<div>
-				<nav class="navbar navbar-expand-lg navbar-light ">
+				<nav class="navbar navbar-expand-lg navbar-light nav_padding">
 					<div class="container-fluid">
 						<a class="navbar-brand" href="/product/index">쇼핑몰</a>
 						<button class="navbar-toggler" type="button"
@@ -217,8 +224,8 @@
 		</div>
 		<div class="offcanvas offcanvas-end" tabindex="-1"
 			id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-			<div class="offcanvas-header">
-				<button type="button" class="btn-close" data-bs-dismiss="offcanvas"
+			<div class="offcanvas-header justify-content-end">
+				<button type="button" class="btn-close exit_button" data-bs-dismiss="offcanvas"
 					aria-label="Close"></button>
 			</div>
 			<div class="offcanvas-body sidebar-body p-5">

@@ -175,7 +175,10 @@ a, a:hover {
 	color: rgba(113, 113, 113, 1);
 }
 .slide_box{
-	margin-top: 60px;
+	margin-top: 55px;
+}
+.slide_item img {
+	height: 500px;
 }
 </style>
 
@@ -187,15 +190,15 @@ a, a:hover {
 	<div id="carouselExampleFade" class="slide_box carousel slide carousel-fade"
 		data-bs-ride="carousel">
 		<div class="carousel-inner">
-			<div class="carousel-item active">
+			<div class="carousel-item slide_item active">
 				<img src="https://cheatkey.speedgabia.com/jpeg/cheesePC.jpg"
 					class="d-block w-100" alt="...">
 			</div>
-			<div class="carousel-item">
+			<div class="carousel-item slide_item" >
 				<img src="https://cheatkey.speedgabia.com/jpeg/pomelPC.jpg"
 					class="d-block w-100" alt="...">
 			</div>
-			<div class="carousel-item">
+			<div class="carousel-item slide_item" >
 				<img src="https://cheatkey.speedgabia.com/jpeg/bumaterPC.jpg"
 					class="d-block w-100" alt="...">
 			</div>
