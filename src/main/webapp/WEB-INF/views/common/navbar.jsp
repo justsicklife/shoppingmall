@@ -106,6 +106,7 @@
 .fa-search {
 	font-size: 15px;
 }
+
 .navbar-brand{
 	font-weight: bold;
 	font-size: 1.5rem !important;
@@ -127,13 +128,16 @@
 }
 
 .navbar_box {
-	background-color: #4141410d;
+	background-color: #41414156;
 }
 .create-product{
 	font-weight: bold;
 }
 .category-button,.community-button{
 	font-weight: bold;
+}
+.container-fluid{
+	height: 40px !important;
 }
 </style>
 </head>

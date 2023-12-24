@@ -72,7 +72,7 @@
 									</c:forTokens>
 								</div>
 							</div>
-							<div class="col-md-6">
+							<div class="col-md-5">
 								<h1 class="fw-bolder pb-2 division">${product.product_name }</h1>
 
 								<h5 class="pb-2 division my-1 product_content">${product.product_content }</h5>
@@ -126,7 +126,6 @@
 				</section>
 
 				<div class="py-5 container">
-
 					<div class="score-box ">
 						<div class="score-box-2 d-flex align-items-center">
 							<div>
