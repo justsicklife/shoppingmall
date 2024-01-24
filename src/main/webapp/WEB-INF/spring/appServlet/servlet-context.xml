@@ -72,6 +72,9 @@
 			<!-- 인터셉터 적용할 경로 -->
 			<mapping path="/chat/*"/>
 			<mapping path="/review/*"/>
+			<mapping path="/member/editMyPage"/>
+			<mapping path="/member/memberDeletePage"/>
+			<mapping path="/board/*"/>
 			
 			<!-- 인터셉터 제외 경로 -->
 			<!-- <exclude-mapping path=""/>  -->
